@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 9214265343736360911}
   - component: {fileID: 320202016848333618}
   - component: {fileID: 2402225277628560349}
+  - component: {fileID: -1992041449306256785}
   m_Layer: 0
   m_Name: Basic_Floating_platform_7.5x0.5
   m_TagString: Untagged
@@ -95,3 +96,15 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &-1992041449306256785
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8866361444743088995}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d42153be826b54cb5be2d253b4798049, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
