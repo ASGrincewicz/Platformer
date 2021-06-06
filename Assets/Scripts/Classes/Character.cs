@@ -2,7 +2,7 @@
 using UnityEngine;
 namespace Veganimus.Platformer
 {
-    public class Character : MonoBehaviour
+    public class Character : MonoBehaviour, ICollector
     {
         private CharacterController _controller;
         private float _horizontal;
@@ -21,10 +21,14 @@ namespace Veganimus.Platformer
         [SerializeField] private GameObject _characterModel;
         [SerializeField] private bool _hanging;
         [SerializeField] private LayerMask _detectSurfaceLayers;
+        private ICollector _collector;
+
+        public bool IsCollecting { get; set; }
 
         private void Start()
         {
             _controller = GetComponent<CharacterController>();
+            _collector = GetComponent<ICollector>();
             _defaultSpeed = _speed;
         }
         private void Update()
@@ -33,6 +37,7 @@ namespace Veganimus.Platformer
             Run();
             FaceDirection();
             DetectSurface();
+            IsCollecting = Collecting();
         }
         private void Movement()
         {
@@ -132,6 +137,13 @@ namespace Veganimus.Platformer
                 _hanging = false;
                 _gravity = 1.0f;
             }
+        }
+        private bool Collecting()
+        {
+            if (Input.GetKey(KeyCode.C))
+                return true;
+            else
+                return false;
         }
     }
 }
