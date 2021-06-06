@@ -6,7 +6,10 @@ namespace Veganimus.Platformer
     {
         private CharacterController _controller;
         private float _horizontal;
-        [SerializeField] private float _speed = 2f;
+        private float _vertical;
+        [SerializeField] private float _speed = 5f;
+        private float _runSpeed = 10.0f;
+        private float _defaultSpeed;
         [SerializeField] private float _gravity = 1.0f;
         [SerializeField] private float _jumpHeight = 15.0f;
         private Vector3 _direction;
@@ -16,19 +19,25 @@ namespace Veganimus.Platformer
         private bool _canDoubleJump;
         private bool _canWallJump;
         [SerializeField] private GameObject _characterModel;
+        [SerializeField] private bool _hanging;
+        [SerializeField] private LayerMask _detectSurfaceLayers;
 
         private void Start()
         {
             _controller = GetComponent<CharacterController>();
+            _defaultSpeed = _speed;
         }
         private void Update()
         {
             Movement();
+            Run();
             FaceDirection();
+            DetectSurface();
         }
         private void Movement()
         {
             _horizontal = Input.GetAxis("Horizontal");
+            _vertical = Input.GetAxis("Vertical");
             _direction = new Vector3(_horizontal, 0, 0);
             _velocity = _direction * _speed;
 
@@ -49,16 +58,41 @@ namespace Veganimus.Platformer
                         if (_canWallJump)
                         {
                             _velocity = _wallSurfaceNormal * (_speed * 3);
+                            _canDoubleJump = false;
                         }
                         _yVelocity = _jumpHeight;
                         _canDoubleJump = false;
                     }
+                    //if (_hanging)
+                    //{
+                    //    _gravity = 0;
+                    //    _canDoubleJump = false;
+                    //    _canWallJump = false;
+                    //}
+                }
+                if (_hanging)
+                {
+                    _gravity = 0;
+                    _canDoubleJump = false;
+                    _canWallJump = false;
+                }
+                if (_vertical < 0 && _hanging)
+                {
+                    _hanging = false;
+                    _gravity = 1;
                 }
                 _yVelocity -= _gravity;
             }
 
             _velocity.y = _yVelocity;
             _controller.Move(_velocity * Time.deltaTime);
+        }
+        private void Run()
+        {
+            if (Input.GetKey(KeyCode.LeftShift) && _controller.isGrounded)
+                _speed = _runSpeed;
+            else
+                _speed = _defaultSpeed;
         }
         private void FaceDirection()
         {
@@ -78,10 +112,26 @@ namespace Veganimus.Platformer
                 {
                     _wallSurfaceNormal = hit.normal;
                     _canWallJump = true;
+                    _canDoubleJump = false;
                 }
             }
             else
                 _canWallJump = false;
+        }
+        private void DetectSurface()
+        {
+            RaycastHit hitInfo;
+            if (Physics.Raycast(_characterModel.transform.position, Vector3.up, out hitInfo, 2.5f, _detectSurfaceLayers))
+            {
+                var hangable = hitInfo.collider.GetComponent<IHang>();
+                if (hangable != null)
+                    _hanging = true;
+            }
+            else
+            {
+                _hanging = false;
+                _gravity = 1.0f;
+            }
         }
     }
 }
