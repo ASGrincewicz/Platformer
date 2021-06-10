@@ -67,7 +67,7 @@ namespace Veganimus.Platformer
             else
             {
                 _animator.SetFloat("grounded", 0);
-                if (Input.GetButtonDown("Jump"))
+                if (Input.GetButtonDown("Jump")&& !_isWallJumping)
                 {
                     if (_canDoubleJump || _canWallJump)
                     {
@@ -81,9 +81,9 @@ namespace Veganimus.Platformer
                             _canWallJump = false;
                         }
                         _yVelocity = _jumpHeight;
-                        _animator.SetFloat("jumping", 1);
                         _canDoubleJump = false;
                     }
+                    _animator.SetFloat("jumping", 1);
                 }
                 if (_hanging)
                 {
