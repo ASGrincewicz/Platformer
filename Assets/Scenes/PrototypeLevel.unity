@@ -484,22 +484,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Moving_Platform_5x0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 7072375932701654694, guid: 147716db3924c4b5f877660014499e16, type: 3}
-      propertyPath: m_Layer
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 7072375933724647847, guid: 147716db3924c4b5f877660014499e16, type: 3}
-      propertyPath: m_Layer
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 7072375934386224305, guid: 147716db3924c4b5f877660014499e16, type: 3}
-      propertyPath: m_Layer
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 7072375934515962109, guid: 147716db3924c4b5f877660014499e16, type: 3}
-      propertyPath: m_Layer
-      value: 9
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 147716db3924c4b5f877660014499e16, type: 3}
 --- !u!4 &616926452 stripped
@@ -1403,6 +1387,10 @@ PrefabInstance:
       propertyPath: m_Center.y
       value: 0.2
       objectReference: {fileID: 0}
+    - target: {fileID: 387879581356729610, guid: 2d2656af18a124d14b8672f9bc2d1c25, type: 3}
+      propertyPath: _detectSurfaceLayers.m_Bits
+      value: 2048
+      objectReference: {fileID: 0}
     - target: {fileID: 387879581356729611, guid: 2d2656af18a124d14b8672f9bc2d1c25, type: 3}
       propertyPath: m_Name
       value: Character
@@ -1804,17 +1792,13 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 776924661}
     m_Modifications:
-    - target: {fileID: 5454877139882754575, guid: daca4525f7b694cbabd72f5815e1f733, type: 3}
-      propertyPath: m_Layer
-      value: 9
+    - target: {fileID: 5454877139882754572, guid: daca4525f7b694cbabd72f5815e1f733, type: 3}
+      propertyPath: m_Size.y
+      value: 1.1492758
       objectReference: {fileID: 0}
-    - target: {fileID: 5454877140563336985, guid: daca4525f7b694cbabd72f5815e1f733, type: 3}
-      propertyPath: m_Layer
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 5454877140709917525, guid: daca4525f7b694cbabd72f5815e1f733, type: 3}
-      propertyPath: m_Layer
-      value: 9
+    - target: {fileID: 5454877139882754572, guid: daca4525f7b694cbabd72f5815e1f733, type: 3}
+      propertyPath: m_Center.y
+      value: 0.07463789
       objectReference: {fileID: 0}
     - target: {fileID: 5454877141173116173, guid: daca4525f7b694cbabd72f5815e1f733, type: 3}
       propertyPath: m_RootOrder
@@ -1863,10 +1847,6 @@ PrefabInstance:
     - target: {fileID: 5454877141173116174, guid: daca4525f7b694cbabd72f5815e1f733, type: 3}
       propertyPath: m_Name
       value: Moving_Platform_2.5x0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 5454877141173116174, guid: daca4525f7b694cbabd72f5815e1f733, type: 3}
-      propertyPath: m_Layer
-      value: 9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: daca4525f7b694cbabd72f5815e1f733, type: 3}

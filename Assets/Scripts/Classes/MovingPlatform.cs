@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 namespace Veganimus.Platformer
 {
-    public class MovingPlatform : Platform
+    public class MovingPlatform : Platform, IMoving
     {
         [SerializeField] private List<Transform> _waypoints = new List<Transform>();
         private int _targetWaypont;
@@ -22,6 +22,22 @@ namespace Veganimus.Platformer
 
             else
                 _targetWaypont = 0;
+        }
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.GetComponent<Character>())
+            {
+                Debug.Log("Found Character!");
+                other.transform.parent = this.transform;
+            }
+        }
+        private void OnTriggerExit(Collider other)
+        {
+            if (other.GetComponent<Character>())
+            {
+               
+                other.transform.parent = null;
+            }
         }
     }
 }

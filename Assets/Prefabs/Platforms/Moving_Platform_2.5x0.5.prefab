@@ -12,8 +12,9 @@ GameObject:
   - component: {fileID: 5454877139882754578}
   - component: {fileID: 5454877139882754579}
   - component: {fileID: 5454877139882754572}
+  - component: {fileID: 2522544720922888222}
   - component: {fileID: 5454877139882754574}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Moving_platform_2.5x0.5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,8 +95,21 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1, y: 1.1081638, z: 1}
+  m_Center: {x: 0, y: 0.054081917, z: 0}
+--- !u!65 &2522544720922888222
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5454877139882754575}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1.5541954, z: 1}
+  m_Center: {x: 0, y: 0.2770977, z: 0}
 --- !u!114 &5454877139882754574
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -121,7 +135,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5454877140563336984}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Waypoint2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -151,7 +165,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5454877140709917524}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Waypoint1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -182,7 +196,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5454877141173116173}
   - component: {fileID: -7733924672351807}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Moving_Platform_2.5x0.5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
