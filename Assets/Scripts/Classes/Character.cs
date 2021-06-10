@@ -12,6 +12,7 @@ namespace Veganimus.Platformer
         private float _yVelocity;
         private bool _canDoubleJump;
         [SerializeField] private bool _canWallJump;
+        [SerializeField] private bool _isWallJumping;
         private Vector3 _direction;
         private Vector3 _velocity;
         private Vector3 _wallSurfaceNormal;
@@ -58,10 +59,12 @@ namespace Veganimus.Platformer
                 {
                     if (_canDoubleJump || _canWallJump)
                     {
-                        if (_canWallJump)
+                        if (_canWallJump && !_isWallJumping)
                         {
+                            _isWallJumping = true;
                             _velocity = _wallSurfaceNormal * (_speed * 3);
                             _canDoubleJump = false;
+                            _canWallJump = false;
                         }
                         _yVelocity = _jumpHeight;
                         _canDoubleJump = false;
@@ -101,7 +104,7 @@ namespace Veganimus.Platformer
 
         private void OnControllerColliderHit(ControllerColliderHit hit)
         {
-            if (!_controller.isGrounded)
+            if (!_controller.isGrounded && !_canWallJump)
             {
                 var wall = hit.collider.GetComponent<IWall>();
                 if (wall != null)
@@ -112,7 +115,10 @@ namespace Veganimus.Platformer
                 }
             }
             else
+            {
                 _canWallJump = false;
+                _isWallJumping = false;
+            }
         }
         private void DetectSurface()
         {
