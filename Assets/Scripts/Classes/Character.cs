@@ -5,6 +5,7 @@ namespace Veganimus.Platformer
     public class Character : MonoBehaviour
     {
         private CharacterController _controller;
+        private Animator _animator;
         private float _horizontal;
         private float _vertical;
         private float _runSpeed = 10.0f;
@@ -28,6 +29,7 @@ namespace Veganimus.Platformer
         private void Start()
         {
             _controller = GetComponent<CharacterController>();
+            _animator = _characterModel.GetComponent<Animator>();
             _defaultSpeed = _speed;
         }
         private void Update()
@@ -37,6 +39,10 @@ namespace Veganimus.Platformer
             FaceDirection();
             DetectSurface();
             DetectCollectible();
+            if (_horizontal != 0)
+                _animator.SetFloat("horizontal", 1);
+            else
+                _animator.SetFloat("horizontal", 0);
         }
         private void Movement()
         {
@@ -47,21 +53,29 @@ namespace Veganimus.Platformer
 
             if (_controller.isGrounded)
             {
+                _animator.SetFloat("grounded", 1);
+                _animator.SetBool("dropping", false);
+                _animator.SetFloat("jumping", 0);
                 if (Input.GetButtonDown("Jump"))
                 {
                     _yVelocity = _jumpHeight;
                     _canDoubleJump = true;
+                    _animator.SetFloat("jumping", 1);
+                    _animator.SetFloat("grounded", 0);
                 }
             }
             else
             {
-                if (Input.GetButtonDown("Jump"))
+                _animator.SetFloat("grounded", 0);
+                if (Input.GetButtonDown("Jump")&& !_isWallJumping)
                 {
                     if (_canDoubleJump || _canWallJump)
                     {
                         if (_canWallJump && !_isWallJumping)
                         {
                             _isWallJumping = true;
+                            _animator.SetFloat("jumping", 0);
+                            _animator.SetFloat("wallJumping", 1);
                             _velocity = _wallSurfaceNormal * (_speed * 3);
                             _canDoubleJump = false;
                             _canWallJump = false;
@@ -69,21 +83,25 @@ namespace Veganimus.Platformer
                         _yVelocity = _jumpHeight;
                         _canDoubleJump = false;
                     }
+                    _animator.SetFloat("jumping", 1);
                 }
                 if (_hanging)
                 {
+                    _animator.SetFloat("jumping", 0);
+                    _animator.SetFloat("hanging", 1);
                     _gravity = 0;
                     _canDoubleJump = false;
                     _canWallJump = false;
                 }
-                if (_vertical < 0 && _hanging)
+                if (_vertical < 0.5 && _hanging)
                 {
+                    _animator.SetFloat("hanging", 0);
+                    _animator.SetBool("dropping", true);
                     _hanging = false;
                     _gravity = 1;
                 }
                 _yVelocity -= _gravity;
             }
-
             _velocity.y = _yVelocity;
             _controller.Move(_velocity * Time.deltaTime);
         }
@@ -97,14 +115,15 @@ namespace Veganimus.Platformer
         private void FaceDirection()
         {
             if (_horizontal < 0)
-                _characterModel.transform.localRotation = new Quaternion(0, -180, 0, 0);
+                _characterModel.transform.localRotation = Quaternion.Euler(0, -90, 0);
+
             else if (_horizontal > 0)
-                _characterModel.transform.localRotation = new Quaternion(0, 0, 0, 0);
+                _characterModel.transform.localRotation = Quaternion.Euler(0, 90, 0);
         }
 
         private void OnControllerColliderHit(ControllerColliderHit hit)
         {
-            if (!_controller.isGrounded && !_canWallJump)
+            if (!_controller.isGrounded && !_isWallJumping)
             {
                 var wall = hit.collider.GetComponent<IWall>();
                 if (wall != null)
@@ -118,19 +137,21 @@ namespace Veganimus.Platformer
             {
                 _canWallJump = false;
                 _isWallJumping = false;
+                _animator.SetFloat("wallJumping", 0);
             }
         }
         private void DetectSurface()
         {
             RaycastHit hitInfo;
-            if (Physics.Raycast(_characterModel.transform.position, Vector3.up, out hitInfo, 2.5f, _detectSurfaceLayers))
+            if (Physics.Raycast(transform.position, Vector3.up, out hitInfo, 2.0f, _detectSurfaceLayers))
             {
                 var hangable = hitInfo.collider.GetComponent<IHang>();
-                if (hangable != null)
+                if (hangable != null && _vertical > 0)
                     _hanging = true;
             }
             else
             {
+                _animator.SetFloat("hanging", 0);
                 _hanging = false;
                 _gravity = 1.0f;
             }
