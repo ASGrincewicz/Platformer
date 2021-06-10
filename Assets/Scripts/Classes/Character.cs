@@ -97,9 +97,10 @@ namespace Veganimus.Platformer
         private void FaceDirection()
         {
             if (_horizontal < 0)
-                _characterModel.transform.localRotation = new Quaternion(0, -180, 0, 0);
+                _characterModel.transform.localRotation = Quaternion.Euler(0, -90, 0);
+
             else if (_horizontal > 0)
-                _characterModel.transform.localRotation = new Quaternion(0, 0, 0, 0);
+                _characterModel.transform.localRotation = Quaternion.Euler(0, 90, 0);
         }
 
         private void OnControllerColliderHit(ControllerColliderHit hit)
