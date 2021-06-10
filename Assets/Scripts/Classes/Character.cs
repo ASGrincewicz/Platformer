@@ -81,12 +81,14 @@ namespace Veganimus.Platformer
                 }
                 if (_hanging)
                 {
+                    _animator.SetFloat("hanging", 1);
                     _gravity = 0;
                     _canDoubleJump = false;
                     _canWallJump = false;
                 }
                 if (_vertical < 0 && _hanging)
                 {
+                    _animator.SetFloat("hanging", 0);
                     _hanging = false;
                     _gravity = 1;
                 }
@@ -133,7 +135,7 @@ namespace Veganimus.Platformer
         private void DetectSurface()
         {
             RaycastHit hitInfo;
-            if (Physics.Raycast(_characterModel.transform.position, Vector3.up, out hitInfo, 2.5f, _detectSurfaceLayers))
+            if (Physics.Raycast(_characterModel.transform.position, Vector3.up, out hitInfo, 2.0f, _detectSurfaceLayers))
             {
                 var hangable = hitInfo.collider.GetComponent<IHang>();
                 if (hangable != null)
