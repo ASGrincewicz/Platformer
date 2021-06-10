@@ -5,6 +5,7 @@ namespace Veganimus.Platformer
     public class Character : MonoBehaviour
     {
         private CharacterController _controller;
+        private Animator _animator;
         private float _horizontal;
         private float _vertical;
         private float _runSpeed = 10.0f;
@@ -28,6 +29,7 @@ namespace Veganimus.Platformer
         private void Start()
         {
             _controller = GetComponent<CharacterController>();
+            _animator = _characterModel.GetComponent<Animator>();
             _defaultSpeed = _speed;
         }
         private void Update()
@@ -37,6 +39,10 @@ namespace Veganimus.Platformer
             FaceDirection();
             DetectSurface();
             DetectCollectible();
+            if (_horizontal != 0)
+                _animator.SetFloat("horizontal", 1);
+            else
+                _animator.SetFloat("horizontal", 0);
         }
         private void Movement()
         {
@@ -47,10 +53,12 @@ namespace Veganimus.Platformer
 
             if (_controller.isGrounded)
             {
+                _animator.SetBool("jumping", false);
                 if (Input.GetButtonDown("Jump"))
                 {
                     _yVelocity = _jumpHeight;
                     _canDoubleJump = true;
+                    _animator.SetBool("jumping", true);
                 }
             }
             else
@@ -67,6 +75,7 @@ namespace Veganimus.Platformer
                             _canWallJump = false;
                         }
                         _yVelocity = _jumpHeight;
+                        _animator.SetBool("jumping", true);
                         _canDoubleJump = false;
                     }
                 }
@@ -83,7 +92,7 @@ namespace Veganimus.Platformer
                 }
                 _yVelocity -= _gravity;
             }
-
+           
             _velocity.y = _yVelocity;
             _controller.Move(_velocity * Time.deltaTime);
         }
