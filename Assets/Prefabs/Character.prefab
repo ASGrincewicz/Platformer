@@ -50,6 +50,13 @@ MonoBehaviour:
   _gravity: 1
   _jumpHeight: 15
   _characterModel: {fileID: 387879581718464192}
+  _hanging: 0
+  _detectSurfaceLayers:
+    serializedVersion: 2
+    m_Bits: 2048
+  _collectibleLayerMask:
+    serializedVersion: 2
+    m_Bits: 4096
 --- !u!143 &714321472
 CharacterController:
   m_ObjectHideFlags: 0
@@ -182,6 +189,13 @@ MonoBehaviour:
   _gravity: 0
   _jumpHeight: 0
   _characterModel: {fileID: 0}
+  _hanging: 0
+  _detectSurfaceLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  _collectibleLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1 &387879581997917140
 GameObject:
   m_ObjectHideFlags: 0

@@ -2,24 +2,23 @@
 using UnityEngine;
 namespace Veganimus.Platformer
 {
-    public class Collectible : MonoBehaviour
+    public class Collectible : MonoBehaviour, IAbsorbable
     {
-        public void OnTriggerStay(Collider other)
+        [SerializeField] private bool _canAbosrb = false;
+        public bool CanAbsorb { get { return _canAbosrb; } }
+        [SerializeField] private LayerMask _collectorLayerMask;
+
+        private void OnTriggerEnter(Collider other)
         {
-            var collector = other.GetComponent<ICollector>();
-            if (collector != null)
+            if (_canAbosrb)
             {
-                if (collector.IsCollecting == true)
+                var absorber = other.GetComponent<IAbsorbable>();
+                if (absorber != null)
                 {
-                    transform.position = Vector3.Lerp(transform.position, other.transform.position, 3f * Time.deltaTime);
-                    if (Vector3.Distance(transform.position, other.transform.position) < 0.5f)
-                    {
-                        Destroy(this.gameObject);
-                    }
+                    transform.localScale = new Vector3(2, 2, 2);
+                    Destroy(other.gameObject);
                 }
             }
-            else
-                return;
         }
     }
 }

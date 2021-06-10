@@ -21,6 +21,7 @@ namespace Veganimus.Platformer
         [SerializeField] private GameObject _characterModel;
         [SerializeField] private bool _hanging;
         [SerializeField] private LayerMask _detectSurfaceLayers;
+        [SerializeField] private LayerMask _collectibleLayerMask;
         private ICollector _collector;
 
         public bool IsCollecting { get; set; }
@@ -37,6 +38,7 @@ namespace Veganimus.Platformer
             Run();
             FaceDirection();
             DetectSurface();
+            DetectCollectible();
             IsCollecting = Collecting();
         }
         private void Movement()
@@ -103,7 +105,7 @@ namespace Veganimus.Platformer
         {
 
             if (_horizontal < 0)
-                _characterModel.transform.localRotation = new Quaternion(0, -180, 0,0);
+                _characterModel.transform.localRotation = new Quaternion(0, -180, 0, 0);
             else if (_horizontal > 0)
                 _characterModel.transform.localRotation = new Quaternion(0, 0, 0, 0);
         }
@@ -144,6 +146,20 @@ namespace Veganimus.Platformer
                 return true;
             else
                 return false;
+        }
+        private void DetectCollectible()
+        {
+            int maxColliders = 5;
+            Collider[] results = new Collider[maxColliders];
+            int numberColliders = Physics.OverlapSphereNonAlloc(transform.position, 5.0f, results, _collectibleLayerMask);
+
+            for (int i = 0; i < numberColliders; i++)
+            {
+                results[i].transform.position = Vector3.Lerp(results[i].transform.position, transform.position, 3f * Time.deltaTime);
+
+                if (Vector3.Distance(transform.position, results[i].transform.position) < 0.5f)
+                 Destroy(results[i].gameObject);
+            }
         }
     }
 }
