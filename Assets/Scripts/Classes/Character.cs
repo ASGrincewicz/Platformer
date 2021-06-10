@@ -7,22 +7,22 @@ namespace Veganimus.Platformer
         private CharacterController _controller;
         private float _horizontal;
         private float _vertical;
-        [SerializeField] private float _speed = 5f;
         private float _runSpeed = 10.0f;
         private float _defaultSpeed;
-        [SerializeField] private float _gravity = 1.0f;
-        [SerializeField] private float _jumpHeight = 15.0f;
+        private float _yVelocity;
+        private bool _canDoubleJump;
+        [SerializeField] private bool _canWallJump;
         private Vector3 _direction;
         private Vector3 _velocity;
         private Vector3 _wallSurfaceNormal;
-        private float _yVelocity;
-        private bool _canDoubleJump;
-        private bool _canWallJump;
+        [SerializeField] private float _speed = 5f;
+        [SerializeField] private float _gravity = 1.0f;
+        [SerializeField] private float _jumpHeight = 15.0f;
+        [SerializeField] private float _collectibleDetectionRadius;
         [SerializeField] private GameObject _characterModel;
         [SerializeField] private bool _hanging;
         [SerializeField] private LayerMask _detectSurfaceLayers;
         [SerializeField] private LayerMask _collectibleLayerMask;
-       
 
         private void Start()
         {
@@ -93,7 +93,6 @@ namespace Veganimus.Platformer
         }
         private void FaceDirection()
         {
-
             if (_horizontal < 0)
                 _characterModel.transform.localRotation = new Quaternion(0, -180, 0, 0);
             else if (_horizontal > 0)
@@ -135,7 +134,10 @@ namespace Veganimus.Platformer
         {
             int maxColliders = 5;
             Collider[] results = new Collider[maxColliders];
-            int numberColliders = Physics.OverlapSphereNonAlloc(transform.position, 5.0f, results, _collectibleLayerMask);
+            int numberColliders = Physics.OverlapSphereNonAlloc(transform.position,
+                                                                _collectibleDetectionRadius,
+                                                                results,
+                                                                _collectibleLayerMask);
 
             for (int i = 0; i < numberColliders; i++)
             {
