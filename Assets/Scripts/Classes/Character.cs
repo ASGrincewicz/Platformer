@@ -5,6 +5,7 @@ namespace Veganimus.Platformer
     public class Character : MonoBehaviour
     {
         private CharacterController _controller;
+        private Rigidbody _rigidbody;
         private Animator _animator;
         private float _horizontal;
         private float _vertical;
@@ -12,8 +13,9 @@ namespace Veganimus.Platformer
         private float _defaultSpeed;
         private float _yVelocity;
         private bool _canDoubleJump;
-        [SerializeField] private bool _canWallJump;
-        [SerializeField] private bool _isWallJumping;
+        private bool _canWallJump;
+        private bool _isWallJumping;
+        private bool _inBallForm;
         private Vector3 _direction;
         private Vector3 _velocity;
         private Vector3 _wallSurfaceNormal;
@@ -22,27 +24,52 @@ namespace Veganimus.Platformer
         [SerializeField] private float _jumpHeight = 15.0f;
         [SerializeField] private float _collectibleDetectionRadius;
         [SerializeField] private GameObject _characterModel;
+        [SerializeField] private GameObject _ballForm;
         [SerializeField] private bool _hanging;
         [SerializeField] private LayerMask _detectSurfaceLayers;
         [SerializeField] private LayerMask _collectibleLayerMask;
 
         private void Start()
         {
-            _controller = GetComponent<CharacterController>();
+            _controller = GetComponentInChildren<CharacterController>();
+            
             _animator = _characterModel.GetComponent<Animator>();
             _defaultSpeed = _speed;
         }
         private void Update()
         {
-            Movement();
-            Run();
-            FaceDirection();
+            if (!_inBallForm)
+            {
+                Movement();
+                FaceDirection();
+            }
+            else if(_inBallForm)
+            {
+                BallMovement();
+            }
             DetectSurface();
             DetectCollectible();
             if (_horizontal != 0)
                 _animator.SetFloat("horizontal", 1);
             else
                 _animator.SetFloat("horizontal", 0);
+            if(Input.GetKeyDown(KeyCode.M)&& !_inBallForm)
+            {
+                _characterModel.SetActive(false);
+                _ballForm.SetActive(true);
+                _inBallForm = true;
+                _rigidbody = GetComponentInChildren<Rigidbody>();
+                _controller.height = 0.5f;
+                _controller.center = new Vector3(0, -0.46f, 0);
+            }
+            else if(Input.GetKeyDown(KeyCode.M)&& _inBallForm)
+            {
+                _characterModel.SetActive(true);
+                _ballForm.SetActive(false);
+                _inBallForm = false;
+                _controller.height = 1.92f;
+                _controller.center = new Vector3(0, 0.2f, 0);
+            }
         }
         private void Movement()
         {
@@ -76,7 +103,7 @@ namespace Veganimus.Platformer
                             _isWallJumping = true;
                             _animator.SetFloat("jumping", 0);
                             _animator.SetFloat("wallJumping", 1);
-                            _velocity = _wallSurfaceNormal * (_speed * 3);
+                            _velocity = _wallSurfaceNormal * (_speed * 10);
                             _canDoubleJump = false;
                             _canWallJump = false;
                         }
@@ -105,12 +132,25 @@ namespace Veganimus.Platformer
             _velocity.y = _yVelocity;
             _controller.Move(_velocity * Time.deltaTime);
         }
-        private void Run()
+        private void BallMovement()
         {
-            if (Input.GetKey(KeyCode.LeftShift) && _controller.isGrounded)
-                _speed = _runSpeed;
+            _horizontal = Input.GetAxis("Horizontal");
+            _direction = new Vector3(_horizontal, 0, 0);
+            _velocity = _direction * _speed;
+            if(_controller.isGrounded)
+            {
+                if (Input.GetButtonDown("Jump"))
+                {
+                    _yVelocity = _jumpHeight;
+                }
+            }
             else
-                _speed = _defaultSpeed;
+            {
+                _yVelocity -= _gravity;
+            }
+            _velocity.y = _yVelocity;
+            _controller.Move(_velocity * Time.deltaTime);
+            
         }
         private void FaceDirection()
         {
