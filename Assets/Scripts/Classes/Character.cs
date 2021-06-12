@@ -15,6 +15,7 @@ namespace Veganimus.Platformer
         private float _yVelocity;
         private bool _canDoubleJump;
         private bool _canWallJump;
+        private bool _jumpTriggered;
         private bool _isWallJumping;
         private bool _inBallForm;
         private Vector3 _direction;
@@ -34,6 +35,7 @@ namespace Veganimus.Platformer
         private void OnEnable()
         {
             _inputManager.moveAction += OnMoveInput;
+            
         }
         private void OnDisable()
         {
@@ -49,12 +51,14 @@ namespace Veganimus.Platformer
         private void Start()
         {
             _controller = GetComponentInChildren<CharacterController>();
-            
+            _inputManager = GetComponent<InputManager>();
             _animator = _characterModel.GetComponent<Animator>();
             _defaultSpeed = _speed;
+           
         }
         private void Update()
         {
+            var ballModeTriggered = _inputManager.controls.Standard.BallMode.triggered;
             if (!_inBallForm)
             {
                 Movement();
@@ -70,7 +74,7 @@ namespace Veganimus.Platformer
                 _animator.SetFloat("horizontal", 1);
             else
                 _animator.SetFloat("horizontal", 0);
-            if(Input.GetKeyDown(KeyCode.M)&& !_inBallForm)
+            if(ballModeTriggered && !_inBallForm)
             {
                 _characterModel.SetActive(false);
                 _ballForm.SetActive(true);
@@ -79,7 +83,7 @@ namespace Veganimus.Platformer
                 _controller.height = 0.5f;
                 _controller.center = new Vector3(0, -0.46f, 0);
             }
-            else if(Input.GetKeyDown(KeyCode.M)&& _inBallForm)
+            else if(ballModeTriggered && _inBallForm)
             {
                 _characterModel.SetActive(true);
                 _ballForm.SetActive(false);
@@ -90,17 +94,16 @@ namespace Veganimus.Platformer
         }
         private void Movement()
         {
-            //_horizontal = Input.GetAxis("Horizontal");
-            //_vertical = Input.GetAxis("Vertical");
+            _jumpTriggered = _inputManager.controls.Standard.Jump.triggered;
             _direction = new Vector3(_horizontal, 0, 0);
             _velocity = _direction * _speed;
-
+          
             if (_controller.isGrounded)
             {
                 _animator.SetFloat("grounded", 1);
                 _animator.SetBool("dropping", false);
                 _animator.SetFloat("jumping", 0);
-                if (Input.GetButtonDown("Jump"))
+                if (_jumpTriggered)
                 {
                     _yVelocity = _jumpHeight;
                     _canDoubleJump = true;
@@ -111,7 +114,7 @@ namespace Veganimus.Platformer
             else
             {
                 _animator.SetFloat("grounded", 0);
-                if (Input.GetButtonDown("Jump")&& !_isWallJumping)
+                if (_jumpTriggered && !_isWallJumping)
                 {
                     if (_canDoubleJump || _canWallJump)
                     {
@@ -151,12 +154,12 @@ namespace Veganimus.Platformer
         }
         private void BallMovement()
         {
-            _horizontal = Input.GetAxis("Horizontal");
+            _jumpTriggered = _inputManager.controls.Standard.Jump.triggered;
             _direction = new Vector3(_horizontal, 0, 0);
             _velocity = _direction * _speed;
             if(_controller.isGrounded)
             {
-                if (Input.GetButtonDown("Jump"))
+                if (_jumpTriggered)
                 {
                     _yVelocity = _jumpHeight;
                 }

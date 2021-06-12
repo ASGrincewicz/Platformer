@@ -4,48 +4,52 @@ using UnityEngine.InputSystem;
 
 namespace Veganimus.Platformer
 {
-    [CreateAssetMenu(menuName ="Input Manager")]
-    public class InputManager : ScriptableObject
+   
+    public class InputManager :MonoBehaviour
     {
         public UnityAction<float, float> moveAction;
         public UnityAction shootAction;
         public UnityAction ballModeAction;
         public UnityAction jumpAction;
 
-        private Controls _controls;
+        public Controls controls;
 
         private void OnEnable()
         {
-            _controls = new Controls();
-            _controls.Standard.Enable();
-            _controls.Standard.Movement.performed += OnMoveInput;
-            _controls.Standard.Jump.performed += OnJumpInput;
-            _controls.Standard.BallMode.performed += OnBallModeInput;
+            controls = new Controls();
+            controls.Standard.Enable();
+            controls.Standard.Movement.performed += OnMoveInput;
+            //controls.Standard.Jump.performed += OnJumpInput;
+            //controls.Standard.Jump.canceled += OnJumpInput;
+            //controls.Standard.BallMode.performed += OnBallModeInput;
         }
         private void OnDisable()
         {
-            _controls.Disable();
-            _controls.Standard.Disable();
-            _controls.Standard.Movement.performed -= OnMoveInput;
-            _controls.Standard.Jump.performed -= OnJumpInput;
-            _controls.Standard.BallMode.performed += OnBallModeInput;
+            controls.Disable();
+            controls.Standard.Disable();
+            controls.Standard.Movement.performed -= OnMoveInput;
+            //controls.Standard.Jump.performed -= OnJumpInput;
+            //controls.Standard.Jump.canceled -= OnJumpInput;
+            //controls.Standard.BallMode.performed += OnBallModeInput;
 
         }
+        
         private void OnMoveInput(InputAction.CallbackContext obj)
         {
             Vector2 moveInput = obj.ReadValue<Vector2>();
             if (moveAction != null)
                 moveAction.Invoke(moveInput.x, moveInput.y);
         }
-        private void OnJumpInput(InputAction.CallbackContext obj)
-        {
-            if (jumpAction != null)
-                jumpAction.Invoke();
-        }
-        private void OnBallModeInput(InputAction.CallbackContext obj)
-        {
-            if (ballModeAction != null)
-                ballModeAction.Invoke();
-        }
+        //private void OnJumpInput(InputAction.CallbackContext obj)
+        //{
+        //    //bool isJumping = obj.ReadValueAsButton();
+        //    if (jumpAction != null)
+        //        jumpAction.Invoke();
+        //}
+        //private void OnBallModeInput(InputAction.CallbackContext obj)
+        //{
+        //    if (ballModeAction != null)
+        //        ballModeAction.Invoke();
+        //}
     }
 }
