@@ -31,6 +31,7 @@ namespace Veganimus.Platformer
         [SerializeField] private LayerMask _detectSurfaceLayers;
         [SerializeField] private LayerMask _collectibleLayerMask;
         [SerializeField] private InputManager _inputManager;
+        public GameObject testIcon;
 
         private void OnEnable()
         {
@@ -51,6 +52,7 @@ namespace Veganimus.Platformer
         private void Start()
         {
             _controller = GetComponentInChildren<CharacterController>();
+            _rigidbody = GetComponentInChildren<Rigidbody>();
             _inputManager = GetComponent<InputManager>();
             _animator = _characterModel.GetComponent<Animator>();
             _defaultSpeed = _speed;
@@ -160,15 +162,13 @@ namespace Veganimus.Platformer
             if(_controller.isGrounded)
             {
                 if (_jumpTriggered)
-                {
-                    _yVelocity = _jumpHeight;
-                }
+                 _yVelocity = _jumpHeight;
             }
             else
-            {
-                _yVelocity -= _gravity;
-            }
+             _yVelocity -= _gravity;
+            
             _velocity.y = _yVelocity;
+            //_rigidbody.MoveRotation(_velocity);
             _controller.Move(_velocity * Time.deltaTime);
             
         }
@@ -231,7 +231,11 @@ namespace Veganimus.Platformer
                 results[i].transform.position = Vector3.Lerp(results[i].transform.position, transform.position, 3f * Time.deltaTime);
 
                 if (Vector3.Distance(transform.position, results[i].transform.position) < 0.5f)
-                 Destroy(results[i].gameObject);
+                {
+                    Destroy(results[i].gameObject);
+                    
+                }
+
             }
         }
     }
