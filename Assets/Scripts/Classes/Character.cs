@@ -1,4 +1,5 @@
 ﻿// Aaron Grincewicz Veganimus@icloud.com 6/5/2021
+using System;
 using UnityEngine;
 namespace Veganimus.Platformer
 {
@@ -28,6 +29,22 @@ namespace Veganimus.Platformer
         [SerializeField] private bool _hanging;
         [SerializeField] private LayerMask _detectSurfaceLayers;
         [SerializeField] private LayerMask _collectibleLayerMask;
+        [SerializeField] private InputManager _inputManager;
+
+        private void OnEnable()
+        {
+            _inputManager.moveAction += OnMoveInput;
+        }
+        private void OnDisable()
+        {
+            _inputManager.moveAction -= OnMoveInput;
+        }
+
+        private void OnMoveInput(float x, float y)
+        {
+            _horizontal = x;
+            _vertical = y;
+        }
 
         private void Start()
         {
@@ -73,8 +90,8 @@ namespace Veganimus.Platformer
         }
         private void Movement()
         {
-            _horizontal = Input.GetAxis("Horizontal");
-            _vertical = Input.GetAxis("Vertical");
+            //_horizontal = Input.GetAxis("Horizontal");
+            //_vertical = Input.GetAxis("Vertical");
             _direction = new Vector3(_horizontal, 0, 0);
             _velocity = _direction * _speed;
 

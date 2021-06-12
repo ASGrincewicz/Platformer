@@ -1834,6 +1834,10 @@ PrefabInstance:
       propertyPath: _jumpHeight
       value: 15
       objectReference: {fileID: 0}
+    - target: {fileID: 387879581356729610, guid: 2d2656af18a124d14b8672f9bc2d1c25, type: 3}
+      propertyPath: _inputManager
+      value: 
+      objectReference: {fileID: 11400000, guid: ff3dda4c5e6a54a9b9c98ab91e8b69cf, type: 2}
     - target: {fileID: 387879581356729611, guid: 2d2656af18a124d14b8672f9bc2d1c25, type: 3}
       propertyPath: m_Name
       value: Character
