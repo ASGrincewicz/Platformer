@@ -11,6 +11,7 @@ namespace Veganimus.Platformer
         private float _yRadius;
         [SerializeField] private float _speed;
         private float _time = 0;
+        private bool _collected;
 
         private void Start()
         {
@@ -20,24 +21,23 @@ namespace Veganimus.Platformer
 
         private void Update()
         {
-           _time += Time.deltaTime;
-            float x = _xRadius * Mathf.Cos(_time * _speed);
-            float y = _yRadius * Mathf.Sin(_time * _speed);
-            transform.position += new Vector3(x,y , 0);
+            if (!_collected)
+            {
+                _time += Time.deltaTime;
+                float x = _xRadius * Mathf.Cos(_time * _speed);
+                float y = _yRadius * Mathf.Sin(_time * _speed);
+                transform.position += new Vector3(x, y, 0);
+            }
            
         }
-
-        //private void OnTriggerEnter(Collider other)
-        //{
-        //    if (_canAbosrb)
-        //    {
-        //        var absorber = other.GetComponent<IAbsorbable>();
-        //        if (absorber != null)
-        //        {
-        //            transform.localScale = new Vector3(2, 2, 2);
-        //            Destroy(other.gameObject);
-        //        }
-        //    }
-        //}
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.GetComponent<CharacterController>())
+            {
+                _collected = true;
+                UIManager.Instance.UpdateCollectibleText(1);
+                Destroy(this.gameObject);
+            }
+        }
     }
 }

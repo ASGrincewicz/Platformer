@@ -160,7 +160,5 @@ MonoBehaviour:
   _collectorLayerMask:
     serializedVersion: 2
     m_Bits: 64
-  _xRadius: 0.04
-  _yRadius: 0.03
   _speed: 3
-  _object: {fileID: 981652720181784730}
+  _iconPrefab: {fileID: 4213051436083464804, guid: 408b9794c44734ca8a724e7793243594, type: 3}
