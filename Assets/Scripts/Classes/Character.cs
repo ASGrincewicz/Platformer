@@ -21,6 +21,7 @@ namespace Veganimus.Platformer
         private Vector3 _direction;
         private Vector3 _velocity;
         private Vector3 _wallSurfaceNormal;
+        [SerializeField] private int _collectibles;
         [SerializeField] private float _speed = 5f;
         [SerializeField] private float _gravity = 1.0f;
         [SerializeField] private float _jumpHeight = 15.0f;
@@ -230,11 +231,11 @@ namespace Veganimus.Platformer
             {
                 results[i].transform.position = Vector3.Lerp(results[i].transform.position, transform.position, 3f * Time.deltaTime);
 
-                if (Vector3.Distance(transform.position, results[i].transform.position) < 0.5f)
-                {
-                    Destroy(results[i].gameObject);
-                    
-                }
+                //if (Vector3.Distance(transform.position, results[i].transform.position) < 1f)
+                //{
+                //    _collectibles++;
+                //    UIManager.Instance.UpdateCollectibleText(_collectibles);
+                //}
 
             }
         }

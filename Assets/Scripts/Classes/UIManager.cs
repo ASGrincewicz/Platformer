@@ -1,10 +1,13 @@
 ﻿// Aaron Grincewicz ASGrincewicz@icloud.com 6/11/2021
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 namespace Veganimus.Platformer
 {
     public class UIManager : MonoBehaviour
     {
-       public static UIManager Instance
+        #region Singleton
+        public static UIManager Instance
         {
             get
             {
@@ -12,15 +15,18 @@ namespace Veganimus.Platformer
             }
         }
         private static UIManager _instance;
-        public Canvas canvas;
-        public Camera cam;
-
+        #endregion
+        [SerializeField] private TMP_Text _collectibleText;
+        private int _collectiblesCollected;
         private void Awake()
         {
             _instance = this;
         }
-
-        
+        public void UpdateCollectibleText(int amount)
+        {
+            _collectiblesCollected += amount;
+            _collectibleText.text = $"{_collectiblesCollected}";
+        }
     }
    
 }
