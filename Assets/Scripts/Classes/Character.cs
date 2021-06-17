@@ -126,7 +126,7 @@ namespace Veganimus.Platformer
                             _isWallJumping = true;
                             _animator.SetFloat("jumping", 0);
                             _animator.SetFloat("wallJumping", 1);
-                            _velocity = _wallSurfaceNormal * (_speed * 10);
+                            _velocity = _wallSurfaceNormal * (_speed * 5);
                             _canDoubleJump = false;
                             _canWallJump = false;
                         }
