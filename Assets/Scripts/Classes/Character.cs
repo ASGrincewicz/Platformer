@@ -23,12 +23,14 @@ namespace Veganimus.Platformer
         private Vector3 _wallSurfaceNormal;
         [SerializeField] private int _collectibles;
         [SerializeField] private float _speed = 5f;
-        [SerializeField] private float _gravity = 1.0f;
+        [SerializeField] private float _gravity;
+        [SerializeField] private float _adjustGravity;
         [SerializeField] private float _jumpHeight = 15.0f;
         [SerializeField] private float _collectibleDetectionRadius;
         [SerializeField] private GameObject _characterModel;
         [SerializeField] private GameObject _ballForm;
         [SerializeField] private bool _hanging;
+        [SerializeField] private bool _grabbingLedge;
         [SerializeField] private LayerMask _detectSurfaceLayers;
         [SerializeField] private LayerMask _collectibleLayerMask;
         [SerializeField] private InputManager _inputManager;
@@ -57,6 +59,7 @@ namespace Veganimus.Platformer
             _inputManager = GetComponent<InputManager>();
             _animator = _characterModel.GetComponent<Animator>();
             _defaultSpeed = _speed;
+            _gravity = _adjustGravity;
            
         }
         private void Update()
@@ -148,7 +151,7 @@ namespace Veganimus.Platformer
                     _animator.SetFloat("hanging", 0);
                     _animator.SetBool("dropping", true);
                     _hanging = false;
-                    _gravity = 1;
+                    _gravity = _adjustGravity;
                 }
                 _yVelocity -= _gravity;
             }
@@ -184,20 +187,27 @@ namespace Veganimus.Platformer
 
         private void OnControllerColliderHit(ControllerColliderHit hit)
         {
-            if (!_controller.isGrounded && !_isWallJumping)
+            if (!_controller.isGrounded && !_isWallJumping && !_grabbingLedge)
             {
                 var wall = hit.collider.GetComponent<IWall>();
+                var ledge = hit.collider.GetComponent<ILedge>();
                 if (wall != null)
                 {
                     _wallSurfaceNormal = hit.normal;
                     _canWallJump = true;
                     _canDoubleJump = false;
                 }
+                else if (ledge != null)
+                {
+                    _grabbingLedge = true;
+                    Debug.Log("Grabbed Ledge");
+                }
             }
             else
             {
                 _canWallJump = false;
                 _isWallJumping = false;
+                _grabbingLedge = false;
                 _animator.SetFloat("wallJumping", 0);
             }
         }
@@ -210,11 +220,12 @@ namespace Veganimus.Platformer
                 if (hangable != null && _vertical > 0)
                     _hanging = true;
             }
+            
             else
             {
                 _animator.SetFloat("hanging", 0);
                 _hanging = false;
-                _gravity = 1.0f;
+                _gravity = _adjustGravity;
             }
         }
         
