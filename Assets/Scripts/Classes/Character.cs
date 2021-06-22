@@ -29,6 +29,8 @@ namespace Veganimus.Platformer
         private int _wallJumpingAP = Animator.StringToHash("wallJumping");
         private int _hangingAP = Animator.StringToHash("hanging");
         private int _grabLedgeAP = Animator.StringToHash("grabLedge");
+        private int _ledgeDropAP = Animator.StringToHash("ledgeDrop");
+        private int _ledgeClimbAP = Animator.StringToHash("ledgeClimb");
         [SerializeField] private int _collectibles;
         [SerializeField] private float _speed = 5f;
         [SerializeField] private float _gravity;
@@ -39,24 +41,24 @@ namespace Veganimus.Platformer
         [SerializeField] private GameObject _ballForm;
         [SerializeField] private bool _hanging;
         [SerializeField] private bool _grabbingLedge;
+        [SerializeField] private Vector3 _modelPosition;
         [SerializeField] private LayerMask _detectSurfaceLayers;
         [SerializeField] private LayerMask _collectibleLayerMask;
         [SerializeField] private InputManager _inputManager;
         private Transform _animatorRoot;
+        
 
         public void GrabLedge(Transform anchorPos)
         {
             _animatorRoot = anchorPos;
-            _animator.SetTrigger(_grabLedgeAP);
+            _animator.SetFloat(_grabLedgeAP, 1.0f);
             _grabbingLedge = true;
             _controller.enabled = false;
         }
-        
 
         private void OnEnable()
         {
             _inputManager.moveAction += OnMoveInput;
-            
         }
         private void OnDisable()
         {
@@ -184,7 +186,17 @@ namespace Veganimus.Platformer
         }
         private void LedgeMovement()
         {
-
+            
+            if (_vertical < 0)
+            {
+                _animator.SetFloat(_grabLedgeAP, 0f);
+                _grabbingLedge = false;
+                _animatorRoot = null;
+               
+                _characterModel.transform.localPosition = _modelPosition;
+                _controller.enabled = true;
+                _yVelocity -= _gravity;
+            }
         }
         private void BallMovement()
         {
