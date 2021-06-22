@@ -21,6 +21,14 @@ namespace Veganimus.Platformer
         private Vector3 _direction;
         private Vector3 _velocity;
         private Vector3 _wallSurfaceNormal;
+        //Animator Parameters
+        private int _groundedAP = Animator.StringToHash("grounded");
+        private int _horizontalAP = Animator.StringToHash("horizontal");
+        private int _jumpingAP = Animator.StringToHash("jumping");
+        private int _droppingAP = Animator.StringToHash("dropping");
+        private int _wallJumpingAP = Animator.StringToHash("wallJumping");
+        private int _hangingAP = Animator.StringToHash("hanging");
+        private int _grabLedgeAP = Animator.StringToHash("grabLedge");
         [SerializeField] private int _collectibles;
         [SerializeField] private float _speed = 5f;
         [SerializeField] private float _gravity;
@@ -34,7 +42,16 @@ namespace Veganimus.Platformer
         [SerializeField] private LayerMask _detectSurfaceLayers;
         [SerializeField] private LayerMask _collectibleLayerMask;
         [SerializeField] private InputManager _inputManager;
-        public GameObject testIcon;
+        private Transform _animatorRoot;
+
+        public void GrabLedge(Transform anchorPos)
+        {
+            _animatorRoot = anchorPos;
+            _animator.SetTrigger(_grabLedgeAP);
+            _grabbingLedge = true;
+            _controller.enabled = false;
+        }
+        
 
         private void OnEnable()
         {
@@ -60,12 +77,15 @@ namespace Veganimus.Platformer
             _animator = _characterModel.GetComponent<Animator>();
             _defaultSpeed = _speed;
             _gravity = _adjustGravity;
-           
+        }
+        private void FixedUpdate()
+        {
+            AnimLerp();
         }
         private void Update()
         {
             var ballModeTriggered = _inputManager.controls.Standard.BallMode.triggered;
-            if (!_inBallForm)
+            if (!_inBallForm && _controller.enabled)
             {
                 Movement();
                 FaceDirection();
@@ -74,12 +94,16 @@ namespace Veganimus.Platformer
             {
                 BallMovement();
             }
+            else if(!_controller.enabled && _grabbingLedge)
+            {
+                LedgeMovement();
+            }
             DetectSurface();
             DetectCollectible();
             if (_horizontal != 0)
-                _animator.SetFloat("horizontal", 1);
+                _animator.SetFloat(_horizontalAP, 1);
             else
-                _animator.SetFloat("horizontal", 0);
+                _animator.SetFloat(_horizontalAP, 0);
             if(ballModeTriggered && !_inBallForm)
             {
                 _characterModel.SetActive(false);
@@ -106,20 +130,20 @@ namespace Veganimus.Platformer
           
             if (_controller.isGrounded)
             {
-                _animator.SetFloat("grounded", 1);
-                _animator.SetBool("dropping", false);
-                _animator.SetFloat("jumping", 0);
+                _animator.SetFloat(_groundedAP, 1);
+                _animator.SetBool(_droppingAP, false);
+                _animator.SetFloat(_jumpingAP, 0);
                 if (_jumpTriggered)
                 {
                     _yVelocity = _jumpHeight;
                     _canDoubleJump = true;
-                    _animator.SetFloat("jumping", 1);
-                    _animator.SetFloat("grounded", 0);
+                    _animator.SetFloat(_jumpingAP, 1);
+                    _animator.SetFloat(_groundedAP, 0);
                 }
             }
             else
             {
-                _animator.SetFloat("grounded", 0);
+                _animator.SetFloat(_groundedAP, 0);
                 if (_jumpTriggered && !_isWallJumping)
                 {
                     if (_canDoubleJump || _canWallJump)
@@ -127,8 +151,8 @@ namespace Veganimus.Platformer
                         if (_canWallJump && !_isWallJumping)
                         {
                             _isWallJumping = true;
-                            _animator.SetFloat("jumping", 0);
-                            _animator.SetFloat("wallJumping", 1);
+                            _animator.SetFloat(_jumpingAP, 0);
+                            _animator.SetFloat(_wallJumpingAP, 1);
                             _velocity = _wallSurfaceNormal * (_speed * 5);
                             _canDoubleJump = false;
                             _canWallJump = false;
@@ -136,20 +160,20 @@ namespace Veganimus.Platformer
                         _yVelocity = _jumpHeight;
                         _canDoubleJump = false;
                     }
-                    _animator.SetFloat("jumping", 1);
+                    _animator.SetFloat(_jumpingAP, 1);
                 }
                 if (_hanging)
                 {
-                    _animator.SetFloat("jumping", 0);
-                    _animator.SetFloat("hanging", 1);
+                    _animator.SetFloat(_jumpingAP, 0);
+                    _animator.SetFloat(_hangingAP, 1);
                     _gravity = 0;
                     _canDoubleJump = false;
                     _canWallJump = false;
                 }
                 if (_vertical < 0.5 && _hanging)
                 {
-                    _animator.SetFloat("hanging", 0);
-                    _animator.SetBool("dropping", true);
+                    _animator.SetFloat(_hangingAP, 0);
+                    _animator.SetBool(_droppingAP, true);
                     _hanging = false;
                     _gravity = _adjustGravity;
                 }
@@ -157,6 +181,10 @@ namespace Veganimus.Platformer
             }
             _velocity.y = _yVelocity;
             _controller.Move(_velocity * Time.deltaTime);
+        }
+        private void LedgeMovement()
+        {
+
         }
         private void BallMovement()
         {
@@ -190,25 +218,20 @@ namespace Veganimus.Platformer
             if (!_controller.isGrounded && !_isWallJumping && !_grabbingLedge)
             {
                 var wall = hit.collider.GetComponent<IWall>();
-                var ledge = hit.collider.GetComponent<ILedge>();
+                
                 if (wall != null)
                 {
                     _wallSurfaceNormal = hit.normal;
                     _canWallJump = true;
                     _canDoubleJump = false;
                 }
-                else if (ledge != null)
-                {
-                    _grabbingLedge = true;
-                    Debug.Log("Grabbed Ledge");
-                }
             }
             else
             {
                 _canWallJump = false;
                 _isWallJumping = false;
-                _grabbingLedge = false;
-                _animator.SetFloat("wallJumping", 0);
+                //_grabbingLedge = false;
+                _animator.SetFloat(_wallJumpingAP, 0);
             }
         }
         private void DetectSurface()
@@ -223,7 +246,7 @@ namespace Veganimus.Platformer
             
             else
             {
-                _animator.SetFloat("hanging", 0);
+                _animator.SetFloat(_hangingAP, 0);
                 _hanging = false;
                 _gravity = _adjustGravity;
             }
@@ -248,6 +271,26 @@ namespace Veganimus.Platformer
                 //    UIManager.Instance.UpdateCollectibleText(_collectibles);
                 //}
 
+            }
+        }
+        private void AnimLerp()
+        {
+            if (!_animatorRoot) return;
+
+            if (Vector3.Distance(this.transform.position, _animatorRoot.position) > 0.1f)
+            {
+                float lerpSpeed = 60.0f;
+                _characterModel.transform.rotation = Quaternion.Lerp(_characterModel.transform.rotation,
+                                                     _animatorRoot.rotation,
+                                                     Time.deltaTime * lerpSpeed);
+                _characterModel.transform.position = Vector3.Lerp(_characterModel.transform.position,
+                                                  _animatorRoot.position,
+                                                  Time.deltaTime * lerpSpeed);
+            }
+            else
+            {
+                _characterModel.transform.position = _animatorRoot.position;
+                _characterModel.transform.rotation = _animatorRoot.rotation;
             }
         }
     }
