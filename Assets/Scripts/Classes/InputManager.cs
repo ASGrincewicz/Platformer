@@ -1,11 +1,10 @@
-using System;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 namespace Veganimus.Platformer
 {
-   
+
     public class InputManager :MonoBehaviour
     {
         public UnityAction<float, float> moveAction;
@@ -26,21 +25,6 @@ namespace Veganimus.Platformer
             controls.Standard.UpAIm.canceled += OnUpAimInput;
             controls.Standard.DownAim.performed += OnDownAimInput;
             controls.Standard.DownAim.canceled += OnDownAimInput;
-          
-        }
-
-        private void OnDownAimInput(InputAction.CallbackContext obj)
-        {
-            float downAimInput = obj.ReadValue<float>();
-            if (downAimAction != null)
-                downAimAction.Invoke(downAimInput);
-        }
-
-        private void OnUpAimInput(InputAction.CallbackContext obj)
-        {
-            float upAimInput = obj.ReadValue<float>();
-            if (upAimAction != null)
-                upAimAction.Invoke(upAimInput);
         }
 
         private void OnDisable()
@@ -56,6 +40,19 @@ namespace Veganimus.Platformer
             if (moveAction != null)
                 moveAction.Invoke(moveInput.x, moveInput.y);
         }
-       
+        private void OnDownAimInput(InputAction.CallbackContext obj)
+        {
+            float downAimInput = obj.ReadValue<float>();
+            if (downAimAction != null)
+                downAimAction.Invoke(downAimInput);
+        }
+
+        private void OnUpAimInput(InputAction.CallbackContext obj)
+        {
+            float upAimInput = obj.ReadValue<float>();
+            if (upAimAction != null)
+                upAimAction.Invoke(upAimInput);
+        }
+
     }
 }
