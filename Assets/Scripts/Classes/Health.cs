@@ -4,6 +4,7 @@ namespace Veganimus.Platformer
 {
     public class Health : MonoBehaviour, IDamageable
     {
+        [SerializeField] private CharacterType _characterType;
         [SerializeField] private int _lives;
         public int Lives { get { return _lives; }private set { _lives = value; } }
         [SerializeField] private int _hp;
@@ -15,20 +16,25 @@ namespace Veganimus.Platformer
         {
             _hp -= hpDamage;
            
-            if (_hp < 0)
+            if (_hp <= 0)
             {
                 _hp = 0;
-                _lives--;
+                if (_characterType == CharacterType.Player)
+                {
+                    _lives--;
 
-                if (_lives > 0 || hpDamage == 9999)
-                {
-                    _respawnPlayerChannel.RaiseRespawnEvent();
+                    if (_lives > 0 || hpDamage == 9999)
+                    {
+                        _respawnPlayerChannel.RaiseRespawnEvent();
+                    }
+                    else
+                    {
+                        _gameStateChannel.RaiseGameStateChange(GameState.GameOver);
+                        Destroy(this.gameObject);
+                    }
                 }
-                else
-                {
-                    _gameStateChannel.RaiseGameStateChange(GameState.GameOver);
-                    Destroy(this.gameObject);
-                }
+                
+                Destroy(this.gameObject);
                 //game over
             }
         }

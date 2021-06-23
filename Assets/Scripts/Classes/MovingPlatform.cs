@@ -8,6 +8,7 @@ namespace Veganimus.Platformer
         [SerializeField] private List<Transform> _waypoints = new List<Transform>();
         private int _targetWaypont;
         [SerializeField] private float _speed;
+        [SerializeField] private Transform _playerParent;
 
         private void Update()
         {
@@ -22,22 +23,6 @@ namespace Veganimus.Platformer
 
             else
                 _targetWaypont = 0;
-        }
-        private void OnTriggerEnter(Collider other)
-        {
-            if (other.GetComponent<Character>())
-            {
-                Debug.Log("Found Character!");
-                other.transform.parent = this.transform;
-            }
-        }
-        private void OnTriggerExit(Collider other)
-        {
-            if (other.GetComponent<Character>())
-            {
-               
-                other.transform.parent = null;
-            }
         }
     }
 }
