@@ -39,6 +39,7 @@ namespace Veganimus.Platformer
         [SerializeField] private float _collectibleDetectionRadius;
         [SerializeField] private GameObject _characterModel;
         [SerializeField] private GameObject _ballForm;
+        [SerializeField] private GameObject _aimTarget;
         [SerializeField] private bool _hanging;
         [SerializeField] private bool _grabbingLedge;
         [SerializeField] private Vector3 _modelPosition;
@@ -46,6 +47,7 @@ namespace Veganimus.Platformer
         [SerializeField] private LayerMask _collectibleLayerMask;
         [SerializeField] private InputManager _inputManager;
         private Transform _animatorRoot;
+        private PlayerAim _playerAim;
         
 
         public void GrabLedge(Transform anchorPos)
@@ -77,6 +79,7 @@ namespace Veganimus.Platformer
             _rigidbody = GetComponentInChildren<Rigidbody>();
             _inputManager = GetComponent<InputManager>();
             _animator = _characterModel.GetComponent<Animator>();
+            _playerAim = _characterModel.GetComponent<PlayerAim>();
             _defaultSpeed = _speed;
             _gravity = _adjustGravity;
         }
@@ -92,14 +95,15 @@ namespace Veganimus.Platformer
                 Movement();
                 FaceDirection();
             }
-            else if(_inBallForm)
+            else if (_inBallForm)
             {
                 BallMovement();
             }
-            else if(!_controller.enabled && _grabbingLedge)
+            else if (!_controller.enabled && _grabbingLedge)
             {
                 LedgeMovement();
             }
+           
             DetectSurface();
             DetectCollectible();
             if (_horizontal != 0)
@@ -192,7 +196,6 @@ namespace Veganimus.Platformer
                 _animator.SetFloat(_grabLedgeAP, 0f);
                 _grabbingLedge = false;
                 _animatorRoot = null;
-               
                 _characterModel.transform.localPosition = _modelPosition;
                 _controller.enabled = true;
                 _yVelocity -= _gravity;
@@ -212,7 +215,6 @@ namespace Veganimus.Platformer
              _yVelocity -= _gravity;
             
             _velocity.y = _yVelocity;
-            //_rigidbody.MoveRotation(_velocity);
             _controller.Move(_velocity * Time.deltaTime);
             
         }
@@ -236,13 +238,14 @@ namespace Veganimus.Platformer
                     _wallSurfaceNormal = hit.normal;
                     _canWallJump = true;
                     _canDoubleJump = false;
+                    _playerAim.AimWeight = 0;
                 }
             }
             else
             {
                 _canWallJump = false;
                 _isWallJumping = false;
-                //_grabbingLedge = false;
+                _playerAim.AimWeight = 1;
                 _animator.SetFloat(_wallJumpingAP, 0);
             }
         }
@@ -276,12 +279,6 @@ namespace Veganimus.Platformer
             for (int i = 0; i < numberColliders; i++)
             {
                 results[i].transform.position = Vector3.Lerp(results[i].transform.position, transform.position, 3f * Time.deltaTime);
-
-                //if (Vector3.Distance(transform.position, results[i].transform.position) < 1f)
-                //{
-                //    _collectibles++;
-                //    UIManager.Instance.UpdateCollectibleText(_collectibles);
-                //}
 
             }
         }

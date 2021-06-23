@@ -41,6 +41,30 @@ public class @Controls : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""UpAIm"",
+                    ""type"": ""Value"",
+                    ""id"": ""a7fb3a43-3ae0-42ec-b41a-0914108cac84"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""DownAim"",
+                    ""type"": ""Value"",
+                    ""id"": ""96af4422-13ad-4d23-a83a-18370024f665"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Crouch"",
+                    ""type"": ""Value"",
+                    ""id"": ""3d20ef92-2b82-46ea-97a2-638f425145f1"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -197,6 +221,72 @@ public class @Controls : IInputActionCollection, IDisposable
                     ""action"": ""Ball Mode"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e0d628b4-9221-437c-bcec-0431861926f9"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""GamePad"",
+                    ""action"": ""UpAIm"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b63146f4-2962-4160-9fdd-0987add6b3ec"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""UpAIm"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""656bc881-74b4-4940-ae58-7c7098b42412"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""GamePad"",
+                    ""action"": ""DownAim"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e66fd11d-d8e0-4463-80f9-9a47e7ada60c"",
+                    ""path"": ""<Keyboard>/t"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""DownAim"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""34b5441a-bc28-4f08-b0a4-85d7eba1ac1f"",
+                    ""path"": ""<Gamepad>/leftStickPress"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""GamePad"",
+                    ""action"": ""Crouch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1dc5f344-14e0-4465-8fa1-5e1aac523086"",
+                    ""path"": ""<Keyboard>/c"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Crouch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -231,6 +321,9 @@ public class @Controls : IInputActionCollection, IDisposable
         m_Standard_Movement = m_Standard.FindAction("Movement", throwIfNotFound: true);
         m_Standard_Jump = m_Standard.FindAction("Jump", throwIfNotFound: true);
         m_Standard_BallMode = m_Standard.FindAction("Ball Mode", throwIfNotFound: true);
+        m_Standard_UpAIm = m_Standard.FindAction("UpAIm", throwIfNotFound: true);
+        m_Standard_DownAim = m_Standard.FindAction("DownAim", throwIfNotFound: true);
+        m_Standard_Crouch = m_Standard.FindAction("Crouch", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -283,6 +376,9 @@ public class @Controls : IInputActionCollection, IDisposable
     private readonly InputAction m_Standard_Movement;
     private readonly InputAction m_Standard_Jump;
     private readonly InputAction m_Standard_BallMode;
+    private readonly InputAction m_Standard_UpAIm;
+    private readonly InputAction m_Standard_DownAim;
+    private readonly InputAction m_Standard_Crouch;
     public struct StandardActions
     {
         private @Controls m_Wrapper;
@@ -290,6 +386,9 @@ public class @Controls : IInputActionCollection, IDisposable
         public InputAction @Movement => m_Wrapper.m_Standard_Movement;
         public InputAction @Jump => m_Wrapper.m_Standard_Jump;
         public InputAction @BallMode => m_Wrapper.m_Standard_BallMode;
+        public InputAction @UpAIm => m_Wrapper.m_Standard_UpAIm;
+        public InputAction @DownAim => m_Wrapper.m_Standard_DownAim;
+        public InputAction @Crouch => m_Wrapper.m_Standard_Crouch;
         public InputActionMap Get() { return m_Wrapper.m_Standard; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -308,6 +407,15 @@ public class @Controls : IInputActionCollection, IDisposable
                 @BallMode.started -= m_Wrapper.m_StandardActionsCallbackInterface.OnBallMode;
                 @BallMode.performed -= m_Wrapper.m_StandardActionsCallbackInterface.OnBallMode;
                 @BallMode.canceled -= m_Wrapper.m_StandardActionsCallbackInterface.OnBallMode;
+                @UpAIm.started -= m_Wrapper.m_StandardActionsCallbackInterface.OnUpAIm;
+                @UpAIm.performed -= m_Wrapper.m_StandardActionsCallbackInterface.OnUpAIm;
+                @UpAIm.canceled -= m_Wrapper.m_StandardActionsCallbackInterface.OnUpAIm;
+                @DownAim.started -= m_Wrapper.m_StandardActionsCallbackInterface.OnDownAim;
+                @DownAim.performed -= m_Wrapper.m_StandardActionsCallbackInterface.OnDownAim;
+                @DownAim.canceled -= m_Wrapper.m_StandardActionsCallbackInterface.OnDownAim;
+                @Crouch.started -= m_Wrapper.m_StandardActionsCallbackInterface.OnCrouch;
+                @Crouch.performed -= m_Wrapper.m_StandardActionsCallbackInterface.OnCrouch;
+                @Crouch.canceled -= m_Wrapper.m_StandardActionsCallbackInterface.OnCrouch;
             }
             m_Wrapper.m_StandardActionsCallbackInterface = instance;
             if (instance != null)
@@ -321,6 +429,15 @@ public class @Controls : IInputActionCollection, IDisposable
                 @BallMode.started += instance.OnBallMode;
                 @BallMode.performed += instance.OnBallMode;
                 @BallMode.canceled += instance.OnBallMode;
+                @UpAIm.started += instance.OnUpAIm;
+                @UpAIm.performed += instance.OnUpAIm;
+                @UpAIm.canceled += instance.OnUpAIm;
+                @DownAim.started += instance.OnDownAim;
+                @DownAim.performed += instance.OnDownAim;
+                @DownAim.canceled += instance.OnDownAim;
+                @Crouch.started += instance.OnCrouch;
+                @Crouch.performed += instance.OnCrouch;
+                @Crouch.canceled += instance.OnCrouch;
             }
         }
     }
@@ -348,5 +465,8 @@ public class @Controls : IInputActionCollection, IDisposable
         void OnMovement(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnBallMode(InputAction.CallbackContext context);
+        void OnUpAIm(InputAction.CallbackContext context);
+        void OnDownAim(InputAction.CallbackContext context);
+        void OnCrouch(InputAction.CallbackContext context);
     }
 }

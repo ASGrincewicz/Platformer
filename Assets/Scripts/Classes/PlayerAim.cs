@@ -7,19 +7,13 @@ namespace Veganimus.Platformer
         [SerializeField] private GameObject _aimTarget;
 
         [SerializeField] private float _aimWeight = 1f;
+        public float AimWeight { get { return _aimWeight; } set { _aimWeight = value; } }
 
         private Animator _animator;
 
         private void Start()
         {
             _animator = GetComponent<Animator>();
-            if (_animator != null)
-                Debug.Log("found animator!");
-        }
-
-        private void Update()
-        {
-            
         }
 
         private void OnAnimatorIK(int layerIndex)
