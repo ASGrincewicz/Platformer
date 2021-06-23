@@ -10,9 +10,10 @@ namespace Veganimus.Platformer
         [SerializeField] private GameObject _bulletPrefab;
         [SerializeField] private InputManager _inputManager;
         [SerializeField] private float _fireRate = 0.5f;
+        [SerializeField] private GameObject _poolManager;
         private float _canFire = -1.0f;
         private WaitForSeconds _shootCoolDown;
-
+       
         private void Start()
         {
             _shootCoolDown = new WaitForSeconds(_fireRate);
@@ -31,7 +32,7 @@ namespace Veganimus.Platformer
             if (shootTriggered)
             {
                 _canFire = Time.time + _fireRate;
-                var newBullet = Instantiate(_bulletPrefab, _fireOffset.transform.position, _fireOffset.rotation);
+                var newBullet = Instantiate(_bulletPrefab, _fireOffset.transform.position, _fireOffset.rotation, _poolManager.transform);
             }
             StartCoroutine(ShootCoolDownRoutine());
         }

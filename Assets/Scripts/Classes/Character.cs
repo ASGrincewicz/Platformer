@@ -18,6 +18,7 @@ namespace Veganimus.Platformer
         private bool _jumpTriggered;
         private bool _isWallJumping;
         private bool _inBallForm;
+        private bool _isCrouching;
         private Vector3 _direction;
         private Vector3 _velocity;
         private Vector3 _wallSurfaceNormal;
@@ -31,6 +32,7 @@ namespace Veganimus.Platformer
         private int _grabLedgeAP = Animator.StringToHash("grabLedge");
         private int _ledgeDropAP = Animator.StringToHash("ledgeDrop");
         private int _ledgeClimbAP = Animator.StringToHash("ledgeClimb");
+        private int _crouchAP = Animator.StringToHash("crouch");
         [SerializeField] private int _collectibles;
         [SerializeField] private float _speed = 5f;
         [SerializeField] private float _gravity;
@@ -48,6 +50,9 @@ namespace Veganimus.Platformer
         [SerializeField] private InputManager _inputManager;
         private Transform _animatorRoot;
         private PlayerAim _playerAim;
+        private float _aimTargetStandingPos =1.4f;
+        private float _aimTargetCrouchingPos =0.85f;
+       
         
 
         public void GrabLedge(Transform anchorPos)
@@ -61,16 +66,38 @@ namespace Veganimus.Platformer
         private void OnEnable()
         {
             _inputManager.moveAction += OnMoveInput;
+            _inputManager.crouchAction += OnCrouchInput;
         }
         private void OnDisable()
         {
             _inputManager.moveAction -= OnMoveInput;
+            _inputManager.crouchAction -= OnCrouchInput;
         }
 
         private void OnMoveInput(float x, float y)
         {
             _horizontal = x;
             _vertical = y;
+        }
+        private void OnCrouchInput(float c)
+        {
+            if (c == 1 && _controller.isGrounded)
+            {
+                _animator.SetFloat(_crouchAP, c);
+                _animator.SetFloat(_horizontalAP, 0);
+                _isCrouching = true;
+                _aimTarget.transform.localPosition = new Vector3(_aimTarget.transform.localPosition.x, _aimTargetCrouchingPos, _aimTarget.transform.localPosition.z);
+            }
+            else if(c == 1 && !_controller.isGrounded)
+            {
+                return;
+            }
+            else
+            {
+                _animator.SetFloat(_crouchAP, c);
+                _isCrouching = false;
+               _aimTarget.transform.localPosition = new Vector3(_aimTarget.transform.localPosition.x, _aimTargetStandingPos, _aimTarget.transform.localPosition.z);
+            }
         }
 
         private void Start()
@@ -82,6 +109,7 @@ namespace Veganimus.Platformer
             _playerAim = _characterModel.GetComponent<PlayerAim>();
             _defaultSpeed = _speed;
             _gravity = _adjustGravity;
+           
         }
         private void FixedUpdate()
         {
@@ -90,10 +118,10 @@ namespace Veganimus.Platformer
         private void Update()
         {
             var ballModeTriggered = _inputManager.controls.Standard.BallMode.triggered;
-            if (!_inBallForm && _controller.enabled)
+            if (!_inBallForm && !_isCrouching && _controller.enabled)
             {
                 Movement();
-                FaceDirection();
+                //FaceDirection();
             }
             else if (_inBallForm)
             {
@@ -103,30 +131,34 @@ namespace Veganimus.Platformer
             {
                 LedgeMovement();
             }
-           
+            if(_controller.enabled)
+            {
+                FaceDirection();
+                if (ballModeTriggered && !_inBallForm)
+                {
+                    _characterModel.SetActive(false);
+                    _ballForm.SetActive(true);
+                    _inBallForm = true;
+                    _rigidbody = GetComponentInChildren<Rigidbody>();
+                    _controller.height = 0.5f;
+                    _controller.center = new Vector3(0, -0.46f, 0);
+                }
+                else if (ballModeTriggered && _inBallForm)
+                {
+                    _characterModel.SetActive(true);
+                    _ballForm.SetActive(false);
+                    _inBallForm = false;
+                    _controller.height = 1.92f;
+                    _controller.center = new Vector3(0, 0.2f, 0);
+                }
+            }
             DetectSurface();
             DetectCollectible();
             if (_horizontal != 0)
                 _animator.SetFloat(_horizontalAP, 1);
             else
                 _animator.SetFloat(_horizontalAP, 0);
-            if(ballModeTriggered && !_inBallForm)
-            {
-                _characterModel.SetActive(false);
-                _ballForm.SetActive(true);
-                _inBallForm = true;
-                _rigidbody = GetComponentInChildren<Rigidbody>();
-                _controller.height = 0.5f;
-                _controller.center = new Vector3(0, -0.46f, 0);
-            }
-            else if(ballModeTriggered && _inBallForm)
-            {
-                _characterModel.SetActive(true);
-                _ballForm.SetActive(false);
-                _inBallForm = false;
-                _controller.height = 1.92f;
-                _controller.center = new Vector3(0, 0.2f, 0);
-            }
+          
         }
         private void Movement()
         {
