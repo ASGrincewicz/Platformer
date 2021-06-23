@@ -24,21 +24,5 @@ namespace Veganimus.Platformer
             else
                 _targetWaypont = 0;
         }
-        //private void OnTriggerEnter(Collider other)
-        //{
-        //    if (other.GetComponent<Character>())
-        //    {
-        //        Debug.Log("Found Character!");
-        //        other.transform.parent = _playerParent;
-        //    }
-        //}
-        //private void OnTriggerExit(Collider other)
-        //{
-        //    if (other.GetComponent<Character>())
-        //    {
-               
-        //        other.transform.parent = null;
-        //    }
-        //}
     }
 }

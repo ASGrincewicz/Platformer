@@ -4,6 +4,6 @@ namespace Veganimus.Platformer
 {
     public class Platform : MonoBehaviour, IPlatform
     {
-        public Platform() { }
+       
     }
 }
