@@ -1,5 +1,6 @@
 ﻿// Aaron Grincewicz Veganimus@icloud.com 6/5/2021
 using System;
+using Cinemachine;
 using UnityEngine;
 namespace Veganimus.Platformer
 {
@@ -8,17 +9,23 @@ namespace Veganimus.Platformer
         private CharacterController _controller;
         private Rigidbody _rigidbody;
         private Animator _animator;
+        private Transform _animatorRoot;
+        private PlayerAim _playerAim;
         private float _horizontal;
         private float _vertical;
-        private float _runSpeed = 10.0f;
-        private float _defaultSpeed;
+        //private float _runSpeed = 10.0f;
+        //private float _defaultSpeed;
         private float _yVelocity;
+        private float _aimTargetStandingPos = 1.4f;
+        private float _aimTargetCrouchingPos = 0.85f;
         private bool _canDoubleJump;
         private bool _canWallJump;
         private bool _jumpTriggered;
         private bool _isWallJumping;
         private bool _inBallForm;
         private bool _isCrouching;
+        private bool _hanging;
+        private bool _grabbingLedge;
         private Vector3 _direction;
         private Vector3 _velocity;
         private Vector3 _wallSurfaceNormal;
@@ -30,8 +37,8 @@ namespace Veganimus.Platformer
         private int _wallJumpingAP = Animator.StringToHash("wallJumping");
         private int _hangingAP = Animator.StringToHash("hanging");
         private int _grabLedgeAP = Animator.StringToHash("grabLedge");
-        private int _ledgeDropAP = Animator.StringToHash("ledgeDrop");
-        private int _ledgeClimbAP = Animator.StringToHash("ledgeClimb");
+        //private int _ledgeDropAP = Animator.StringToHash("ledgeDrop");
+        //private int _ledgeClimbAP = Animator.StringToHash("ledgeClimb");
         private int _crouchAP = Animator.StringToHash("crouch");
         [SerializeField] private int _collectibles;
         [SerializeField] private float _speed = 5f;
@@ -42,25 +49,22 @@ namespace Veganimus.Platformer
         [SerializeField] private GameObject _characterModel;
         [SerializeField] private GameObject _ballForm;
         [SerializeField] private GameObject _aimTarget;
-        [SerializeField] private bool _hanging;
-        [SerializeField] private bool _grabbingLedge;
         [SerializeField] private Vector3 _modelPosition;
         [SerializeField] private LayerMask _detectSurfaceLayers;
         [SerializeField] private LayerMask _collectibleLayerMask;
         [SerializeField] private InputManager _inputManager;
-        private Transform _animatorRoot;
-        private PlayerAim _playerAim;
-        private float _aimTargetStandingPos =1.4f;
-        private float _aimTargetCrouchingPos =0.85f;
-       
-        
+        public InputManager InputManager { get; set; }
+        [SerializeField] private CinemachineTargetGroup _cinemachineTargetGroup;
 
         public void GrabLedge(Transform anchorPos)
         {
-            _animatorRoot = anchorPos;
-            _animator.SetFloat(_grabLedgeAP, 1.0f);
-            _grabbingLedge = true;
-            _controller.enabled = false;
+            if (!_inBallForm)
+            {
+                _animatorRoot = anchorPos;
+                _animator.SetFloat(_grabLedgeAP, 1.0f);
+                _grabbingLedge = true;
+                _controller.enabled = false;
+            }
         }
 
         private void OnEnable()
@@ -107,9 +111,7 @@ namespace Veganimus.Platformer
             _inputManager = GetComponent<InputManager>();
             _animator = _characterModel.GetComponent<Animator>();
             _playerAim = _characterModel.GetComponent<PlayerAim>();
-            _defaultSpeed = _speed;
             _gravity = _adjustGravity;
-           
         }
         private void FixedUpdate()
         {
@@ -121,35 +123,41 @@ namespace Veganimus.Platformer
             if (!_inBallForm && !_isCrouching && _controller.enabled)
             {
                 Movement();
-                //FaceDirection();
             }
             else if (_inBallForm)
             {
+                _controller.enabled = false;
                 BallMovement();
             }
             else if (!_controller.enabled && _grabbingLedge)
             {
                 LedgeMovement();
             }
-            if(_controller.enabled)
+            if(_controller.enabled || _inBallForm)
             {
                 FaceDirection();
-                if (ballModeTriggered && !_inBallForm)
+                if (ballModeTriggered && !_inBallForm && _controller.isGrounded)
                 {
+                    _cinemachineTargetGroup.m_Targets[0].weight = 0;
+                    _cinemachineTargetGroup.m_Targets[1].weight = 1;
+                    _ballForm.transform.position = transform.position;
                     _characterModel.SetActive(false);
                     _ballForm.SetActive(true);
                     _inBallForm = true;
                     _rigidbody = GetComponentInChildren<Rigidbody>();
-                    _controller.height = 0.5f;
-                    _controller.center = new Vector3(0, -0.46f, 0);
+                    _rigidbody.velocity = Vector3.zero;
                 }
                 else if (ballModeTriggered && _inBallForm)
                 {
+                    _cinemachineTargetGroup.m_Targets[1].weight = 0;
+                    _cinemachineTargetGroup.m_Targets[0].weight = 1;
+                    transform.position = _ballForm.transform.position;
+                    _controller.enabled = true;
                     _characterModel.SetActive(true);
                     _ballForm.SetActive(false);
                     _inBallForm = false;
-                    _controller.height = 1.92f;
-                    _controller.center = new Vector3(0, 0.2f, 0);
+                    _ballForm.transform.position = transform.position;
+                    _rigidbody.velocity = Vector3.zero;
                 }
             }
             DetectSurface();
@@ -235,20 +243,9 @@ namespace Veganimus.Platformer
         }
         private void BallMovement()
         {
-            _jumpTriggered = _inputManager.controls.Standard.Jump.triggered;
             _direction = new Vector3(_horizontal, 0, 0);
-            _velocity = _direction * _speed;
-            if(_controller.isGrounded)
-            {
-                if (_jumpTriggered)
-                 _yVelocity = _jumpHeight;
-            }
-            else
-             _yVelocity -= _gravity;
-            
-            _velocity.y = _yVelocity;
-            _controller.Move(_velocity * Time.deltaTime);
-            
+            _velocity = _direction * _speed *1.5f;
+            _rigidbody.AddForce(_velocity, ForceMode.Force);
         }
         private void FaceDirection()
         {

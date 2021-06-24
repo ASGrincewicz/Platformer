@@ -28,8 +28,6 @@ namespace Veganimus.Platformer
             _meshRenderer = GetComponentInChildren<MeshRenderer>();
             _chaseCoolDown = new WaitForSeconds(3f);
             ChangeAIState(AIState.Patrolling);
-            //if(_aiState == AIState.Patrolling)
-            //GoToNextPoint();
         }
         private void Update()
         {

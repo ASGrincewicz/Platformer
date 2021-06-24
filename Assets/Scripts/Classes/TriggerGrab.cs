@@ -11,6 +11,5 @@ namespace Veganimus.Platformer
             if(other.tag == "Player")
             other.GetComponent<Character>().GrabLedge(_anchorPos.transform);
         }
-
     }
 }
