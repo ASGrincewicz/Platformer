@@ -70,6 +70,5 @@ namespace Veganimus.Platformer
             if (upAimAction != null)
                 upAimAction.Invoke(upAimInput);
         }
-
     }
 }

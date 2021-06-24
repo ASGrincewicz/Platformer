@@ -19,7 +19,6 @@ namespace Veganimus.Platformer
                 var damage = collision.collider.GetComponentInParent<IDamageable>();
                 if (damage != null)
                 {
-                    Debug.Log($"Found {collision.collider.name} health!");
                     damage.Damage(_damageAmount);
                 }
             }
