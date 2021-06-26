@@ -10,6 +10,7 @@ namespace Veganimus.Platformer
         [SerializeField] private float _explosionForce;
         [SerializeField] private float _explosionRadius;
         [SerializeField] private float _upForce;
+        [SerializeField] private int _damageAmount = 2;
 
         private void Start()
         {
@@ -22,9 +23,21 @@ namespace Veganimus.Platformer
             foreach(Collider hit in colliders)
             {
                 Rigidbody rigidbody = hit.GetComponent<Rigidbody>();
-                var bombable = hit.GetComponent<IBombable>();
+                var bombable = hit.GetComponentInParent<IBombable>();
+                var damageable = hit.GetComponentInParent<IDamageable>();
                 if (rigidbody != null && bombable != null)
-                rigidbody.AddExplosionForce(_explosionForce, transform.position, _explosionRadius, 3.0f, ForceMode.Impulse);
+                {
+                    rigidbody.useGravity = true;
+                    rigidbody.isKinematic = false;
+                    rigidbody.AddExplosionForce(_explosionForce, transform.position, _explosionRadius, _upForce, ForceMode.Impulse);
+                    if (damageable != null && damageable.IsPlayer == false)
+                    {
+                        Debug.Log($"Found Damageable in {hit.name}");
+                        damageable.Damage(_damageAmount);
+                    }
+                    else if(damageable == null && damageable.IsPlayer == false)
+                        Destroy(hit.gameObject, 1.0f);
+                }
             }
         }
         private IEnumerator ExplosionRoutine()

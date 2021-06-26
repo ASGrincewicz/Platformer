@@ -647,11 +647,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 10.871639, z: 12.67}
   m_Center: {x: 0, y: -4.9358196, z: 0}
---- !u!1 &523839617 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8280568485620427644, guid: 2d2656af18a124d14b8672f9bc2d1c25, type: 3}
-  m_PrefabInstance: {fileID: 387879582003792693}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &551906790
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2632,14 +2627,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 714321472, guid: 2d2656af18a124d14b8672f9bc2d1c25, type: 3}
-      propertyPath: m_Center.y
-      value: 0.23
-      objectReference: {fileID: 0}
-    - target: {fileID: 387879581356729610, guid: 2d2656af18a124d14b8672f9bc2d1c25, type: 3}
-      propertyPath: _aimTarget
-      value: 
-      objectReference: {fileID: 523839617}
     - target: {fileID: 387879581356729610, guid: 2d2656af18a124d14b8672f9bc2d1c25, type: 3}
       propertyPath: _cinemachineTargetGroup
       value: 
@@ -2692,40 +2679,15 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1757200098113137743, guid: 2d2656af18a124d14b8672f9bc2d1c25, type: 3}
-      propertyPath: _fireRate
-      value: 0.15
+    - target: {fileID: 965898967967388963, guid: 2d2656af18a124d14b8672f9bc2d1c25, type: 3}
+      propertyPath: _isPlayer
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1757200098113137743, guid: 2d2656af18a124d14b8672f9bc2d1c25, type: 3}
       propertyPath: _poolManager
       value: 
       objectReference: {fileID: 1122399864}
-    - target: {fileID: 7389170781619114655, guid: 2d2656af18a124d14b8672f9bc2d1c25, type: 3}
-      propertyPath: m_Layer
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 7389170781619114655, guid: 2d2656af18a124d14b8672f9bc2d1c25, type: 3}
-      propertyPath: m_TagString
-      value: BallForm
-      objectReference: {fileID: 0}
-    - target: {fileID: 7409875663345331750, guid: 2d2656af18a124d14b8672f9bc2d1c25, type: 3}
-      propertyPath: m_Mass
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7409875663345331750, guid: 2d2656af18a124d14b8672f9bc2d1c25, type: 3}
-      propertyPath: m_Constraints
-      value: 56
-      objectReference: {fileID: 0}
-    - target: {fileID: 8280568484293761245, guid: 2d2656af18a124d14b8672f9bc2d1c25, type: 3}
-      propertyPath: m_IsTrigger
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8280568485725652533, guid: 2d2656af18a124d14b8672f9bc2d1c25, type: 3}
-      propertyPath: _aimWeight
-      value: 1
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 280230924, guid: 2d2656af18a124d14b8672f9bc2d1c25, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2d2656af18a124d14b8672f9bc2d1c25, type: 3}
 --- !u!1001 &1222736236047471924
 PrefabInstance:
