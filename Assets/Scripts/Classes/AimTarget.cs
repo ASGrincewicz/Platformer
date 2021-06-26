@@ -13,7 +13,7 @@ namespace Veganimus.Platformer
         [SerializeField] private Transform _belowTarget;
         [SerializeField] private InputManager _inputManager;
         private Transform _targetPosition;
-        [SerializeField] private float _vertical;
+        private float _vertical;
 
         private void OnEnable()
         {

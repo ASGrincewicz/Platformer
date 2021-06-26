@@ -2,9 +2,11 @@
 
 namespace Veganimus.Platformer
 {
-    public class Health : MonoBehaviour, IDamageable
+    public class Health : MonoBehaviour, IDamageable, IBombable
     {
         [SerializeField] private CharacterType _characterType;
+        [SerializeField] private bool _isPlayer;
+        public bool IsPlayer { get { return _isPlayer; } }
         [SerializeField] private int _lives;
         public int Lives { get { return _lives; }private set { _lives = value; } }
         [SerializeField] private int _hp;
