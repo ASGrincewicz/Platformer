@@ -21,6 +21,7 @@ namespace Veganimus.Platformer
         private bool _canDoubleJump;
         private bool _canWallJump;
         private bool _jumpTriggered;
+        private bool _ballModeTriggered;
         private bool _isWallJumping;
         private bool _inBallForm;
         private bool _isCrouching;
@@ -113,13 +114,18 @@ namespace Veganimus.Platformer
             _playerAim = _characterModel.GetComponent<PlayerAim>();
             _gravity = _adjustGravity;
         }
-        private void FixedUpdate()
-        {
-            AnimLerp();
-        }
+        //private void FixedUpdate()
+        //{
+        //    AnimLerp();
+        //}
         private void Update()
         {
-            var ballModeTriggered = _inputManager.controls.Standard.BallMode.triggered;
+            _ballModeTriggered = _inputManager.controls.Standard.BallMode.triggered;
+            _jumpTriggered = _inputManager.controls.Standard.Jump.triggered;
+        }
+        private void FixedUpdate()
+        {
+            //var ballModeTriggered = _inputManager.controls.Standard.BallMode.triggered;
             if (!_inBallForm && !_isCrouching && _controller.enabled)
             {
                 Movement();
@@ -136,7 +142,7 @@ namespace Veganimus.Platformer
             if(_controller.enabled || _inBallForm)
             {
                 FaceDirection();
-                if (ballModeTriggered && !_inBallForm && _controller.isGrounded)
+                if (_ballModeTriggered && !_inBallForm && _controller.isGrounded)
                 {
                     _cinemachineTargetGroup.m_Targets[0].weight = 0;
                     _cinemachineTargetGroup.m_Targets[1].weight = 1;
@@ -147,7 +153,7 @@ namespace Veganimus.Platformer
                     _rigidbody = GetComponentInChildren<Rigidbody>();
                     _rigidbody.velocity = Vector3.zero;
                 }
-                else if (ballModeTriggered && _inBallForm)
+                else if (_ballModeTriggered && _inBallForm)
                 {
                     _cinemachineTargetGroup.m_Targets[1].weight = 0;
                     _cinemachineTargetGroup.m_Targets[0].weight = 1;
@@ -170,7 +176,6 @@ namespace Veganimus.Platformer
         }
         private void Movement()
         {
-            _jumpTriggered = _inputManager.controls.Standard.Jump.triggered;
             _direction = new Vector3(_horizontal, 0, 0);
             _velocity = _direction * _speed;
           
