@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5509058104384797646}
   - component: {fileID: 5134045871316918645}
   - component: {fileID: -6426823501038313470}
+  - component: {fileID: 4414382322811232185}
   m_Layer: 0
   m_Name: Bomb
   m_TagString: Untagged
@@ -64,9 +65,32 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _bombTimer: 1
   _explosionForce: 7
-  _explosionRadius: 3.5
+  _explosionRadius: 2.25
   _upForce: 2
   _damageAmount: 2
+  _targetLayers:
+    serializedVersion: 2
+    m_Bits: 17472
+  hitColliders: []
+--- !u!95 &4414382322811232185
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5134045871316918644}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 46e5a479c286a402fbadd930dfe10664, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &5358948827814839752
 GameObject:
   m_ObjectHideFlags: 0
@@ -80,7 +104,7 @@ GameObject:
   - component: {fileID: 839924432365869117}
   - component: {fileID: 5358948827814839753}
   m_Layer: 0
-  m_Name: Icosphere.001
+  m_Name: Bomb_inner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -127,7 +151,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c852af001dae0064e9acaa832f1dadb7, type: 2}
+  - {fileID: 2100000, guid: b2a6169f9d5e8404c8482dce66ebc286, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -175,7 +199,7 @@ GameObject:
   - component: {fileID: 1706634817390216535}
   - component: {fileID: 8288000670256601412}
   m_Layer: 0
-  m_Name: Icosphere
+  m_Name: Bomb_outer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -222,7 +246,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 5a26de236ce89e94b963be8fa2b7ade6, type: 2}
+  - {fileID: 2100000, guid: 35d0aa596aa8342a5b72f09f997f140c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

@@ -12,7 +12,7 @@ namespace Veganimus.Platformer
         [SerializeField] private float _attackRange;
         [SerializeField] private int _destinationPoint;
         [SerializeField] Transform[] _navPoints;
-        
+
         private NavMeshAgent _agent;
         private MeshRenderer _meshRenderer;
         [SerializeField] private int _hitPoints;
@@ -29,7 +29,7 @@ namespace Veganimus.Platformer
             _chaseCoolDown = new WaitForSeconds(3f);
             ChangeAIState(AIState.Patrolling);
         }
-        private void Update()
+        private void FixedUpdate()
         {
             Detect();
             if (_aiState == AIState.Patrolling)
@@ -83,10 +83,10 @@ namespace Veganimus.Platformer
         {
             Ray ray = new Ray(_agent.transform.position, _agent.transform.forward);
             RaycastHit hitInfo;
-          
+
             if (Physics.Raycast(ray, out hitInfo, _sightDistance, _targetLayer))
             {
-                if(hitInfo.collider != null)
+                if (hitInfo.collider != null)
                 {
                     ChangeAIState(AIState.Chasing);
                     _chaseDestination = hitInfo.transform.position;

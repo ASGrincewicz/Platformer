@@ -27,7 +27,6 @@ namespace Veganimus.Platformer
         }
         private void Shoot()
         {
-           
             var shootTriggered = _inputManager.controls.Standard.Shoot.triggered;
             if (shootTriggered)
             {

@@ -5,7 +5,6 @@ namespace Veganimus.Platformer
     public class PlayerAim : MonoBehaviour
     {
         [SerializeField] private GameObject _aimTarget;
-
         [SerializeField] private float _aimWeight = 1f;
         public float AimWeight { get { return _aimWeight; } set { _aimWeight = value; } }
         public float LookWeight { get; set; } = 1f;

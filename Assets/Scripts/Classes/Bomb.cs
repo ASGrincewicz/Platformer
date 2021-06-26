@@ -5,12 +5,20 @@ namespace Veganimus.Platformer
 {
     public class Bomb : MonoBehaviour
     {
-        private WaitForSeconds _explosionDelay;
+        [SerializeField] private int _maxColliders = 50;
         [SerializeField] private float _bombTimer;
         [SerializeField] private float _explosionForce;
         [SerializeField] private float _explosionRadius;
         [SerializeField] private float _upForce;
         [SerializeField] private int _damageAmount = 2;
+        [SerializeField] private LayerMask _targetLayers;
+        private WaitForSeconds _explosionDelay;
+        private Collider[] _hitColliders;
+
+        private void OnDrawGizmosSelected()
+        {
+            Gizmos.DrawWireSphere(transform.position, _explosionRadius)
+;        }
 
         private void Start()
         {
@@ -19,12 +27,13 @@ namespace Veganimus.Platformer
         }
         private void Detonate()
         {
-            Collider[] colliders = Physics.OverlapSphere(transform.position, _explosionRadius);
-            foreach(Collider hit in colliders)
+            _hitColliders = new Collider[_maxColliders];
+            int numberColliders =  Physics.OverlapSphereNonAlloc(transform.position, _explosionRadius, _hitColliders,_targetLayers);
+            for(int i = 0; i< numberColliders; i++)
             {
-                Rigidbody rigidbody = hit.GetComponent<Rigidbody>();
-                var bombable = hit.GetComponentInParent<IBombable>();
-                var damageable = hit.GetComponentInParent<IDamageable>();
+                Rigidbody rigidbody = _hitColliders[i].GetComponent<Rigidbody>();
+                var bombable = _hitColliders[i].GetComponentInParent<IBombable>();
+                var damageable = _hitColliders[i].GetComponentInParent<IDamageable>();
                 if (rigidbody != null && bombable != null)
                 {
                     rigidbody.useGravity = true;
@@ -32,11 +41,10 @@ namespace Veganimus.Platformer
                     rigidbody.AddExplosionForce(_explosionForce, transform.position, _explosionRadius, _upForce, ForceMode.Impulse);
                     if (damageable != null && damageable.IsPlayer == false)
                     {
-                        Debug.Log($"Found Damageable in {hit.name}");
                         damageable.Damage(_damageAmount);
                     }
-                    else if(damageable == null && damageable.IsPlayer == false)
-                        Destroy(hit.gameObject, 1.0f);
+                    else if (damageable == null)
+                        Destroy(_hitColliders[i].gameObject, 1.0f);
                 }
             }
         }
@@ -44,7 +52,7 @@ namespace Veganimus.Platformer
         {
             yield return _explosionDelay;
             Detonate();
-            Destroy(this.gameObject, 1f);
+            Destroy(this.gameObject, 0.25f);
         }
     }
 }

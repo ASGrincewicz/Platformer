@@ -6,9 +6,9 @@ namespace Veganimus.Platformer
     public class MovingPlatform : Platform, IMoving
     {
         [SerializeField] private List<Transform> _waypoints = new List<Transform>();
-        private int _targetWaypont;
         [SerializeField] private float _speed;
         [SerializeField] private Transform _playerParent;
+        private int _targetWaypont;
 
         private void Update()
         {
