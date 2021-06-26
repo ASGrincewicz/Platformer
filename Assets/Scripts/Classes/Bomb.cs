@@ -5,14 +5,15 @@ namespace Veganimus.Platformer
 {
     public class Bomb : MonoBehaviour
     {
-        private WaitForSeconds _explosionDelay;
+        [SerializeField] private int _maxColliders = 50;
         [SerializeField] private float _bombTimer;
         [SerializeField] private float _explosionForce;
         [SerializeField] private float _explosionRadius;
         [SerializeField] private float _upForce;
         [SerializeField] private int _damageAmount = 2;
         [SerializeField] private LayerMask _targetLayers;
-        public Collider[] hitColliders;
+        private WaitForSeconds _explosionDelay;
+        private Collider[] _hitColliders;
 
         private void OnDrawGizmosSelected()
         {
@@ -26,14 +27,13 @@ namespace Veganimus.Platformer
         }
         private void Detonate()
         {
-            int maxColliders = 50;
-            hitColliders = new Collider[maxColliders];
-            int numberColliders =  Physics.OverlapSphereNonAlloc(transform.position, _explosionRadius, hitColliders,_targetLayers);
+            _hitColliders = new Collider[_maxColliders];
+            int numberColliders =  Physics.OverlapSphereNonAlloc(transform.position, _explosionRadius, _hitColliders,_targetLayers);
             for(int i = 0; i< numberColliders; i++)
             {
-                Rigidbody rigidbody = hitColliders[i].GetComponent<Rigidbody>();
-                var bombable = hitColliders[i].GetComponentInParent<IBombable>();
-                var damageable = hitColliders[i].GetComponentInParent<IDamageable>();
+                Rigidbody rigidbody = _hitColliders[i].GetComponent<Rigidbody>();
+                var bombable = _hitColliders[i].GetComponentInParent<IBombable>();
+                var damageable = _hitColliders[i].GetComponentInParent<IDamageable>();
                 if (rigidbody != null && bombable != null)
                 {
                     rigidbody.useGravity = true;
@@ -44,9 +44,7 @@ namespace Veganimus.Platformer
                         damageable.Damage(_damageAmount);
                     }
                     else if (damageable == null)
-                        Destroy(hitColliders[i].gameObject, 1.0f);
-                    //else if (damageable != null && damageable.IsPlayer == true)
-                    //    return;
+                        Destroy(_hitColliders[i].gameObject, 1.0f);
                 }
             }
         }

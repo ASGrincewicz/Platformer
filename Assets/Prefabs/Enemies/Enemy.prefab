@@ -54,10 +54,10 @@ MonoBehaviour:
   _sightDistance: 40
   _attackRange: 2.5
   _destinationPoint: 0
+  _hitPoints: 10
   _navPoints:
   - {fileID: 2049905760810468498}
   - {fileID: 2049905760924808711}
-  _hitPoints: 10
 --- !u!114 &2049905760264124297
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -71,6 +71,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _characterType: 1
+  _isPlayer: 0
   _lives: 0
   _hp: 10
   _respawnPlayerChannel: {fileID: 0}

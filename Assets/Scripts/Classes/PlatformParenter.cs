@@ -16,7 +16,6 @@ namespace Veganimus.Platformer
         {
             if (other.GetComponent<Character>())
             {
-
                 other.transform.parent = null;
             }
         }

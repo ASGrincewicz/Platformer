@@ -4,14 +4,14 @@ namespace Veganimus.Platformer
 {
     public class Collectible : MonoBehaviour, IAbsorbable
     {
-        [SerializeField] private bool _canAbosrb = false;
-        public bool CanAbsorb { get { return _canAbosrb; } }
-        [SerializeField] private LayerMask _collectorLayerMask;
         private float _xRadius;
         private float _yRadius;
-        [SerializeField] private float _speed;
         private float _time = 0;
         private bool _collected;
+        [SerializeField] private float _speed;
+        [SerializeField] private LayerMask _collectorLayerMask;
+        [SerializeField] private bool _canAbosrb = false;
+        public bool CanAbsorb { get { return _canAbosrb; } }
 
         private void Start()
         {

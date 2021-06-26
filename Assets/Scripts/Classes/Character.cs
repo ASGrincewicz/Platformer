@@ -38,8 +38,6 @@ namespace Veganimus.Platformer
         private int _wallJumpingAP = Animator.StringToHash("wallJumping");
         private int _hangingAP = Animator.StringToHash("hanging");
         private int _grabLedgeAP = Animator.StringToHash("grabLedge");
-        //private int _ledgeDropAP = Animator.StringToHash("ledgeDrop");
-        //private int _ledgeClimbAP = Animator.StringToHash("ledgeClimb");
         private int _crouchAP = Animator.StringToHash("crouch");
         [SerializeField] private int _collectibles;
         [SerializeField] private float _speed = 5f;
@@ -125,7 +123,6 @@ namespace Veganimus.Platformer
         }
         private void FixedUpdate()
         {
-            //var ballModeTriggered = _inputManager.controls.Standard.BallMode.triggered;
             if (!_inBallForm && !_isCrouching && _controller.enabled)
             {
                 Movement();
@@ -235,7 +232,6 @@ namespace Veganimus.Platformer
         }
         private void LedgeMovement()
         {
-            
             if (_vertical < 0)
             {
                 _animator.SetFloat(_grabLedgeAP, 0f);
