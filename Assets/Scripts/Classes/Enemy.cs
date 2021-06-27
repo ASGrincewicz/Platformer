@@ -4,18 +4,33 @@ using UnityEngine;
 using UnityEngine.AI;
 namespace Veganimus.Platformer
 {
+    [System.Serializable]
+    public struct EnemyInfo
+    {
+        public int hitPoints;
+        public float speed;
+        public float chaseSpeed;
+        public float sightDistance;
+        public float attackRange;
+
+        public EnemyInfo(int hp, float speed, float chaseSpeed, float sightDistance, float attackRange)
+        {
+            hitPoints = hp;
+            this.speed = speed;
+            this.chaseSpeed = chaseSpeed;
+            this.sightDistance = sightDistance;
+            this.attackRange = attackRange;
+        }
+    }
     public class Enemy : MonoBehaviour
     {
+        [SerializeField] private EnemyInfo _enemyInfo;
         [SerializeField] private AIState _aiState;
         [SerializeField] private LayerMask _targetLayer;
-        [SerializeField] private float _sightDistance;
-        [SerializeField] private float _attackRange;
         [SerializeField] private int _destinationPoint;
         [SerializeField] Transform[] _navPoints;
-
         private NavMeshAgent _agent;
         private MeshRenderer _meshRenderer;
-        [SerializeField] private int _hitPoints;
         private Health _health;
         private Vector3 _chaseDestination;
         private WaitForSeconds _chaseCoolDown;
@@ -24,9 +39,11 @@ namespace Veganimus.Platformer
         private void Start()
         {
             _health = GetComponent<Health>();
+            _health.HP = _enemyInfo.hitPoints;
             _agent = GetComponentInChildren<NavMeshAgent>();
             _meshRenderer = GetComponentInChildren<MeshRenderer>();
             _chaseCoolDown = new WaitForSeconds(3f);
+            _agent.speed = _enemyInfo.speed;
             ChangeAIState(AIState.Patrolling);
         }
         private void FixedUpdate()
@@ -49,6 +66,7 @@ namespace Veganimus.Platformer
                     break;
                 case AIState.Patrolling:
                     _agent.enabled = true;
+                    _agent.speed = _enemyInfo.speed;
                     _meshRenderer.material.color = Color.blue;
                     _aiState = AIState.Patrolling;
                     break;
@@ -57,6 +75,7 @@ namespace Veganimus.Platformer
                     _meshRenderer.material.color = Color.yellow;
                     _aiState = AIState.Chasing;
                     _agent.SetDestination(_chaseDestination);
+                    _agent.speed = _enemyInfo.chaseSpeed;
                     break;
                 case AIState.Attacking:
                     _agent.enabled = false;
@@ -84,7 +103,7 @@ namespace Veganimus.Platformer
             Ray ray = new Ray(_agent.transform.position, _agent.transform.forward);
             RaycastHit hitInfo;
 
-            if (Physics.Raycast(ray, out hitInfo, _sightDistance, _targetLayer))
+            if (Physics.Raycast(ray, out hitInfo, _enemyInfo.sightDistance, _targetLayer))
             {
                 if (hitInfo.collider != null)
                 {
@@ -92,7 +111,7 @@ namespace Veganimus.Platformer
                     _chaseDestination = hitInfo.transform.position;
                     if (_aiState == AIState.Chasing)
                     {
-                        if (Vector3.Distance(_agent.transform.position, _agent.destination) <= _attackRange)
+                        if (Vector3.Distance(_agent.transform.position, _agent.destination) <= _enemyInfo.attackRange)
                         {
                             ChangeAIState(AIState.Attacking);
                         }
