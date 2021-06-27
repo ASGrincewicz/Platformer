@@ -13,10 +13,19 @@ namespace Veganimus.Platformer
         public int HP { get { return _hp; }set { _hp = value; } }
         [SerializeField] private RespawnPlayerChannel _respawnPlayerChannel;
         [SerializeField] private GameStateChannel _gameStateChannel;
-
+        private void Start()
+        {
+            if (_characterType == CharacterType.Player)
+            {
+                UIManager.Instance.HealthTextUpdate(_hp);
+                UIManager.Instance.LivesUpdate(_lives);
+            }
+        }
         public void Damage(int hpDamage)
         {
             _hp -= hpDamage;
+            if (_characterType == CharacterType.Player)
+                UIManager.Instance.HealthTextUpdate(_hp);
            
             if (_hp <= 0)
             {
@@ -24,7 +33,7 @@ namespace Veganimus.Platformer
                 if (_characterType == CharacterType.Player)
                 {
                     _lives--;
-
+                    UIManager.Instance.LivesUpdate(_lives);
                     if (_lives > 0 || hpDamage == 9999)
                     {
                         _respawnPlayerChannel.RaiseRespawnEvent();

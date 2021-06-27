@@ -35,7 +35,7 @@ namespace Veganimus.Platformer
             if (other.GetComponent<CharacterController>())
             {
                 _collected = true;
-                UIManager.Instance.UpdateCollectibleText(1);
+                UIManager.Instance.CollectibleTextUpdate(1);
                 Destroy(this.gameObject);
             }
         }
