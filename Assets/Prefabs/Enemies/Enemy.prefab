@@ -47,14 +47,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49c870df08f484e4d9c9332b0f73663b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _enemyInfo:
+    hitPoints: 15
+    speed: 2
+    sightDistance: 10
+    attackRange: 2.5
   _aiState: 0
   _targetLayer:
     serializedVersion: 2
     m_Bits: 64
-  _sightDistance: 40
-  _attackRange: 2.5
   _destinationPoint: 0
-  _hitPoints: 10
   _navPoints:
   - {fileID: 2049905760810468498}
   - {fileID: 2049905760924808711}
@@ -100,7 +102,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2049905760810468499}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.35, y: 0, z: 0}
+  m_LocalPosition: {x: 9.37, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2049905760264124299}
@@ -130,7 +132,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2049905760924808704}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -8.41, y: 0, z: 0}
+  m_LocalPosition: {x: -6.59, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2049905760264124299}

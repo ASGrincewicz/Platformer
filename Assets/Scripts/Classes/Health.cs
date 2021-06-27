@@ -10,7 +10,7 @@ namespace Veganimus.Platformer
         [SerializeField] private int _lives;
         public int Lives { get { return _lives; }private set { _lives = value; } }
         [SerializeField] private int _hp;
-        public int HP { get { return _hp; }private set { _hp = value; } }
+        public int HP { get { return _hp; }set { _hp = value; } }
         [SerializeField] private RespawnPlayerChannel _respawnPlayerChannel;
         [SerializeField] private GameStateChannel _gameStateChannel;
 

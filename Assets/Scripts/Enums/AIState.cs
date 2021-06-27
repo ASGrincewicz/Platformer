@@ -2,6 +2,6 @@
 {
     public enum AIState
     {
-        Idle, Patrolling, Chasing, Attacking, Dead
+        Idle, Patrolling, Chasing, Attacking, Stunned, Dead
     }
 }
