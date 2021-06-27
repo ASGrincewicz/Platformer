@@ -276,8 +276,8 @@ public class @Controls : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""34b5441a-bc28-4f08-b0a4-85d7eba1ac1f"",
-                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""id"": ""47f750cc-3f23-4dfa-823b-84073b73ee58"",
+                    ""path"": ""<Gamepad>/leftStick/down"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""GamePad"",
@@ -287,8 +287,8 @@ public class @Controls : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""1dc5f344-14e0-4465-8fa1-5e1aac523086"",
-                    ""path"": ""<Keyboard>/c"",
+                    ""id"": ""ae2a1858-55a1-48d0-8bfa-bd96ee53c043"",
+                    ""path"": ""<Keyboard>/s"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
