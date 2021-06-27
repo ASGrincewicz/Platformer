@@ -34,6 +34,7 @@ namespace Veganimus.Platformer
             if (bombTriggered)
             {
                 _bombCount--;
+                UIManager.Instance.BombUpdate(_bombCount);
                 _canDropBomb = Time.time + _dropRate;
                 Instantiate(_bombPrefab,new Vector3(transform.position.x,transform.position.y, transform.position.z - 0.5f), Quaternion.identity);
                 Invoke("RechargeBomb", _bombRechargeTime);
@@ -42,6 +43,7 @@ namespace Veganimus.Platformer
         private void RechargeBomb()
         {
             _bombCount++;
+            UIManager.Instance.BombUpdate(_bombCount);
         }
     }
 }
