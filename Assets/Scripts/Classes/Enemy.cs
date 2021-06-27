@@ -11,12 +11,12 @@ namespace Veganimus.Platformer
         [SerializeField] private LayerMask _targetLayer;
         [SerializeField] private int _destinationPoint;
         [SerializeField] Transform[] _navPoints;
+        [SerializeField] EnemyWeapon _weapon;
         private NavMeshAgent _agent;
         private MeshRenderer _meshRenderer;
         private Health _health;
         private Vector3 _chaseDestination;
         private WaitForSeconds _chaseCoolDown;
-
 
         private void Start()
         {
@@ -24,6 +24,7 @@ namespace Veganimus.Platformer
             _health.HP = _enemyInfo.hitPoints;
             _agent = GetComponentInChildren<NavMeshAgent>();
             _meshRenderer = GetComponentInChildren<MeshRenderer>();
+            _weapon = GetComponent<EnemyWeapon>();
             _chaseCoolDown = new WaitForSeconds(3f);
             _agent.speed = _enemyInfo.speed;
             ChangeAIState(AIState.Patrolling);
@@ -38,6 +39,18 @@ namespace Veganimus.Platformer
                     GoToNextPoint();
                 }
             }
+            if(_aiState == AIState.Attacking)
+            {
+                if(_weapon != null)
+                {
+                    _weapon.isShooting = true;
+                }
+            }
+            else
+            {
+                _weapon.isShooting = false;
+            }
+            
         }
         private void ChangeAIState(AIState state)
         {
@@ -47,25 +60,25 @@ namespace Veganimus.Platformer
                     _meshRenderer.material.color = Color.gray;
                     break;
                 case AIState.Patrolling:
-                    _agent.enabled = true;
+                    _agent.isStopped = false;
                     _agent.speed = _enemyInfo.speed;
                     _meshRenderer.material.color = Color.blue;
                     _aiState = AIState.Patrolling;
                     break;
                 case AIState.Chasing:
-                    _agent.enabled = true;
+                    _agent.isStopped = false;
                     _meshRenderer.material.color = Color.yellow;
                     _aiState = AIState.Chasing;
                     _agent.SetDestination(_chaseDestination);
                     _agent.speed = _enemyInfo.chaseSpeed;
                     break;
                 case AIState.Attacking:
-                    _agent.enabled = false;
+                    _agent.isStopped = true;
                     _meshRenderer.material.color = Color.red;
                     _aiState = AIState.Attacking;
                     break;
                 case AIState.Stunned:
-                    _agent.enabled = false;
+                    _agent.isStopped = true;
                     StartCoroutine(ChaseCoolDown());
                     break;
                 case AIState.Dead:

@@ -4,28 +4,28 @@ using System.Collections.Generic;
 using UnityEngine;
 namespace Veganimus.Platformer
 {
-    public class ArmCannon : MonoBehaviour
+    public class Weapon : MonoBehaviour
     {
-        [SerializeField] private Transform _fireOffset;
-        [SerializeField] private GameObject _bulletPrefab;
+        [SerializeField] protected Transform _fireOffset;
+        [SerializeField] protected GameObject _bulletPrefab;
         [SerializeField] private InputManager _inputManager;
-        [SerializeField] private float _fireRate = 0.5f;
-        [SerializeField] private GameObject _poolManager;
-        private float _canFire = -1.0f;
-        private WaitForSeconds _shootCoolDown;
+        [SerializeField] protected float _fireRate = 0.5f;
+        [SerializeField] protected GameObject _poolManager;
+        protected float _canFire = -1.0f;
+        protected WaitForSeconds _shootCoolDown;
        
-        private void Start()
+        protected void Start()
         {
             _shootCoolDown = new WaitForSeconds(_fireRate);
         }
-        private void Update()
+        protected virtual void Update()
         {
             if (Time.time > _canFire)
             {
                 Shoot();
             }
         }
-        private void Shoot()
+        public virtual void Shoot()
         {
             var shootTriggered = _inputManager.controls.Standard.Shoot.triggered;
             if (shootTriggered)
@@ -35,7 +35,7 @@ namespace Veganimus.Platformer
             }
             StartCoroutine(ShootCoolDownRoutine());
         }
-        private IEnumerator ShootCoolDownRoutine()
+        protected IEnumerator ShootCoolDownRoutine()
         {
             yield return _shootCoolDown;
         }
