@@ -4,24 +4,6 @@ using UnityEngine;
 using UnityEngine.AI;
 namespace Veganimus.Platformer
 {
-    [System.Serializable]
-    public struct EnemyInfo
-    {
-        public int hitPoints;
-        public float speed;
-        public float chaseSpeed;
-        public float sightDistance;
-        public float attackRange;
-
-        public EnemyInfo(int hp, float speed, float chaseSpeed, float sightDistance, float attackRange)
-        {
-            hitPoints = hp;
-            this.speed = speed;
-            this.chaseSpeed = chaseSpeed;
-            this.sightDistance = sightDistance;
-            this.attackRange = attackRange;
-        }
-    }
     public class Enemy : MonoBehaviour
     {
         [SerializeField] private EnemyInfo _enemyInfo;
@@ -81,6 +63,10 @@ namespace Veganimus.Platformer
                     _agent.enabled = false;
                     _meshRenderer.material.color = Color.red;
                     _aiState = AIState.Attacking;
+                    break;
+                case AIState.Stunned:
+                    _agent.enabled = false;
+                    StartCoroutine(ChaseCoolDown());
                     break;
                 case AIState.Dead:
                     break;
