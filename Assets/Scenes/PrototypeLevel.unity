@@ -3605,7 +3605,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 843439143}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 11400000, guid: 8ff0857cd636e4227bb0b534eccf9239, type: 2}
+        m_TargetAssemblyTypeName: Veganimus.Platformer.ExitButton, Assembly-CSharp
+        m_MethodName: QuitGame
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &843439143
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8355,7 +8367,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1968280860}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 589630850}
+        m_TargetAssemblyTypeName: Veganimus.Platformer.GameManager, Assembly-CSharp
+        m_MethodName: OnPauseInput
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!114 &1968280860
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8612,7 +8636,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1982838511}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 11400000, guid: 8d2316ec58a6f46dbb3a35348569d84d, type: 2}
+        m_TargetAssemblyTypeName: Veganimus.Platformer.SceneLoader, Assembly-CSharp
+        m_MethodName: LoadGame
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1982838511
 MonoBehaviour:
   m_ObjectHideFlags: 0
