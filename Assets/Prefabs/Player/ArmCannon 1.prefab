@@ -55,7 +55,7 @@ GameObject:
   - component: {fileID: 775635302415595568}
   - component: {fileID: 775635302415595571}
   - component: {fileID: 775635302415595570}
-  - component: {fileID: 775635302415595569}
+  - component: {fileID: 3250480732216427441}
   m_Layer: 0
   m_Name: ArmCannon 1
   m_TagString: Untagged
@@ -70,7 +70,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 775635302415595575}
-  m_LocalRotation: {x: 0.018305385, y: 0.81345665, z: 0.58075464, w: 0.0260226}
+  m_LocalRotation: {x: 0.0183061, y: 0.8134545, z: 0.5807578, w: 0.026020031}
   m_LocalPosition: {x: 0.228, y: -0.038, z: -0.081}
   m_LocalScale: {x: 26.36, y: 20, z: 20}
   m_Children:
@@ -127,7 +127,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &775635302415595569
+--- !u!114 &3250480732216427441
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -136,11 +136,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 775635302415595575}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d66ba70fb005a4100b5d99dd10b910ce, type: 3}
+  m_Script: {fileID: 11500000, guid: 2ef2d5f075ac349ae80803a5cddfb815, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _fireOffset: {fileID: 775635301986035229}
-  _bulletPrefab: {fileID: 4874575737357313677, guid: a12084e2f01e24bb5b242f5387744b6d, type: 3}
+  _bulletPrefab: {fileID: 4874575737357313677, guid: 4899bddf3d63244e2bbd00a07832d5aa, type: 3}
   _inputManager: {fileID: 0}
-  _fireRate: 0.15
+  _fireRate: 0.5
   _poolManager: {fileID: 0}

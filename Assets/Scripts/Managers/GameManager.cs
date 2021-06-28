@@ -30,7 +30,7 @@ namespace Veganimus.Platformer
         {
             ChangeGameState(GameState.Start);
         }
-        private void OnPauseInput(bool isPaused)
+        public void OnPauseInput(bool isPaused)
         {
             //var isPaused = _inputManager.controls.Standard.Pause.triggered;
             if (isPaused == true && _isPaused == false)
@@ -72,5 +72,3 @@ namespace Veganimus.Platformer
         }
     }
 }
-
-
