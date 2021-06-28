@@ -11,7 +11,7 @@ namespace Veganimus.Platformer
         {
             sceneIndex = index;
             var toUnload = SceneManager.GetActiveScene().buildIndex;
-            var load = SceneManager.LoadSceneAsync(sceneIndex);
+            var load = SceneManager.LoadSceneAsync(2);
             if (load.isDone)
             {
                 SceneManager.UnloadSceneAsync(toUnload);
