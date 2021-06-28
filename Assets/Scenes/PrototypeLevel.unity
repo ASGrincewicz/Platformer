@@ -7547,6 +7547,10 @@ PrefabInstance:
       propertyPath: _collectibleType
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8183341179546786366, guid: 4dc4eb849aadf4109b0ce6d18c933bb0, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 17c44fb3e5be9644586a0728a5f5a386, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4dc4eb849aadf4109b0ce6d18c933bb0, type: 3}
 --- !u!1 &1982832513
@@ -8196,6 +8200,10 @@ PrefabInstance:
       value: 0.4
       objectReference: {fileID: 0}
     - target: {fileID: 3250480732216427441, guid: 32551223a82b24c66bd644e821a4159d, type: 3}
+      propertyPath: _fireRate
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3250480732216427441, guid: 32551223a82b24c66bd644e821a4159d, type: 3}
       propertyPath: _poolManager
       value: 
       objectReference: {fileID: 1122399864}
@@ -8208,8 +8216,16 @@ PrefabInstance:
       value: Character
       objectReference: {fileID: 0}
     - target: {fileID: 3648882456030760718, guid: 32551223a82b24c66bd644e821a4159d, type: 3}
+      propertyPath: _hp
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3648882456030760718, guid: 32551223a82b24c66bd644e821a4159d, type: 3}
+      propertyPath: _lives
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3648882456030760718, guid: 32551223a82b24c66bd644e821a4159d, type: 3}
       propertyPath: _maxLives
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3648882456030760719, guid: 32551223a82b24c66bd644e821a4159d, type: 3}
       propertyPath: _cinemachineTargetGroup
