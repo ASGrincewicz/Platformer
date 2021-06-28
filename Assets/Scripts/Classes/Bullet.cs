@@ -18,9 +18,7 @@ namespace Veganimus.Platformer
             {
                 var damage = collision.collider.GetComponentInParent<IDamageable>();
                 if (damage != null)
-                {
-                    damage.Damage(_damageAmount);
-                }
+                 damage.Damage(_damageAmount);
             }
             Destroy(gameObject);
         }

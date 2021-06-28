@@ -30,7 +30,6 @@ namespace Veganimus.Platformer
         {
             if (!_isGameOver)
             {
-                
                 _player.transform.position = _spawnPoint.position;
                 _player.transform.rotation = Quaternion.identity;
             }

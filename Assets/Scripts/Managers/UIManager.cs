@@ -25,19 +25,19 @@ namespace Veganimus.Platformer
         [SerializeField] private List<Image> _bombImages = new List<Image>();
         private int _currentHealth;
         private int _maxHealth;
-        private int _currentLives = 3;
+        private int _currentLives;
         private int _maxLives;
         private int _missileCount;
         private int _maxMissileCount;
         private int _currentBombs;
         private int _maxBombs;
         private int _collectiblesCollected;
-        private void Awake()
-        {
-            _instance = this;
-        }
+
+        private void Awake() => _instance = this;
+
         private void Start()
         {
+            HealthTextUpdate(_currentHealth);
             LivesUpdate(_currentLives);
         }
         public void HealthTextUpdate(int amount)
@@ -47,7 +47,7 @@ namespace Veganimus.Platformer
         }
         public void LivesUpdate(int amount)
         {
-            _currentLives = amount;
+            _currentLives = amount - 1;
             ClearAmount(_livesImages);
             ShowAmount(0,_currentLives);
         }
@@ -70,10 +70,9 @@ namespace Veganimus.Platformer
         }
         private void ClearAmount(List<Image> toClear)
         {
-            foreach (var image in toClear)
-            {
+            foreach (Image image in toClear)
                 image.canvasRenderer.SetAlpha(0);
-            }
+            
         }
         private void ShowAmount(int toShow, int amount)
         {

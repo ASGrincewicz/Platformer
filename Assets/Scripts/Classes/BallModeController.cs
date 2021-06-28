@@ -21,9 +21,8 @@ namespace Veganimus.Platformer
             {
                 var bombTriggered = _inputManager.controls.Standard.Shoot.triggered;
                 if (bombTriggered && _bombCount > 0)
-                {
                     DropBomb();
-                }
+                
                 else
                     return;
             }
