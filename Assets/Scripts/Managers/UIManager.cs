@@ -47,7 +47,7 @@ namespace Veganimus.Platformer
         }
         public void LivesUpdate(int amount)
         {
-            _currentLives = amount-1;
+            _currentLives = amount - 1;
             ClearAmount(_livesImages);
             ShowAmount(0,_currentLives);
         }

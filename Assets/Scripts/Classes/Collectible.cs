@@ -8,7 +8,7 @@ namespace Veganimus.Platformer
         private float _yRadius;
         private float _time = 0;
         private bool _collected;
-        private int _absorbCount = 1;
+        [SerializeField] private CollectibleType _collectibleType;
         [SerializeField] private int _powerUpAmount;
         [SerializeField] private float _speed;
         [SerializeField] private LayerMask _collectorLayerMask;
@@ -34,13 +34,27 @@ namespace Veganimus.Platformer
         }
         private void OnTriggerEnter(Collider other)
         {
-            if (other.GetComponent<Character>() && _absorbCount > 0)
+            if (other.GetComponent<Character>())
             {
-                Debug.Log($"Found{other.name}");
-                _absorbCount--;
                 if(_canAbosrb)
                 {
-                    other.GetComponent<Health>().Heal(_powerUpAmount/2);
+                    switch(_collectibleType)
+                    {
+                        case CollectibleType.Health:
+                            other.GetComponent<Health>().Heal(_powerUpAmount / 2);
+                            break;
+                        case CollectibleType.Life:
+                            other.GetComponent<Health>().IncreaseMaxLives();
+                            break;
+                        case CollectibleType.Missile:
+                            //Increase Missile Capacity.
+                            break;
+                        case CollectibleType.Bomb:
+                            //Increase Bomb Capacity.
+                            break;
+                        default:
+                            break;
+                    }
                 }
                 _collected = true;
                 UIManager.Instance.CollectibleTextUpdate(1);

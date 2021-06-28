@@ -7541,7 +7541,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4125935196165220659, guid: 4dc4eb849aadf4109b0ce6d18c933bb0, type: 3}
       propertyPath: _powerUpAmount
-      value: 20
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4125935196165220659, guid: 4dc4eb849aadf4109b0ce6d18c933bb0, type: 3}
+      propertyPath: _collectibleType
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4dc4eb849aadf4109b0ce6d18c933bb0, type: 3}
@@ -8202,6 +8206,10 @@ PrefabInstance:
     - target: {fileID: 3648882456030760715, guid: 32551223a82b24c66bd644e821a4159d, type: 3}
       propertyPath: m_Name
       value: Character
+      objectReference: {fileID: 0}
+    - target: {fileID: 3648882456030760718, guid: 32551223a82b24c66bd644e821a4159d, type: 3}
+      propertyPath: _maxLives
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3648882456030760719, guid: 32551223a82b24c66bd644e821a4159d, type: 3}
       propertyPath: _cinemachineTargetGroup
