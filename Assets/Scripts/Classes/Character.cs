@@ -92,9 +92,8 @@ namespace Veganimus.Platformer
                 _aimTarget.transform.localPosition = new Vector3(_aimTarget.transform.localPosition.x, _aimTargetCrouchingPos, _aimTarget.transform.localPosition.z);
             }
             else if(c == 1 && !_controller.isGrounded)
-            {
-                return;
-            }
+             return;
+            
             else
             {
                 _animator.SetFloat(_crouchAP, c);
@@ -124,18 +123,16 @@ namespace Veganimus.Platformer
         private void FixedUpdate()
         {
             if (!_inBallForm && !_isCrouching && _controller.enabled)
-            {
-                Movement();
-            }
+             Movement();
+            
             else if (_inBallForm)
             {
                 _controller.enabled = false;
                 BallMovement();
             }
             else if (!_controller.enabled && _grabbingLedge)
-            {
-                LedgeMovement();
-            }
+             LedgeMovement();
+            
             if(_controller.enabled || _inBallForm)
             {
                 FaceDirection();

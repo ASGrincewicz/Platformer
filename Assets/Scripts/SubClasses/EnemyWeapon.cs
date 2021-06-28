@@ -5,14 +5,11 @@ namespace Veganimus.Platformer
     public class EnemyWeapon : Weapon
     {
         public bool isShooting;
-        
 
         protected override void Update()
         {
             if (Time.time > _canFire)
-            {
                 EnemyShoot();
-            }
         }
 
         public void EnemyShoot()

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 namespace Veganimus.Platformer
 {
@@ -14,12 +15,13 @@ namespace Veganimus.Platformer
         public int HP { get { return _hp; }set { _hp = value; } }
         [SerializeField] private RespawnPlayerChannel _respawnPlayerChannel;
         [SerializeField] private GameStateChannel _gameStateChannel;
-        private void Start()
+
+        private IEnumerator Start()
         {
             if (_characterType == CharacterType.Player)
             {
-                UIManager.Instance.HealthTextUpdate(_hp);
-                UIManager.Instance.LivesUpdate(_lives);
+                yield return new WaitForSeconds(0.5f);
+               Heal(0);
             }
         }
         private void Update()
@@ -31,8 +33,7 @@ namespace Veganimus.Platformer
                     var amount = _hp - 100;
                     _hp = amount;
                     _lives++;
-                    UIManager.Instance.HealthTextUpdate(_hp);
-                    UIManager.Instance.LivesUpdate(_lives);
+                    UIManagerUpdate();
                 }
                 
                 if (_hp <= 0 && _lives > 0)
@@ -40,11 +41,14 @@ namespace Veganimus.Platformer
                     _lives--;
                     var amount = 99 + _hp;
                     _hp = amount;
-
-                    UIManager.Instance.HealthTextUpdate(_hp);
-                    UIManager.Instance.LivesUpdate(_lives);
+                    UIManagerUpdate();
                 }
             }
+        }
+        private void UIManagerUpdate()
+        {
+            UIManager.Instance.HealthTextUpdate(_hp);
+            UIManager.Instance.LivesUpdate(_lives);
         }
         public void Heal(int amount)
         {
@@ -53,56 +57,32 @@ namespace Veganimus.Platformer
             {
                 _hp = 99;
             }
-            UIManager.Instance.HealthTextUpdate(_hp);
-            UIManager.Instance.LivesUpdate(_lives);
+            UIManagerUpdate();
         }
         public void IncreaseMaxLives()
         {
             _maxLives += 1;
             _lives = _maxLives;
             _hp = 99;
-            UIManager.Instance.HealthTextUpdate(_hp);
-            UIManager.Instance.LivesUpdate(_lives);
+            UIManagerUpdate();
         }
         public void Damage(int hpDamage)
         {
             _hp -= hpDamage;
-            if (_characterType == CharacterType.Player)
+            switch(_characterType)
             {
-                //if (_hp < 0 && _lives > 0)
-                //{
-                //    _lives--;
-                //    var amount = 100 + _hp;
-                //    _hp = amount;
-                //}
-                UIManager.Instance.HealthTextUpdate(_hp);
-                UIManager.Instance.LivesUpdate(_lives);
+                case CharacterType.Player:
+                    UIManagerUpdate();
+                    break;
+                case CharacterType.Enemy:
+                    break;
+                default:
+                    break;
             }
-
-            else if (_hp <= 0 && _characterType != CharacterType.Player)
-            {
-                Destroy(this.gameObject);
-                //_hp = 0;
-                //if (_characterType == CharacterType.Player && _lives > 0)
-                //{
-                //    _lives--;
-
-                //    UIManager.Instance.LivesUpdate(_lives);
-                //    if (_lives > 0|| hpDamage == 9999)
-                //    {
-                //        _respawnPlayerChannel.RaiseRespawnEvent();
-                //    }
-                //    else
-                //    {
-                //        _gameStateChannel.RaiseGameStateChange(GameState.GameOver);
-                //        Destroy(this.gameObject);
-                //    }
-                //}
-                //else
-                //    Destroy(this.gameObject);
-                //game over
-            }
-            }
+            if (_hp <= 0 && _characterType != CharacterType.Player)
+              Destroy(gameObject);
+               
+        }
     }
 }
 

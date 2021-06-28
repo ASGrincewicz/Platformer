@@ -1,6 +1,5 @@
 ﻿// Aaron Grincewicz Veganimus@icloud.com 6/5/2021
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 namespace Veganimus.Platformer
 {
@@ -13,17 +12,13 @@ namespace Veganimus.Platformer
         [SerializeField] protected GameObject _poolManager;
         protected float _canFire = -1.0f;
         protected WaitForSeconds _shootCoolDown;
-       
-        protected void Start()
-        {
-            _shootCoolDown = new WaitForSeconds(_fireRate);
-        }
+
+        protected void Start() => _shootCoolDown = new WaitForSeconds(_fireRate);
+
         protected virtual void Update()
         {
             if (Time.time > _canFire)
-            {
-                Shoot();
-            }
+             Shoot();
         }
         public virtual void Shoot()
         {
