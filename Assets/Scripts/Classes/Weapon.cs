@@ -7,7 +7,7 @@ namespace Veganimus.Platformer
     {
         [SerializeField] protected Transform _fireOffset;
         [SerializeField] protected GameObject _bulletPrefab;
-        [SerializeField] private InputManager _inputManager;
+        [SerializeField] private InputManagerSO _inputManager;
         [SerializeField] protected float _fireRate = 0.5f;
         [SerializeField] protected GameObject _poolManager;
         protected float _canFire = -1.0f;

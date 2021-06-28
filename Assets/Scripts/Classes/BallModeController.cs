@@ -4,17 +4,13 @@ namespace Veganimus.Platformer
 {
     public class BallModeController : MonoBehaviour, IBombable
     {
+        [SerializeField] private InputManagerSO _inputManager;
         [SerializeField] private GameObject _bombPrefab;
         [SerializeField] private float _dropRate = 0.5f;
         [SerializeField] private float _bombRechargeTime = 3.0f;
         [SerializeField] private int _bombCount = 3;
         private float _canDropBomb = -1.0f;
-        private InputManager _inputManager;
-
-        private void Start()
-        {
-            _inputManager = GetComponentInParent<InputManager>();
-        }
+       
         private void Update()
         {
             if (Time.time > _canDropBomb)

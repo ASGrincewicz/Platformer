@@ -8,13 +8,9 @@ namespace Veganimus.Platformer
         [SerializeField] private float _aimWeight = 1f;
         public float AimWeight { get { return _aimWeight; } set { _aimWeight = value; } }
         public float LookWeight { get; set; } = 1f;
-
         private Animator _animator;
 
-        private void Start()
-        {
-            _animator = GetComponent<Animator>();
-        }
+        private void Start() => _animator = GetComponent<Animator>();
 
         private void OnAnimatorIK(int layerIndex)
         {

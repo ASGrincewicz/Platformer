@@ -1,11 +1,11 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 namespace Veganimus.Platformer
 {
-
-    public class InputManager :MonoBehaviour
+    [CreateAssetMenu(menuName ="Input Manager")]
+    public class InputManagerSO : ScriptableObject
     {
         public UnityAction<float, float> moveAction;
         public UnityAction<float> crouchAction;
@@ -44,7 +44,7 @@ namespace Veganimus.Platformer
             controls.Standard.DownAim.performed -= OnDownAimInput;
             controls.Standard.DownAim.canceled -= OnDownAimInput;
         }
-        
+
         private void OnMoveInput(InputAction.CallbackContext obj)
         {
             Vector2 moveInput = obj.ReadValue<Vector2>();
