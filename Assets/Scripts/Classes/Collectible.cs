@@ -23,14 +23,13 @@ namespace Veganimus.Platformer
 
         private void Update()
         {
-            if (!_collected)
+            if (Time.timeScale > 0)
             {
                 _time += Time.deltaTime;
                 float x = _xRadius * Mathf.Cos(_time * _speed);
                 float y = _yRadius * Mathf.Sin(_time * _speed);
                 transform.position += new Vector3(x, y, 0);
             }
-           
         }
         private void OnTriggerEnter(Collider other)
         {

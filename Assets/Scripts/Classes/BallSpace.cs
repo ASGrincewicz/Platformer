@@ -4,7 +4,7 @@ namespace Veganimus.Platformer
 {
     public class BallSpace : MonoBehaviour
     {
-        [SerializeField] private InputManager _inputManager;
+        [SerializeField] private InputManagerSO _inputManager;
 
         private void OnTriggerEnter(Collider other)
         {

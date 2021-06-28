@@ -1,16 +1,17 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 namespace Veganimus.Platformer
 {
-
-    public class InputManager :MonoBehaviour
+    [CreateAssetMenu(menuName ="Input Manager")]
+    public class InputManagerSO : ScriptableObject
     {
         public UnityAction<float, float> moveAction;
         public UnityAction<float> crouchAction;
         public UnityAction<float> upAimAction;
         public UnityAction<float> downAimAction;
+        public UnityAction<bool> pauseAction;
         public UnityAction shootAction;
         public UnityAction ballModeAction;
         public UnityAction jumpAction;
@@ -29,6 +30,7 @@ namespace Veganimus.Platformer
             controls.Standard.UpAIm.canceled += OnUpAimInput;
             controls.Standard.DownAim.performed += OnDownAimInput;
             controls.Standard.DownAim.canceled += OnDownAimInput;
+            controls.Standard.Pause.performed += OnPauseInput;
         }
 
         private void OnDisable()
@@ -43,8 +45,9 @@ namespace Veganimus.Platformer
             controls.Standard.UpAIm.canceled -= OnUpAimInput;
             controls.Standard.DownAim.performed -= OnDownAimInput;
             controls.Standard.DownAim.canceled -= OnDownAimInput;
+            controls.Standard.Pause.performed -= OnPauseInput;
         }
-        
+
         private void OnMoveInput(InputAction.CallbackContext obj)
         {
             Vector2 moveInput = obj.ReadValue<Vector2>();
@@ -69,6 +72,12 @@ namespace Veganimus.Platformer
             float upAimInput = obj.ReadValue<float>();
             if (upAimAction != null)
                 upAimAction.Invoke(upAimInput);
+        }
+        private void OnPauseInput(InputAction.CallbackContext obj)
+        {
+            var pauseInput = obj.ReadValueAsButton();
+            if (pauseAction != null)
+                pauseAction.Invoke(pauseInput);
         }
     }
 }

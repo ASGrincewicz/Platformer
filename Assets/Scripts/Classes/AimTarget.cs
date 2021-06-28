@@ -11,7 +11,7 @@ namespace Veganimus.Platformer
         [SerializeField] private Transform _centerAimTarget;
         [SerializeField] private Transform _overHeadTarget;
         [SerializeField] private Transform _belowTarget;
-        [SerializeField] private InputManager _inputManager;
+        [SerializeField] private InputManagerSO _inputManager;
         private Transform _targetPosition;
         private float _vertical;
 

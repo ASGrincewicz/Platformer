@@ -31,14 +31,14 @@ namespace Veganimus.Platformer
         private Vector3 _velocity;
         private Vector3 _wallSurfaceNormal;
         //Animator Parameters
-        private int _groundedAP = Animator.StringToHash("grounded");
-        private int _horizontalAP = Animator.StringToHash("horizontal");
-        private int _jumpingAP = Animator.StringToHash("jumping");
-        private int _droppingAP = Animator.StringToHash("dropping");
-        private int _wallJumpingAP = Animator.StringToHash("wallJumping");
-        private int _hangingAP = Animator.StringToHash("hanging");
-        private int _grabLedgeAP = Animator.StringToHash("grabLedge");
-        private int _crouchAP = Animator.StringToHash("crouch");
+        private readonly int _groundedAP = Animator.StringToHash("grounded");
+        private readonly int _horizontalAP = Animator.StringToHash("horizontal");
+        private readonly int _jumpingAP = Animator.StringToHash("jumping");
+        private readonly int _droppingAP = Animator.StringToHash("dropping");
+        private readonly int _wallJumpingAP = Animator.StringToHash("wallJumping");
+        private readonly int _hangingAP = Animator.StringToHash("hanging");
+        private readonly int _grabLedgeAP = Animator.StringToHash("grabLedge");
+        private readonly int _crouchAP = Animator.StringToHash("crouch");
         [SerializeField] private int _collectibles;
         [SerializeField] private float _speed = 5f;
         [SerializeField] private float _gravity;
@@ -51,8 +51,8 @@ namespace Veganimus.Platformer
         [SerializeField] private Vector3 _modelPosition;
         [SerializeField] private LayerMask _detectSurfaceLayers;
         [SerializeField] private LayerMask _collectibleLayerMask;
-        [SerializeField] private InputManager _inputManager;
-        public InputManager InputManager { get; set; }
+        [SerializeField] private InputManagerSO _inputManager;
+        public InputManagerSO InputManager { get; set; }
         [SerializeField] private CinemachineTargetGroup _cinemachineTargetGroup;
 
         public void GrabLedge(Transform anchorPos)
@@ -106,7 +106,6 @@ namespace Veganimus.Platformer
         {
             _controller = GetComponentInChildren<CharacterController>();
             _rigidbody = GetComponentInChildren<Rigidbody>();
-            _inputManager = GetComponent<InputManager>();
             _animator = _characterModel.GetComponent<Animator>();
             _playerAim = _characterModel.GetComponent<PlayerAim>();
             _gravity = _adjustGravity;
