@@ -73,6 +73,14 @@ public class @Controls : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""71ec4c5e-b00d-4846-9a4e-6f1bb18f5c7a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -317,6 +325,28 @@ public class @Controls : IInputActionCollection, IDisposable
                     ""action"": ""Shoot"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""75a3d24d-3bdf-489f-bc3e-871d890cee2e"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""12586028-d33d-4b36-bcf7-7aff6e6cc74d"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""GamePad"",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -355,6 +385,7 @@ public class @Controls : IInputActionCollection, IDisposable
         m_Standard_DownAim = m_Standard.FindAction("DownAim", throwIfNotFound: true);
         m_Standard_Crouch = m_Standard.FindAction("Crouch", throwIfNotFound: true);
         m_Standard_Shoot = m_Standard.FindAction("Shoot", throwIfNotFound: true);
+        m_Standard_Pause = m_Standard.FindAction("Pause", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -411,6 +442,7 @@ public class @Controls : IInputActionCollection, IDisposable
     private readonly InputAction m_Standard_DownAim;
     private readonly InputAction m_Standard_Crouch;
     private readonly InputAction m_Standard_Shoot;
+    private readonly InputAction m_Standard_Pause;
     public struct StandardActions
     {
         private @Controls m_Wrapper;
@@ -422,6 +454,7 @@ public class @Controls : IInputActionCollection, IDisposable
         public InputAction @DownAim => m_Wrapper.m_Standard_DownAim;
         public InputAction @Crouch => m_Wrapper.m_Standard_Crouch;
         public InputAction @Shoot => m_Wrapper.m_Standard_Shoot;
+        public InputAction @Pause => m_Wrapper.m_Standard_Pause;
         public InputActionMap Get() { return m_Wrapper.m_Standard; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -452,6 +485,9 @@ public class @Controls : IInputActionCollection, IDisposable
                 @Shoot.started -= m_Wrapper.m_StandardActionsCallbackInterface.OnShoot;
                 @Shoot.performed -= m_Wrapper.m_StandardActionsCallbackInterface.OnShoot;
                 @Shoot.canceled -= m_Wrapper.m_StandardActionsCallbackInterface.OnShoot;
+                @Pause.started -= m_Wrapper.m_StandardActionsCallbackInterface.OnPause;
+                @Pause.performed -= m_Wrapper.m_StandardActionsCallbackInterface.OnPause;
+                @Pause.canceled -= m_Wrapper.m_StandardActionsCallbackInterface.OnPause;
             }
             m_Wrapper.m_StandardActionsCallbackInterface = instance;
             if (instance != null)
@@ -477,6 +513,9 @@ public class @Controls : IInputActionCollection, IDisposable
                 @Shoot.started += instance.OnShoot;
                 @Shoot.performed += instance.OnShoot;
                 @Shoot.canceled += instance.OnShoot;
+                @Pause.started += instance.OnPause;
+                @Pause.performed += instance.OnPause;
+                @Pause.canceled += instance.OnPause;
             }
         }
     }
@@ -508,5 +547,6 @@ public class @Controls : IInputActionCollection, IDisposable
         void OnDownAim(InputAction.CallbackContext context);
         void OnCrouch(InputAction.CallbackContext context);
         void OnShoot(InputAction.CallbackContext context);
+        void OnPause(InputAction.CallbackContext context);
     }
 }

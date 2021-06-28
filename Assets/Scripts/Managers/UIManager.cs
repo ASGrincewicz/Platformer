@@ -23,6 +23,7 @@ namespace Veganimus.Platformer
         [SerializeField] private TMP_Text _collectibleText;
         [SerializeField] private List<Image> _livesImages = new List<Image>();
         [SerializeField] private List<Image> _bombImages = new List<Image>();
+        [SerializeField] private GameObject _pauseMenu;
         private int _currentHealth;
         private int _maxHealth;
         private int _currentLives;
@@ -39,6 +40,10 @@ namespace Veganimus.Platformer
         {
             HealthTextUpdate(_currentHealth);
             LivesUpdate(_currentLives);
+        }
+        public void ActivatePauseMenu(bool isActive)
+        {
+            _pauseMenu.SetActive(isActive);
         }
         public void HealthTextUpdate(int amount)
         {

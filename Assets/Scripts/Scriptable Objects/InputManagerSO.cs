@@ -11,6 +11,7 @@ namespace Veganimus.Platformer
         public UnityAction<float> crouchAction;
         public UnityAction<float> upAimAction;
         public UnityAction<float> downAimAction;
+        public UnityAction<bool> pauseAction;
         public UnityAction shootAction;
         public UnityAction ballModeAction;
         public UnityAction jumpAction;
@@ -29,6 +30,7 @@ namespace Veganimus.Platformer
             controls.Standard.UpAIm.canceled += OnUpAimInput;
             controls.Standard.DownAim.performed += OnDownAimInput;
             controls.Standard.DownAim.canceled += OnDownAimInput;
+            controls.Standard.Pause.performed += OnPauseInput;
         }
 
         private void OnDisable()
@@ -43,6 +45,7 @@ namespace Veganimus.Platformer
             controls.Standard.UpAIm.canceled -= OnUpAimInput;
             controls.Standard.DownAim.performed -= OnDownAimInput;
             controls.Standard.DownAim.canceled -= OnDownAimInput;
+            controls.Standard.Pause.performed -= OnPauseInput;
         }
 
         private void OnMoveInput(InputAction.CallbackContext obj)
@@ -69,6 +72,12 @@ namespace Veganimus.Platformer
             float upAimInput = obj.ReadValue<float>();
             if (upAimAction != null)
                 upAimAction.Invoke(upAimInput);
+        }
+        private void OnPauseInput(InputAction.CallbackContext obj)
+        {
+            var pauseInput = obj.ReadValueAsButton();
+            if (pauseAction != null)
+                pauseAction.Invoke(pauseInput);
         }
     }
 }
