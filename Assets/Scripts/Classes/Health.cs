@@ -5,6 +5,7 @@ namespace Veganimus.Platformer
 {
     public class Health : MonoBehaviour, IDamageable, IBombable
     {
+        private bool _gameStart = true;
         [SerializeField] private int _maxLives;
         [SerializeField] private CharacterType _characterType;
         [SerializeField] private bool _isPlayer;
@@ -21,7 +22,8 @@ namespace Veganimus.Platformer
             if (_characterType == CharacterType.Player)
             {
                 yield return new WaitForSeconds(0.5f);
-               Heal(0);
+                Heal(0);
+                _gameStart = false;
             }
         }
         private void Update()
@@ -36,12 +38,16 @@ namespace Veganimus.Platformer
                     UIManagerUpdate();
                 }
                 
-                if (_hp <= 0 && _lives > 0)
+                if (_hp <= 0 && _lives > 1)
                 {
                     _lives--;
                     var amount = 99 + _hp;
                     _hp = amount;
                     UIManagerUpdate();
+                }
+                else if(_hp <=0 && _lives <= 1 && !_gameStart)
+                {
+                    Destroy(gameObject);
                 }
             }
         }

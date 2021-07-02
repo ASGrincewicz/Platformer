@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4363823220342054752}
   - component: {fileID: 4644377692472308409}
   - component: {fileID: 5649765714020709581}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Basic_wall_0.5x10
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -30,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 7785952811377086854}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 10, z: 1}
+  m_LocalScale: {x: 0.5, y: 10, z: 5}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0

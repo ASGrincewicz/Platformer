@@ -1,6 +1,4 @@
 ﻿// Aaron Grincewicz Veganimus@icloud.com 6/5/2021
-using System;
-using Cinemachine;
 using UnityEngine;
 namespace Veganimus.Platformer
 {
@@ -53,7 +51,8 @@ namespace Veganimus.Platformer
         [SerializeField] private LayerMask _collectibleLayerMask;
         [SerializeField] private InputManagerSO _inputManager;
         public InputManagerSO InputManager { get; set; }
-        [SerializeField] private CinemachineTargetGroup _cinemachineTargetGroup;
+        //[SerializeField] private CinemachineTargetGroup _cinemachineTargetGroup;
+        [SerializeField] private CameraController _mainCamera;
 
         public void GrabLedge(Transform anchorPos)
         {
@@ -104,6 +103,7 @@ namespace Veganimus.Platformer
 
         private void Start()
         {
+            _mainCamera = Camera.main.GetComponent<CameraController>();
             _controller = GetComponentInChildren<CharacterController>();
             _rigidbody = GetComponentInChildren<Rigidbody>();
             _animator = _characterModel.GetComponent<Animator>();
@@ -137,8 +137,7 @@ namespace Veganimus.Platformer
                 FaceDirection();
                 if (_ballModeTriggered && !_inBallForm && _controller.isGrounded)
                 {
-                    _cinemachineTargetGroup.m_Targets[0].weight = 0;
-                    _cinemachineTargetGroup.m_Targets[1].weight = 1;
+                    _mainCamera.trackedObject = _ballForm;
                     _ballForm.transform.position = transform.position;
                     _characterModel.SetActive(false);
                     _ballForm.SetActive(true);
@@ -148,8 +147,7 @@ namespace Veganimus.Platformer
                 }
                 else if (_ballModeTriggered && _inBallForm)
                 {
-                    _cinemachineTargetGroup.m_Targets[1].weight = 0;
-                    _cinemachineTargetGroup.m_Targets[0].weight = 1;
+                    _mainCamera.trackedObject = this.gameObject;
                     transform.position = _ballForm.transform.position;
                     _controller.enabled = true;
                     _characterModel.SetActive(true);
