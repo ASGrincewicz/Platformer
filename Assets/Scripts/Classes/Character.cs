@@ -37,7 +37,7 @@ namespace Veganimus.Platformer
         private readonly int _hangingAP = Animator.StringToHash("hanging");
         private readonly int _grabLedgeAP = Animator.StringToHash("grabLedge");
         private readonly int _crouchAP = Animator.StringToHash("crouch");
-        [SerializeField] private int _collectibles;
+        [SerializeField] private byte _collectibles;
         [SerializeField] private float _speed = 5f;
         [SerializeField] private float _gravity;
         [SerializeField] private float _adjustGravity;
@@ -293,14 +293,14 @@ namespace Veganimus.Platformer
         
         private void DetectCollectible()
         {
-            int maxColliders = 5;
+            byte maxColliders = 5;
             Collider[] results = new Collider[maxColliders];
-            int numberColliders = Physics.OverlapSphereNonAlloc(transform.position,
+            byte numberColliders = (byte)Physics.OverlapSphereNonAlloc(transform.position,
                                                                 _collectibleDetectionRadius,
                                                                 results,
                                                                 _collectibleLayerMask);
 
-            for (int i = 0; i < numberColliders; i++)
+            for (byte i = 0; i < numberColliders; i++)
             {
                 results[i].transform.position = Vector3.Lerp(results[i].transform.position, transform.position, 3f * Time.deltaTime);
 

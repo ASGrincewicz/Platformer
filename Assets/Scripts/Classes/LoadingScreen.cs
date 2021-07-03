@@ -10,7 +10,7 @@ namespace Veganimus.Platformer
         [SerializeField] private SceneLoader _loader;
         [SerializeField] private Image _progessBar;
         [SerializeField] private TMP_Text _loadingProgress;
-        public int sceneIndex;
+        public byte sceneIndex;
 
         private void Start() => StartCoroutine(LoadLevelASync());
 

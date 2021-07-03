@@ -5,7 +5,7 @@ namespace Veganimus.Platformer
     public class Bullet : MonoBehaviour
     {
         [SerializeField] private float _speed = 10.0f;
-        [SerializeField] private int _damageAmount = 1;
+        [SerializeField] private sbyte _damageAmount = 1;
 
         private void Update()
         {

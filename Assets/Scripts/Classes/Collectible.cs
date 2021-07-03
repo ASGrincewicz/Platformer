@@ -9,7 +9,7 @@ namespace Veganimus.Platformer
         private float _time = 0;
         private bool _collected;
         [SerializeField] private CollectibleType _collectibleType;
-        [SerializeField] private int _powerUpAmount;
+        [SerializeField] private sbyte _powerUpAmount;
         [SerializeField] private float _speed;
         [SerializeField] private LayerMask _collectorLayerMask;
         [SerializeField] private bool _canAbosrb = false;
@@ -40,7 +40,7 @@ namespace Veganimus.Platformer
                     switch(_collectibleType)
                     {
                         case CollectibleType.Health:
-                            other.GetComponent<Health>().Heal(_powerUpAmount / 2);
+                            other.GetComponent<Health>().Heal((sbyte)(_powerUpAmount / 2));
                             break;
                         case CollectibleType.Life:
                             other.GetComponent<Health>().IncreaseMaxLives();

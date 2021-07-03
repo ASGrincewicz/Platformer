@@ -8,7 +8,7 @@ namespace Veganimus.Platformer
         [SerializeField] private EnemyInfo _enemyInfo;
         [SerializeField] private AIState _aiState;
         [SerializeField] private LayerMask _targetLayer;
-        [SerializeField] private int _destinationPoint;
+        [SerializeField] private byte _destinationPoint;
         [SerializeField] Transform[] _navPoints;
         [SerializeField] EnemyWeapon _weapon;
         private NavMeshAgent _agent;
@@ -91,7 +91,7 @@ namespace Veganimus.Platformer
             else
             {
                 _agent.destination = _navPoints[_destinationPoint].position;
-                _destinationPoint = (_destinationPoint + 1) % _navPoints.Length;
+                _destinationPoint = (byte)((_destinationPoint + 1) % _navPoints.Length);
             }
         }
         private void Detect()

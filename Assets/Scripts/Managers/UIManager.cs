@@ -24,15 +24,15 @@ namespace Veganimus.Platformer
         [SerializeField] private List<Image> _livesImages = new List<Image>();
         [SerializeField] private List<Image> _bombImages = new List<Image>();
         [SerializeField] private GameObject _pauseMenu;
-        private int _currentHealth;
-        private int _maxHealth;
-        private int _currentLives;
-        private int _maxLives;
-        private int _missileCount;
-        private int _maxMissileCount;
-        private int _currentBombs;
-        private int _maxBombs;
-        private int _collectiblesCollected;
+        private sbyte _currentHealth;
+        private byte _maxHealth;
+        private sbyte _currentLives;
+        private byte _maxLives;
+        private sbyte _missileCount;
+        private byte _maxMissileCount;
+        private sbyte _currentBombs;
+        private byte _maxBombs;
+        private byte _collectiblesCollected;
 
         private void Awake() => _instance = this;
 
@@ -45,30 +45,30 @@ namespace Veganimus.Platformer
         {
             _pauseMenu.SetActive(isActive);
         }
-        public void HealthTextUpdate(int amount)
+        public void HealthTextUpdate(sbyte amount)
         {
             _currentHealth = amount;
             _healthText.text = $"Health: {_currentHealth}";
         }
-        public void LivesUpdate(int amount)
+        public void LivesUpdate(sbyte amount)
         {
-            _currentLives = amount - 1;
+            _currentLives = (sbyte)(amount - 1);
             ClearAmount(_livesImages);
-            ShowAmount(0,_currentLives);
+            ShowAmount((byte)0,_currentLives);
         }
        
-        public void MissilesTextUpdate(int amount)
+        public void MissilesTextUpdate(sbyte amount)
         {
             _missileCount = amount;
             _missilesText.text = $"Missiles: {_missileCount}";
         }
-        public void BombUpdate(int amount)
+        public void BombUpdate(sbyte amount)
         {
             _currentBombs = amount;
             ClearAmount(_bombImages);
             ShowAmount(1, amount);
         }
-        public void CollectibleTextUpdate(int amount)
+        public void CollectibleTextUpdate(byte amount)
         {
             _collectiblesCollected += amount;
             _collectibleText.text = $"{_collectiblesCollected}";
@@ -79,9 +79,9 @@ namespace Veganimus.Platformer
                 image.canvasRenderer.SetAlpha(0);
             
         }
-        private void ShowAmount(int toShow, int amount)
+        private void ShowAmount(byte toShow, sbyte amount)
         {
-            for (int i = 0; i < amount; i++)
+            for (byte i = 0; i < amount; i++)
             {
                 switch(toShow)
                 {
