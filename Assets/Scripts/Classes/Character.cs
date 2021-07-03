@@ -1,6 +1,4 @@
 ﻿// Aaron Grincewicz Veganimus@icloud.com 6/5/2021
-using System;
-using Cinemachine;
 using UnityEngine;
 namespace Veganimus.Platformer
 {
@@ -39,7 +37,7 @@ namespace Veganimus.Platformer
         private readonly int _hangingAP = Animator.StringToHash("hanging");
         private readonly int _grabLedgeAP = Animator.StringToHash("grabLedge");
         private readonly int _crouchAP = Animator.StringToHash("crouch");
-        [SerializeField] private int _collectibles;
+        [SerializeField] private byte _collectibles;
         [SerializeField] private float _speed = 5f;
         [SerializeField] private float _gravity;
         [SerializeField] private float _adjustGravity;
@@ -53,7 +51,8 @@ namespace Veganimus.Platformer
         [SerializeField] private LayerMask _collectibleLayerMask;
         [SerializeField] private InputManagerSO _inputManager;
         public InputManagerSO InputManager { get; set; }
-        [SerializeField] private CinemachineTargetGroup _cinemachineTargetGroup;
+        //[SerializeField] private CinemachineTargetGroup _cinemachineTargetGroup;
+        [SerializeField] private CameraController _mainCamera;
 
         public void GrabLedge(Transform anchorPos)
         {
@@ -104,6 +103,7 @@ namespace Veganimus.Platformer
 
         private void Start()
         {
+            _mainCamera = Camera.main.GetComponent<CameraController>();
             _controller = GetComponentInChildren<CharacterController>();
             _rigidbody = GetComponentInChildren<Rigidbody>();
             _animator = _characterModel.GetComponent<Animator>();
@@ -114,13 +114,15 @@ namespace Veganimus.Platformer
         //{
         //    AnimLerp();
         //}
+        private void FixedUpdate()
+        {
+            DetectSurface();
+            DetectCollectible();
+        }
         private void Update()
         {
             _ballModeTriggered = _inputManager.controls.Standard.BallMode.triggered;
             _jumpTriggered = _inputManager.controls.Standard.Jump.triggered;
-        }
-        private void FixedUpdate()
-        {
             if (!_inBallForm && !_isCrouching && _controller.enabled)
              Movement();
             
@@ -137,8 +139,7 @@ namespace Veganimus.Platformer
                 FaceDirection();
                 if (_ballModeTriggered && !_inBallForm && _controller.isGrounded)
                 {
-                    _cinemachineTargetGroup.m_Targets[0].weight = 0;
-                    _cinemachineTargetGroup.m_Targets[1].weight = 1;
+                    _mainCamera.trackedObject = _ballForm;
                     _ballForm.transform.position = transform.position;
                     _characterModel.SetActive(false);
                     _ballForm.SetActive(true);
@@ -148,8 +149,7 @@ namespace Veganimus.Platformer
                 }
                 else if (_ballModeTriggered && _inBallForm)
                 {
-                    _cinemachineTargetGroup.m_Targets[1].weight = 0;
-                    _cinemachineTargetGroup.m_Targets[0].weight = 1;
+                    _mainCamera.trackedObject = this.gameObject;
                     transform.position = _ballForm.transform.position;
                     _controller.enabled = true;
                     _characterModel.SetActive(true);
@@ -159,8 +159,8 @@ namespace Veganimus.Platformer
                     _rigidbody.velocity = Vector3.zero;
                 }
             }
-            DetectSurface();
-            DetectCollectible();
+            //DetectSurface();
+            //DetectCollectible();
             if (_horizontal != 0)
                 _animator.SetFloat(_horizontalAP, 1);
             else
@@ -295,14 +295,14 @@ namespace Veganimus.Platformer
         
         private void DetectCollectible()
         {
-            int maxColliders = 5;
+            byte maxColliders = 5;
             Collider[] results = new Collider[maxColliders];
-            int numberColliders = Physics.OverlapSphereNonAlloc(transform.position,
+            byte numberColliders = (byte)Physics.OverlapSphereNonAlloc(transform.position,
                                                                 _collectibleDetectionRadius,
                                                                 results,
                                                                 _collectibleLayerMask);
 
-            for (int i = 0; i < numberColliders; i++)
+            for (byte i = 0; i < numberColliders; i++)
             {
                 results[i].transform.position = Vector3.Lerp(results[i].transform.position, transform.position, 3f * Time.deltaTime);
 

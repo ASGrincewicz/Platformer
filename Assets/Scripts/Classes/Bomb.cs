@@ -5,12 +5,12 @@ namespace Veganimus.Platformer
 {
     public class Bomb : MonoBehaviour
     {
-        [SerializeField] private int _maxColliders = 50;
+        [SerializeField] private byte _maxColliders = 50;
         [SerializeField] private float _bombTimer;
         [SerializeField] private float _explosionForce;
         [SerializeField] private float _explosionRadius;
         [SerializeField] private float _upForce;
-        [SerializeField] private int _damageAmount = 2;
+        [SerializeField] private sbyte _damageAmount = 2;
         [SerializeField] private LayerMask _targetLayers;
         private WaitForSeconds _explosionDelay;
         private Collider[] _hitColliders;
@@ -28,8 +28,8 @@ namespace Veganimus.Platformer
         private void Detonate()
         {
             _hitColliders = new Collider[_maxColliders];
-            int numberColliders =  Physics.OverlapSphereNonAlloc(transform.position, _explosionRadius, _hitColliders,_targetLayers);
-            for(int i = 0; i< numberColliders; i++)
+            byte numberColliders =  (byte)Physics.OverlapSphereNonAlloc(transform.position, _explosionRadius, _hitColliders,_targetLayers);
+            for(byte i = 0; i< numberColliders; i++)
             {
                 Rigidbody rigidbody = _hitColliders[i].GetComponent<Rigidbody>();
                 var bombable = _hitColliders[i].GetComponentInParent<IBombable>();

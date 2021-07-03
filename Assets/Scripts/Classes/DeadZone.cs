@@ -10,7 +10,7 @@ namespace Veganimus.Platformer
             if(other.collider.tag == "Player")
             {
                 Debug.Log("Damaging Player...");
-                damageable.Damage(9999);
+                damageable.Damage(99);
             }
         }
     }

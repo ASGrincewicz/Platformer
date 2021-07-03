@@ -8,7 +8,7 @@ namespace Veganimus.Platformer
         [SerializeField] private GameObject _bombPrefab;
         [SerializeField] private float _dropRate = 0.5f;
         [SerializeField] private float _bombRechargeTime = 3.0f;
-        [SerializeField] private int _bombCount = 3;
+        [SerializeField] private sbyte _bombCount = 3;
         private float _canDropBomb = -1.0f;
        
         private void Update()

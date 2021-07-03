@@ -3,13 +3,13 @@
     [System.Serializable]
     public struct EnemyInfo
     {
-        public int hitPoints;
+        public sbyte hitPoints;
         public float speed;
         public float chaseSpeed;
         public float sightDistance;
         public float attackRange;
 
-        public EnemyInfo(int hp, float speed, float chaseSpeed, float sightDistance, float attackRange)
+        public EnemyInfo(sbyte hp, float speed, float chaseSpeed, float sightDistance, float attackRange)
         {
             hitPoints = hp;
             this.speed = speed;
