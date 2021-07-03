@@ -114,13 +114,15 @@ namespace Veganimus.Platformer
         //{
         //    AnimLerp();
         //}
+        private void FixedUpdate()
+        {
+            DetectSurface();
+            DetectCollectible();
+        }
         private void Update()
         {
             _ballModeTriggered = _inputManager.controls.Standard.BallMode.triggered;
             _jumpTriggered = _inputManager.controls.Standard.Jump.triggered;
-        }
-        private void FixedUpdate()
-        {
             if (!_inBallForm && !_isCrouching && _controller.enabled)
              Movement();
             
@@ -157,8 +159,8 @@ namespace Veganimus.Platformer
                     _rigidbody.velocity = Vector3.zero;
                 }
             }
-            DetectSurface();
-            DetectCollectible();
+            //DetectSurface();
+            //DetectCollectible();
             if (_horizontal != 0)
                 _animator.SetFloat(_horizontalAP, 1);
             else
