@@ -49,18 +49,11 @@ namespace Veganimus.Platformer
         }
         private void OnUpAimInput(float input)
         {
-            if (input > 0)
-                _targetPosition = _upAimTarget;
-            
-            else
-                _targetPosition = _centerAimTarget;
+           _targetPosition =  input > 0 ? _targetPosition = _upAimTarget : _targetPosition = _centerAimTarget;
         }
         private void OnDownAimInput(float input)
         {
-            if (input > 0)
-                _targetPosition = _downAimTarget;
-            else
-                _targetPosition = _centerAimTarget;
+            _targetPosition = input > 0 ? _targetPosition = _downAimTarget : _targetPosition = _centerAimTarget;
         }
         private void OnMoveInput(float h, float v) => _vertical = v;
     }

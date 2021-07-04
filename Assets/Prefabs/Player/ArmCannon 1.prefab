@@ -140,7 +140,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _fireOffset: {fileID: 775635301986035229}
-  _bulletPrefab: {fileID: 4874575737357313677, guid: 4899bddf3d63244e2bbd00a07832d5aa, type: 3}
+  _bulletPrefab: {fileID: 3710627864960694883, guid: 382a36414ce124970a43df9a06616a15, type: 3}
   _inputManager: {fileID: 0}
   _fireRate: 0.5
   _poolManager: {fileID: 0}
