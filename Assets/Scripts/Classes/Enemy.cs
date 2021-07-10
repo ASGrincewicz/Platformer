@@ -40,10 +40,10 @@ namespace Veganimus.Platformer
             if(_aiState == AIState.Attacking)
             {
                 if(_weapon != null)
-                    _weapon.isShooting = true;
+                    _weapon.IsShooting = true;
             }
             else
-                _weapon.isShooting = false;
+                _weapon.IsShooting = false;
         }
         private void ChangeAIState(AIState state)
         {

@@ -4,15 +4,16 @@ namespace Veganimus.Platformer
 {
     public class Bullet : MonoBehaviour, ICanOpenDoor
     {
+        [SerializeField] private float _lifeTime = 5.0f;
         [SerializeField] private float _speed = 10.0f;
         [SerializeField] private sbyte _damageAmount = 1;
         [SerializeField] private byte _maxDoorLevel = 0;
         public byte MaxDoorLevel { get { return _maxDoorLevel; } set { value = _maxDoorLevel; } }
 
-        private void Update()
+        private void FixedUpdate()
         {
             transform.Translate(Vector3.forward * _speed * Time.deltaTime);
-            Destroy(gameObject, 3.0f);
+            Destroy(gameObject, _lifeTime);
         }
         private void OnCollisionEnter(Collision collision)
         {
@@ -26,11 +27,12 @@ namespace Veganimus.Platformer
                     Destroy(gameObject);
                 }
                 else if (damage == null && door != null && door.DoorLevel > _maxDoorLevel)
-                    Destroy(gameObject, 2.0f);
+                    Destroy(gameObject);
                 else
                     Destroy(gameObject);
             }
-            //Destroy(gameObject);
+           
         }
+       
     }
 }

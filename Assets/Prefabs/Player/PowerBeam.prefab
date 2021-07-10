@@ -11,6 +11,14 @@ PrefabInstance:
       propertyPath: _maxDoorLevel
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 777590450313649920, guid: 4899bddf3d63244e2bbd00a07832d5aa, type: 3}
+      propertyPath: m_AngularDrag
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 777590450313649920, guid: 4899bddf3d63244e2bbd00a07832d5aa, type: 3}
+      propertyPath: m_Constraints
+      value: 120
+      objectReference: {fileID: 0}
     - target: {fileID: 2695550011087060804, guid: 4899bddf3d63244e2bbd00a07832d5aa, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -22,6 +30,18 @@ PrefabInstance:
     - target: {fileID: 6350498671542465438, guid: 4899bddf3d63244e2bbd00a07832d5aa, type: 3}
       propertyPath: m_RootOrder
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6350498671542465438, guid: 4899bddf3d63244e2bbd00a07832d5aa, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6350498671542465438, guid: 4899bddf3d63244e2bbd00a07832d5aa, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6350498671542465438, guid: 4899bddf3d63244e2bbd00a07832d5aa, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 6350498671542465438, guid: 4899bddf3d63244e2bbd00a07832d5aa, type: 3}
       propertyPath: m_LocalPosition.x

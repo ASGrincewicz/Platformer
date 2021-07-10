@@ -52,7 +52,6 @@ namespace Veganimus.Platformer
         [SerializeField] private LayerMask _collectibleLayerMask;
         [SerializeField] private InputManagerSO _inputManager;
         public InputManagerSO InputManager { get; set; }
-        //[SerializeField] private CinemachineTargetGroup _cinemachineTargetGroup;
         [SerializeField] private CameraController _mainCamera;
 
         public void GrabLedge(Transform anchorPos)

@@ -4,20 +4,16 @@ namespace Veganimus.Platformer
 {
     public class EnemyWeapon : Weapon
     {
-        public bool isShooting;
-
-        protected override void Update()
+       
+        public bool IsShooting { get; set; }
+       
+        protected override void Shoot()
         {
-            if (Time.time > _canFire)
-                EnemyShoot();
-        }
-
-        public void EnemyShoot()
-        {
-            if (isShooting)
+            if (IsShooting)
             {
                 _canFire = Time.time + _fireRate;
-                var enemyBullet = Instantiate(_bulletPrefab,_fireOffset.transform.position, _fireOffset.rotation, _poolManager.transform);
+                Instantiate(_bulletPrefab, _fireOffset.transform.position, _fireOffset.rotation, _poolManager.transform);
+                
                 StartCoroutine(ShootCoolDownRoutine());
             }
         }
