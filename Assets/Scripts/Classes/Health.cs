@@ -75,7 +75,7 @@ namespace Veganimus.Platformer
         public void Damage(sbyte hpDamage)
         {
             _hp -= hpDamage;
-            switch(_characterType)
+            switch (_characterType)
             {
                 case CharacterType.Player:
                     UIManagerUpdate();

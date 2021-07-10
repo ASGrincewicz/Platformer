@@ -3,8 +3,10 @@ using System.Collections;
 using UnityEngine;
 namespace Veganimus.Platformer
 {
-    public class Bomb : MonoBehaviour
+    public class Bomb : MonoBehaviour, ICanOpenDoor
     {
+        [SerializeField] private byte _maxDoorLevel = 1;
+        public byte MaxDoorLevel { get { return _maxDoorLevel; } set { value = _maxDoorLevel; } }
         [SerializeField] private byte _maxColliders = 50;
         [SerializeField] private float _bombTimer;
         [SerializeField] private float _explosionForce;
@@ -15,10 +17,8 @@ namespace Veganimus.Platformer
         private WaitForSeconds _explosionDelay;
         private Collider[] _hitColliders;
 
-        private void OnDrawGizmosSelected()
-        {
-            Gizmos.DrawWireSphere(transform.position, _explosionRadius)
-;        }
+        private void OnDrawGizmosSelected() => Gizmos.DrawWireSphere(transform.position, _explosionRadius)
+;
 
         private void Start()
         {

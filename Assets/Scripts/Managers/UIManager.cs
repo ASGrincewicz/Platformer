@@ -41,10 +41,8 @@ namespace Veganimus.Platformer
             HealthTextUpdate(_currentHealth);
             LivesUpdate(_currentLives);
         }
-        public void ActivatePauseMenu(bool isActive)
-        {
-            _pauseMenu.SetActive(isActive);
-        }
+        public void ActivatePauseMenu(bool isActive) => _pauseMenu.SetActive(isActive);
+
         public void HealthTextUpdate(sbyte amount)
         {
             _currentHealth = amount;

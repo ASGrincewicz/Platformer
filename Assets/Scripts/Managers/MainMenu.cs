@@ -6,9 +6,6 @@ namespace Veganimus.Platformer
         [SerializeField] private SceneLoader _sceneLoader;
         [SerializeField] private ExitButton exitButton;
 
-        public void LoadScene(byte sceneIndex)
-        {
-            _sceneLoader.LoadGame(sceneIndex);
-        }
+        public void LoadScene(byte sceneIndex) => _sceneLoader.LoadGame(sceneIndex);
     }
 }

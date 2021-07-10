@@ -7,12 +7,10 @@ namespace Veganimus.Platformer
 	{
 		[Header("Setup")]
 		public GameObject trackedObject;
-		[Tooltip("Should be at least 1.1, for this to work, the camera has to move faster than the player. Otherwise, it behaves as if the camera is locked to the player.")]
 		[Range(1.1f, 10f)]
 		[SerializeField] private float _scrollMultiplier = 1.8f;
 		[SerializeField] private Vector2 _movementWindowSize = new Vector2(8, 6);
 		[SerializeField] private Vector2 _windowOffset;
-		// Activate your position limitations for the Y axis by turning this on.
 		[Header("Camera Boundaries")]
 		[SerializeField] private byte _areaID;
 		public byte AreaID { get { return _areaID; } }
@@ -191,6 +189,7 @@ namespace Veganimus.Platformer
 
 			// And now we display the camera limits. If the camera is inactive, they will show in red.
 			// There is an x in the middle of the screen to show what hits against the limit.
+			
 			if (_isCamMovementLimited)
 			{
 				Color limitColor;

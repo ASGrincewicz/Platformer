@@ -11,13 +11,14 @@ GameObject:
   - component: {fileID: 8645046196600287962}
   - component: {fileID: 821272029679478875}
   - component: {fileID: 2584490211564519607}
+  - component: {fileID: 389714910}
   m_Layer: 9
   m_Name: Player_parent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8645046196600287962
 Transform:
   m_ObjectHideFlags: 0
@@ -86,6 +87,18 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1.1639643, z: 1}
   m_Center: {x: 0, y: 0.081982136, z: 0}
+--- !u!114 &389714910
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2677172691588365902}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4bf03fe32490348a38f5e1b3ea5f46d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7072375932701654694
 GameObject:
   m_ObjectHideFlags: 0
@@ -148,7 +161,9 @@ GameObject:
   - component: {fileID: 7072375933724647866}
   - component: {fileID: 7072375933724647867}
   - component: {fileID: 7072375933724647844}
+  - component: {fileID: 8910351389036643673}
   - component: {fileID: 7072375933724647846}
+  - component: {fileID: 26174671669854012}
   m_Layer: 9
   m_Name: Moving_platform_5x0.5
   m_TagString: Untagged
@@ -231,8 +246,21 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1.0931664, z: 1}
-  m_Center: {x: 0, y: 0.046583176, z: 0}
+  m_Size: {x: 1, y: 1.1066542, z: 1}
+  m_Center: {x: 0, y: 0.053327084, z: 0}
+--- !u!65 &8910351389036643673
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7072375933724647847}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 3.22, z: 1}
+  m_Center: {x: 0, y: 2.16, z: 0}
 --- !u!114 &7072375933724647846
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -250,6 +278,18 @@ MonoBehaviour:
   - {fileID: 7072375934386224304}
   _speed: 1
   _playerParent: {fileID: 8645046196600287962}
+--- !u!114 &26174671669854012
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7072375933724647847}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4bf03fe32490348a38f5e1b3ea5f46d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7072375934386224305
 GameObject:
   m_ObjectHideFlags: 0

@@ -22,6 +22,7 @@ namespace Veganimus.Platformer
         private bool _ballModeTriggered;
         private bool _isWallJumping;
         private bool _inBallForm;
+        public bool InBallForm { get { return _inBallForm; } }
         private bool _isCrouching;
         private bool _hanging;
         private bool _grabbingLedge;
@@ -51,7 +52,6 @@ namespace Veganimus.Platformer
         [SerializeField] private LayerMask _collectibleLayerMask;
         [SerializeField] private InputManagerSO _inputManager;
         public InputManagerSO InputManager { get; set; }
-        //[SerializeField] private CinemachineTargetGroup _cinemachineTargetGroup;
         [SerializeField] private CameraController _mainCamera;
 
         public void GrabLedge(Transform anchorPos)
@@ -159,13 +159,7 @@ namespace Veganimus.Platformer
                     _rigidbody.velocity = Vector3.zero;
                 }
             }
-            //DetectSurface();
-            //DetectCollectible();
-            if (_horizontal != 0)
-                _animator.SetFloat(_horizontalAP, 1);
-            else
-                _animator.SetFloat(_horizontalAP, 0);
-          
+             _animator.SetFloat(_horizontalAP, _horizontal != 0 ? 1 : 0);
         }
         private void Movement()
         {
