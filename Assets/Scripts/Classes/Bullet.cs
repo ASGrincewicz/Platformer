@@ -9,10 +9,15 @@ namespace Veganimus.Platformer
         [SerializeField] private sbyte _damageAmount = 1;
         [SerializeField] private byte _maxDoorLevel = 0;
         public byte MaxDoorLevel { get { return _maxDoorLevel; } set { value = _maxDoorLevel; } }
+        private Transform _transform;
+        private float _globalDeltaTime;
+
+        private void Start() => _transform = transform;
 
         private void FixedUpdate()
         {
-            transform.Translate(Vector3.forward * _speed * Time.deltaTime);
+            _globalDeltaTime = Time.deltaTime;
+            _transform.Translate(Vector3.forward * _speed * _globalDeltaTime);
             Destroy(gameObject, _lifeTime);
         }
         private void OnCollisionEnter(Collision collision)
@@ -31,8 +36,6 @@ namespace Veganimus.Platformer
                 else
                     Destroy(gameObject);
             }
-           
         }
-       
     }
 }

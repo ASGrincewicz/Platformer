@@ -14,6 +14,7 @@ namespace Veganimus.Platformer
         [SerializeField] private LayerMask _collectorLayerMask;
         [SerializeField] private bool _canAbosrb = false;
         public bool CanAbsorb { get { return _canAbosrb; } }
+        private float _deltaTime;
 
         private void Start()
         {
@@ -23,9 +24,10 @@ namespace Veganimus.Platformer
 
         private void Update()
         {
+            _deltaTime = Time.deltaTime;
             if (Time.timeScale > 0)
             {
-                _time += Time.deltaTime;
+                _time += _deltaTime;
                 float x = _xRadius * Mathf.Cos(_time * _speed);
                 float y = _yRadius * Mathf.Sin(_time * _speed);
                 transform.position += new Vector3(x, y, 0);

@@ -17,9 +17,11 @@ namespace Veganimus.Platformer
         private Vector3 _chaseDestination;
         public Color currentColor;
         private WaitForSeconds _chaseCoolDown;
+        private Transform _agentTransform;
 
         private void Start()
         {
+            
             _health = GetComponent<Health>();
             _health.HP = _enemyInfo.hitPoints;
             _agent = GetComponentInChildren<NavMeshAgent>();
@@ -27,6 +29,7 @@ namespace Veganimus.Platformer
             _weapon = GetComponent<EnemyWeapon>();
             _chaseCoolDown = new WaitForSeconds(3f);
             _agent.speed = _enemyInfo.speed;
+            _agentTransform = _agent.transform;
             ChangeAIState(AIState.Patrolling);
         }
         private void FixedUpdate()
@@ -96,7 +99,7 @@ namespace Veganimus.Platformer
         }
         private void Detect()
         {
-            Ray ray = new Ray(_agent.transform.position, _agent.transform.forward);
+            Ray ray = new Ray(_agentTransform.position, _agentTransform.forward);
             RaycastHit hitInfo;
 
             if (Physics.Raycast(ray, out hitInfo, _enemyInfo.sightDistance, _targetLayer))
@@ -107,7 +110,7 @@ namespace Veganimus.Platformer
                     _chaseDestination = hitInfo.transform.position;
                     if (_aiState == AIState.Chasing)
                     {
-                        if (Vector3.Distance(_agent.transform.position, _agent.destination) <= _enemyInfo.attackRange)
+                        if (Vector3.Distance(_agentTransform.position, _agent.destination) <= _enemyInfo.attackRange)
                             ChangeAIState(AIState.Attacking);
                     }
                 }

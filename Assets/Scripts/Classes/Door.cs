@@ -25,7 +25,7 @@ namespace Veganimus.Platformer
                 var iCanOpenDoor = other.collider.GetComponent<ICanOpenDoor>();
                 if(iCanOpenDoor != null)
                 {
-                    Debug.Log("Who disturbs my slumber!");
+                   // Debug.Log("Who disturbs my slumber!");
                     if (iCanOpenDoor.MaxDoorLevel >= _doorLevel)
                     {
                         _animator.SetFloat(_doorOpenSpeedAP, 1.0f);

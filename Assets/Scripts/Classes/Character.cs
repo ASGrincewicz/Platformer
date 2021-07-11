@@ -8,7 +8,11 @@ namespace Veganimus.Platformer
         private Rigidbody _rigidbody;
         private Animator _animator;
         private Transform _animatorRoot;
+        private Transform _transform;
+        private Transform _characterModelTransform;
+        private Transform _ballFormTransform;
         private PlayerAim _playerAim;
+        private float _deltaTime;
         private float _horizontal;
         private float _vertical;
         //private float _runSpeed = 10.0f;
@@ -53,6 +57,7 @@ namespace Veganimus.Platformer
         [SerializeField] private InputManagerSO _inputManager;
         public InputManagerSO InputManager { get; set; }
         [SerializeField] private CameraController _mainCamera;
+        private Transform _aimTransform;
 
         public void GrabLedge(Transform anchorPos)
         {
@@ -88,7 +93,7 @@ namespace Veganimus.Platformer
                 _animator.SetFloat(_crouchAP, c);
                 _animator.SetFloat(_horizontalAP, 0);
                 _isCrouching = true;
-                _aimTarget.transform.localPosition = new Vector3(_aimTarget.transform.localPosition.x, _aimTargetCrouchingPos, _aimTarget.transform.localPosition.z);
+                _aimTransform.localPosition = new Vector3(_aimTransform.localPosition.x, _aimTargetCrouchingPos, _aimTransform.localPosition.z);
             }
             else if(c == 1 && !_controller.isGrounded)
              return;
@@ -97,12 +102,16 @@ namespace Veganimus.Platformer
             {
                 _animator.SetFloat(_crouchAP, c);
                 _isCrouching = false;
-               _aimTarget.transform.localPosition = new Vector3(_aimTarget.transform.localPosition.x, _aimTargetStandingPos, _aimTarget.transform.localPosition.z);
+               _aimTransform.localPosition = new Vector3(_aimTransform.localPosition.x, _aimTargetStandingPos, _aimTransform.localPosition.z);
             }
         }
 
         private void Start()
         {
+            _transform = transform;
+            _characterModelTransform = _characterModel.transform;
+            _ballFormTransform = _ballForm.transform;
+            _aimTransform = _aimTarget.transform;
             _mainCamera = Camera.main.GetComponent<CameraController>();
             _controller = GetComponentInChildren<CharacterController>();
             _rigidbody = GetComponentInChildren<Rigidbody>();
@@ -121,6 +130,7 @@ namespace Veganimus.Platformer
         }
         private void Update()
         {
+            _deltaTime = Time.deltaTime;
             _ballModeTriggered = _inputManager.controls.Standard.BallMode.triggered;
             _jumpTriggered = _inputManager.controls.Standard.Jump.triggered;
             if (!_inBallForm && !_isCrouching && _controller.enabled)
@@ -140,7 +150,7 @@ namespace Veganimus.Platformer
                 if (_ballModeTriggered && !_inBallForm && _controller.isGrounded)
                 {
                     _mainCamera.trackedObject = _ballForm;
-                    _ballForm.transform.position = transform.position;
+                   _ballFormTransform.position = _transform.position;
                     _characterModel.SetActive(false);
                     _ballForm.SetActive(true);
                     _inBallForm = true;
@@ -150,12 +160,12 @@ namespace Veganimus.Platformer
                 else if (_ballModeTriggered && _inBallForm)
                 {
                     _mainCamera.trackedObject = this.gameObject;
-                    transform.position = _ballForm.transform.position;
+                    _transform.position = _ballFormTransform.position;
                     _controller.enabled = true;
                     _characterModel.SetActive(true);
                     _ballForm.SetActive(false);
                     _inBallForm = false;
-                    _ballForm.transform.position = transform.position;
+                    _ballFormTransform.position = _transform.position;
                     _rigidbody.velocity = Vector3.zero;
                 }
             }
@@ -218,7 +228,7 @@ namespace Veganimus.Platformer
                 _yVelocity -= _gravity;
             }
             _velocity.y = _yVelocity;
-            _controller.Move(_velocity * Time.deltaTime);
+            _controller.Move(_velocity * _deltaTime);
         }
         private void LedgeMovement()
         {
@@ -227,7 +237,7 @@ namespace Veganimus.Platformer
                 _animator.SetFloat(_grabLedgeAP, 0f);
                 _grabbingLedge = false;
                 _animatorRoot = null;
-                _characterModel.transform.localPosition = _modelPosition;
+               _characterModelTransform.localPosition = _modelPosition;
                 _controller.enabled = true;
                 _yVelocity -= _gravity;
             }
@@ -241,10 +251,10 @@ namespace Veganimus.Platformer
         private void FaceDirection()
         {
             if (_horizontal < 0)
-                _characterModel.transform.localRotation = Quaternion.Euler(0, -90, 0);
+                _characterModelTransform.localRotation = Quaternion.Euler(0, -90, 0);
 
             else if (_horizontal > 0)
-                _characterModel.transform.localRotation = Quaternion.Euler(0, 90, 0);
+                _characterModelTransform.localRotation = Quaternion.Euler(0, 90, 0);
         }
 
         private void OnControllerColliderHit(ControllerColliderHit hit)
@@ -272,7 +282,7 @@ namespace Veganimus.Platformer
         private void DetectSurface()
         {
             RaycastHit hitInfo;
-            if (Physics.Raycast(transform.position, Vector3.up, out hitInfo, 2.0f, _detectSurfaceLayers))
+            if (Physics.Raycast(_transform.localPosition, Vector3.up, out hitInfo, 2.0f, _detectSurfaceLayers))
             {
                 var hangable = hitInfo.collider.GetComponent<IHang>();
                 if (hangable != null && _vertical > 0)
@@ -291,14 +301,14 @@ namespace Veganimus.Platformer
         {
             byte maxColliders = 5;
             Collider[] results = new Collider[maxColliders];
-            byte numberColliders = (byte)Physics.OverlapSphereNonAlloc(transform.position,
+            byte numberColliders = (byte)Physics.OverlapSphereNonAlloc(_transform.localPosition,
                                                                 _collectibleDetectionRadius,
                                                                 results,
                                                                 _collectibleLayerMask);
 
             for (byte i = 0; i < numberColliders; i++)
             {
-                results[i].transform.position = Vector3.Lerp(results[i].transform.position, transform.position, 3f * Time.deltaTime);
+                results[i].transform.localPosition = Vector3.MoveTowards(results[i].transform.localPosition, _transform.localPosition, 3f * _deltaTime);
 
             }
         }
@@ -306,20 +316,20 @@ namespace Veganimus.Platformer
         {
             if (!_animatorRoot) return;
 
-            if (Vector3.Distance(this.transform.position, _animatorRoot.position) > 0.1f)
+            if (Vector3.Distance(_transform.position, _animatorRoot.position) > 0.1f)
             {
                 float lerpSpeed = 60.0f;
-                _characterModel.transform.rotation = Quaternion.Lerp(_characterModel.transform.rotation,
+                _characterModelTransform.rotation = Quaternion.Lerp(_characterModelTransform.rotation,
                                                      _animatorRoot.rotation,
-                                                     Time.deltaTime * lerpSpeed);
-                _characterModel.transform.position = Vector3.Lerp(_characterModel.transform.position,
+                                                     _deltaTime * lerpSpeed);
+                _characterModelTransform.position = Vector3.Lerp(_characterModelTransform.position,
                                                   _animatorRoot.position,
-                                                  Time.deltaTime * lerpSpeed);
+                                                  _deltaTime * lerpSpeed);
             }
             else
             {
-                _characterModel.transform.position = _animatorRoot.position;
-                _characterModel.transform.rotation = _animatorRoot.rotation;
+                _characterModelTransform.position = _animatorRoot.position;
+                _characterModelTransform.rotation = _animatorRoot.rotation;
             }
         }
     }

@@ -14,7 +14,9 @@ namespace Veganimus.Platformer
         protected bool _secondaryFireTriggered;
         [SerializeField] protected byte _secondaryAmmo = 0;
         protected float _canFire = -1.0f;
+        
         protected PoolManager _poolManager;
+        protected Transform _pmTransform;
         protected WaitForSeconds _shootCoolDown;
         protected WaitForSeconds _secondaryCoolDown;
 
@@ -23,6 +25,7 @@ namespace Veganimus.Platformer
             _shootCoolDown = new WaitForSeconds(_fireRate);
             _secondaryCoolDown = new WaitForSeconds(_secondaryFireRate);
             _poolManager = PoolManager.Instance;
+            _pmTransform = _poolManager.transform;
         }
 
         protected virtual void Update()
@@ -52,7 +55,7 @@ namespace Veganimus.Platformer
             if (shootTriggered)
             {
                 _canFire = Time.time + _fireRate;
-                Instantiate(_bulletPrefab, _fireOffset.transform.position, _fireOffset.rotation, _poolManager.transform);
+                Instantiate(_bulletPrefab, _fireOffset.position, _fireOffset.rotation, _pmTransform);
             }
             StartCoroutine(ShootCoolDownRoutine());
         }
@@ -63,7 +66,7 @@ namespace Veganimus.Platformer
             {
                 _canFire = Time.time + _secondaryFireRate;
                 _secondaryAmmo--;
-                Instantiate(_missilePrefab, _fireOffset.transform.position, _fireOffset.rotation, _poolManager.transform);
+                Instantiate(_missilePrefab, _fireOffset.position, _fireOffset.rotation, _pmTransform);
             }
             StartCoroutine(ShootCoolDownRoutine());
         }

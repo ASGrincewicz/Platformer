@@ -26,15 +26,20 @@ namespace Veganimus.Platformer
 		private Vector3 _playerPosition;
 		private Vector3 _previousPlayerPosition;
 		private Rect _windowRect;
+		private Transform _transform;
+		private float _globalDeltaTime;
 
 		private void Start()
 		{
-			_cameraPosition = transform.position;
+			_transform = transform;
+			_cameraPosition = _transform.position;
 
 			if (trackedObject == null)
 				Debug.LogError("Nothing to track!");
 
-			_previousPlayerPosition = trackedObject.transform.position;
+			_previousPlayerPosition.x = trackedObject.transform.position.x;
+			_previousPlayerPosition.y = trackedObject.transform.position.y;
+			_previousPlayerPosition.z = trackedObject.transform.position.z;
 
 			ValidateLeftAndRightLimits();
 			ValidateTopAndBottomLimits();
@@ -49,6 +54,7 @@ namespace Veganimus.Platformer
 		}
 		private void LateUpdate()
 		{
+			_globalDeltaTime = Time.deltaTime;
 			CameraUpdate();
 			if (_showDebug)
 				DrawDebugBox();
@@ -59,7 +65,7 @@ namespace Veganimus.Platformer
 			_playerPosition = trackedObject.transform.position;
 			if (_activeTracking && _playerPosition != _previousPlayerPosition)
 			{
-				_cameraPosition = transform.position;
+				_cameraPosition = _transform.position;
 				//Get the distance of the player from the camera.
 
 				Vector3 playerPositionDifference = _playerPosition - _previousPlayerPosition;
@@ -93,7 +99,7 @@ namespace Veganimus.Platformer
 					_cameraPosition.x = Mathf.Clamp(_cameraPosition.x, _leftLimit, _rightLimit);
 				}
 				// and now we're updating the camera position using what came of all the calculations above.
-				transform.position = _cameraPosition;
+				_transform.position = _cameraPosition;
 			}
 			_previousPlayerPosition = _playerPosition;
 		}
@@ -146,7 +152,7 @@ namespace Veganimus.Platformer
 
 		private void DrawDebugBox()
 		{
-			Vector3 cameraPos = transform.position;
+			Vector3 cameraPos = _transform.position;
 
 			//This will draw the boundaries you are tracking in green, and boundaries you are ignoring in red.
 			_windowRect.x = cameraPos.x - _movementWindowSize.x / 2 + _windowOffset.x;
@@ -242,11 +248,11 @@ namespace Veganimus.Platformer
 		{
 			_activeTracking = false;
 
-			targetPosition.z = transform.position.z;
+			targetPosition.z = _transform.position.z;
 
-			while (transform.position != targetPosition)
+			while (_transform.position != targetPosition)
 			{
-				transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
+				_transform.position = Vector3.MoveTowards(_transform.position, targetPosition, moveSpeed * _globalDeltaTime);
 				yield return 0;
 			}
 

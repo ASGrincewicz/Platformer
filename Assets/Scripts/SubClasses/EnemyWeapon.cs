@@ -18,7 +18,7 @@ namespace Veganimus.Platformer
             if (IsShooting)
             {
                 _canFire = Time.time + _fireRate;
-                Instantiate(_bulletPrefab, _fireOffset.transform.position, _fireOffset.rotation, _poolManager.transform);
+                Instantiate(_bulletPrefab, _fireOffset.position, _fireOffset.rotation, _pmTransform);
                 
                 StartCoroutine(ShootCoolDownRoutine());
             }
