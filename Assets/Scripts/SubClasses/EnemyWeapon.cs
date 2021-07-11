@@ -6,7 +6,13 @@ namespace Veganimus.Platformer
     {
        
         public bool IsShooting { get; set; }
-       
+
+        protected override void Update()
+        {
+            if (Time.time > _canFire)
+                Shoot();
+        }
+
         protected override void Shoot()
         {
             if (IsShooting)

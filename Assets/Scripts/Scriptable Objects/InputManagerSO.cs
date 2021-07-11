@@ -13,6 +13,7 @@ namespace Veganimus.Platformer
         public UnityAction<float> downAimAction;
         public UnityAction<bool> pauseAction;
         public UnityAction shootAction;
+        public UnityAction secondaryFireAction;
         public UnityAction ballModeAction;
         public UnityAction jumpAction;
 
