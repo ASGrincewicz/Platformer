@@ -110,7 +110,7 @@ namespace Veganimus.Platformer
                     _chaseDestination = hitInfo.transform.position;
                     if (_aiState == AIState.Chasing)
                     {
-                        if (Vector3.Distance(_agentTransform.position, _agent.destination) <= _enemyInfo.attackRange)
+                        if (Vector3.Distance(_agent.transform.position, _agent.destination) <= _enemyInfo.attackRange)
                             ChangeAIState(AIState.Attacking);
                     }
                 }
@@ -124,6 +124,7 @@ namespace Veganimus.Platformer
         {
             yield return _chaseCoolDown;
             ChangeAIState(AIState.Patrolling);
+            GoToNextPoint();
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿// Aaron Grincewicz Veganimus@icloud.com 6/5/2021
+using System.Collections;
 using UnityEngine;
 namespace Veganimus.Platformer
 {
@@ -6,6 +7,14 @@ namespace Veganimus.Platformer
     {
        
         public bool IsShooting { get; set; }
+        protected override IEnumerator Start()
+        {
+            yield return new WaitForSeconds(1.0f);
+            _shootCoolDown = new WaitForSeconds(_fireRate);
+            _secondaryCoolDown = new WaitForSeconds(_secondaryFireRate);
+            _poolManager = PoolManager.Instance;
+            _pmTransform = _poolManager.transform;
+        }
 
         protected override void Update()
         {
@@ -23,5 +32,6 @@ namespace Veganimus.Platformer
                 StartCoroutine(ShootCoolDownRoutine());
             }
         }
+        protected override void SecondaryShoot(){}
     }
 }

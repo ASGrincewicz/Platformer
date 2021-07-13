@@ -21,6 +21,7 @@ namespace Veganimus.Platformer
         [SerializeField] private TMP_Text _healthText;
         [SerializeField] private TMP_Text _missilesText;
         [SerializeField] private TMP_Text _collectibleText;
+        [SerializeField] private Image _missileActiveBox;
         [SerializeField] private List<Image> _livesImages = new List<Image>();
         [SerializeField] private List<Image> _bombImages = new List<Image>();
         [SerializeField] private GameObject _pauseMenu;
@@ -28,8 +29,8 @@ namespace Veganimus.Platformer
         private byte _maxHealth;
         private sbyte _currentLives;
         private byte _maxLives;
-        private sbyte _missileCount;
-        private byte _maxMissileCount;
+        private int _missileCount;
+        private int _maxMissileCount;
         private sbyte _currentBombs;
         private byte _maxBombs;
         private byte _collectiblesCollected;
@@ -40,6 +41,8 @@ namespace Veganimus.Platformer
         {
             HealthTextUpdate(_currentHealth);
             LivesUpdate(_currentLives);
+            SecondaryFireActive(false);
+
         }
         public void ActivatePauseMenu(bool isActive) => _pauseMenu.SetActive(isActive);
 
@@ -54,8 +57,15 @@ namespace Veganimus.Platformer
             ClearAmount(_livesImages);
             ShowAmount((byte)0,_currentLives);
         }
+        public void SecondaryFireActive(bool isActive)
+        {
+            if (!isActive)
+                _missileActiveBox.canvasRenderer.SetAlpha(0);
+            else
+                _missileActiveBox.canvasRenderer.SetAlpha(0.75f);
+        }
        
-        public void MissilesTextUpdate(sbyte amount)
+        public void MissilesTextUpdate(int amount)
         {
             _missileCount = amount;
             _missilesText.text = $"Missiles: {_missileCount}";

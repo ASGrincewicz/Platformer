@@ -13,7 +13,7 @@ namespace Veganimus.Platformer
         [SerializeField] private float _explosionRadius;
         [SerializeField] private float _upForce;
         [SerializeField] private sbyte _damageAmount = 2;
-        [SerializeField] private LayerMask _targetLayers;
+        [SerializeField] private LayerMask _targetLayers = 0;
         private WaitForSeconds _explosionDelay;
         private Collider[] _hitColliders;
 
