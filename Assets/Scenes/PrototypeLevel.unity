@@ -1272,11 +1272,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _areaID: 0
-  _cameraStartPos: {fileID: 306423055}
+  _bottonBounds: 0
   _leftBounds: -25
   _rightBounds: 25
   _topBounds: 15
-  _bottonBounds: 0
+  _cameraStartPos: {fileID: 306423055}
 --- !u!65 &252146479
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1463,6 +1463,24 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 3648882456030760715, guid: 32551223a82b24c66bd644e821a4159d, type: 3}
   m_PrefabInstance: {fileID: 3648882455754945280}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &280230924
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 280230923}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6495ce91673fa43b7bc44f744178ea0f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _isPlayer: 1
+  _hp: 5
+  _lives: 2
+  _maxLives: 2
+  _gameStateChannel: {fileID: 11400000, guid: 5bf970827b15a4540b4b577cc056ee92, type: 2}
+  _respawnPlayerChannel: {fileID: 11400000, guid: 0f68ca6cc2ae24693b41f1665e567c41, type: 2}
 --- !u!1 &288423456
 GameObject:
   m_ObjectHideFlags: 0
@@ -4753,11 +4771,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _areaID: 1
-  _cameraStartPos: {fileID: 39085870}
+  _bottonBounds: 0
   _leftBounds: 30
   _rightBounds: 30
   _topBounds: 18
-  _bottonBounds: 0
+  _cameraStartPos: {fileID: 39085870}
 --- !u!65 &816871080
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5451,11 +5469,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _areaID: 0
-  _cameraStartPos: {fileID: 1075205513}
+  _bottonBounds: 0
   _leftBounds: -25
   _rightBounds: 25
   _topBounds: 15
-  _bottonBounds: 0
+  _cameraStartPos: {fileID: 1075205513}
 --- !u!65 &889048091
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -11508,11 +11526,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _areaID: 1
-  _cameraStartPos: {fileID: 1036920498}
+  _bottonBounds: 0
   _leftBounds: 30
   _rightBounds: 30
   _topBounds: 18
-  _bottonBounds: 0
+  _cameraStartPos: {fileID: 1036920498}
 --- !u!65 &1405423815
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -31176,7 +31194,8 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 6
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3648882456030760718, guid: 32551223a82b24c66bd644e821a4159d, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 32551223a82b24c66bd644e821a4159d, type: 3}
 --- !u!23 &3881818260274590021
 MeshRenderer:
@@ -31465,11 +31484,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _areaID: 1
-  _cameraStartPos: {fileID: 8735920707742117961}
+  _bottonBounds: 0
   _leftBounds: 30
   _rightBounds: 30
   _topBounds: 18
-  _bottonBounds: 0
+  _cameraStartPos: {fileID: 8735920707742117961}
 --- !u!1001 &4838152058306080262
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -31867,11 +31886,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _areaID: 0
-  _cameraStartPos: {fileID: 2192806248088834504}
+  _bottonBounds: 0
   _leftBounds: -25
   _rightBounds: 25
   _topBounds: 15
-  _bottonBounds: 0
+  _cameraStartPos: {fileID: 2192806248088834504}
 --- !u!1 &7056886251118537022
 GameObject:
   m_ObjectHideFlags: 0

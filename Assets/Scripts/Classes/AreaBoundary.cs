@@ -3,15 +3,14 @@ namespace Veganimus.Platformer
 {
     public class AreaBoundary : MonoBehaviour
     {
-        private CameraController _mainCamera;
-
         //Camera Boundaries
         [SerializeField] private byte _areaID;
-        [SerializeField] private Transform _cameraStartPos;
+        [SerializeField] private float _bottonBounds;
         [SerializeField] private float _leftBounds;
         [SerializeField] private float _rightBounds;
         [SerializeField] private float _topBounds;
-        [SerializeField] private float _bottonBounds;
+        [SerializeField] private Transform _cameraStartPos;
+        private CameraController _mainCamera;
 
         private void Start() => _mainCamera = Camera.main.GetComponent<CameraController>();
 

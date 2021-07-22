@@ -44,10 +44,10 @@ namespace Veganimus.Platformer
                     switch(_collectibleType)
                     {
                         case CollectibleType.Health:
-                            other.GetComponent<Health>().Heal((sbyte)(_powerUpAmount / 2));
+                            other.GetComponent<PlayerHealth>().Heal((sbyte)(_powerUpAmount / 2));
                             break;
                         case CollectibleType.Life:
-                            other.GetComponent<Health>().IncreaseMaxLives();
+                            other.GetComponent<PlayerHealth>().IncreaseMaxLives();
                             break;
                         case CollectibleType.Missile:
                             //Increase Missile Capacity.
