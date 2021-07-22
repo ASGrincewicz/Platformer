@@ -5,7 +5,6 @@ namespace Veganimus.Platformer
 {
     public class EnemyWeapon : Weapon
     {
-       
         public bool IsShooting { get; set; }
         protected override IEnumerator Start()
         {

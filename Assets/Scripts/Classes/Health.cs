@@ -5,17 +5,17 @@ namespace Veganimus.Platformer
 {
     public class Health : MonoBehaviour, IDamageable, IBombable
     {
-        private bool _gameStart = true;
+        [SerializeField] private bool _isPlayer;
+        [SerializeField] private sbyte _hp;
+        [SerializeField] private sbyte _lives;
         [SerializeField] private byte _maxLives;
         [SerializeField] private CharacterType _characterType;
-        [SerializeField] private bool _isPlayer;
-        public bool IsPlayer { get { return _isPlayer; } }
-        [SerializeField] private sbyte _lives;
-        public sbyte Lives { get { return _lives; }private set { _lives = value; } }
-        [SerializeField] private sbyte _hp;
-        public sbyte HP { get { return _hp; }set { _hp = value; } }
-        [SerializeField] private RespawnPlayerChannel _respawnPlayerChannel;
         [SerializeField] private GameStateChannel _gameStateChannel;
+        [SerializeField] private RespawnPlayerChannel _respawnPlayerChannel;
+        private bool _gameStart = true;
+        public bool IsPlayer { get { return _isPlayer; } }
+        public sbyte Lives { get { return _lives; }private set { _lives = value; } }
+        public sbyte HP { get { return _hp; }set { _hp = value; } }
 
         private IEnumerator Start()
         {
@@ -56,6 +56,23 @@ namespace Veganimus.Platformer
             UIManager.Instance.HealthTextUpdate(_hp);
             UIManager.Instance.LivesUpdate(_lives);
         }
+
+        public void Damage(sbyte hpDamage)
+        {
+            _hp -= hpDamage;
+            switch (_characterType)
+            {
+                case CharacterType.Player:
+                    UIManagerUpdate();
+                    break;
+                case CharacterType.Enemy:
+                    break;
+                default:
+                    break;
+            }
+            if (_hp <= 0 && _characterType != CharacterType.Player)
+                Destroy(gameObject);
+        }
         public void Heal(sbyte amount)
         {
             _hp += amount;
@@ -71,23 +88,6 @@ namespace Veganimus.Platformer
             _lives = (sbyte)_maxLives;
             _hp = 99;
             UIManagerUpdate();
-        }
-        public void Damage(sbyte hpDamage)
-        {
-            _hp -= hpDamage;
-            switch (_characterType)
-            {
-                case CharacterType.Player:
-                    UIManagerUpdate();
-                    break;
-                case CharacterType.Enemy:
-                    break;
-                default:
-                    break;
-            }
-            if (_hp <= 0 && _characterType != CharacterType.Player)
-              Destroy(gameObject);
-               
         }
     }
 }

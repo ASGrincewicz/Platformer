@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 namespace Veganimus.Platformer
 {
-    public class PoolManager: MonoBehaviour
+    public class PoolManager : MonoBehaviour
     {
         public static PoolManager Instance
         {
@@ -14,7 +14,7 @@ namespace Veganimus.Platformer
             }
         }
         private static PoolManager _instance;
-       
+
         private void Awake()
         {
             _instance = this;
@@ -22,7 +22,7 @@ namespace Veganimus.Platformer
 
         private void Start()
         {
-           
+
         }
 
     }

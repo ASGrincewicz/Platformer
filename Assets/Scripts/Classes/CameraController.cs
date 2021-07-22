@@ -6,28 +6,29 @@ namespace Veganimus.Platformer
 	public class CameraController : MonoBehaviour
 	{
 		[Header("Setup")]
-		public GameObject trackedObject;
 		[Range(1.1f, 10f)]
 		[SerializeField] private float _scrollMultiplier = 1.8f;
 		[SerializeField] private Vector2 _movementWindowSize = new Vector2(8, 6);
 		[SerializeField] private Vector2 _windowOffset;
 		[Header("Camera Boundaries")]
-		[SerializeField] private byte _areaID;
-		public byte AreaID { get { return _areaID; } }
 		[SerializeField] private bool _isCamMovementLimited = false;
+		[SerializeField] private byte _areaID;
+		[SerializeField] private float _bottomLimit;
 		[SerializeField] private float _leftLimit;
 		[SerializeField] private float _rightLimit;
-		[SerializeField] private float _bottomLimit;
 		[SerializeField] private float _topLimit;
 		[Header("Debug Visuals")]
 		[SerializeField] private bool _showDebug = false;
 		private bool _activeTracking = true;
+		private float _globalDeltaTime;
+		private Rect _windowRect;
 		private Vector3 _cameraPosition;
 		private Vector3 _playerPosition;
 		private Vector3 _previousPlayerPosition;
-		private Rect _windowRect;
 		private Transform _transform;
-		private float _globalDeltaTime;
+		public byte AreaID { get { return _areaID; } }
+		public GameObject trackedObject;
+
 
 		private void Start()
 		{

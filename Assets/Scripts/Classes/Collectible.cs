@@ -4,20 +4,22 @@ namespace Veganimus.Platformer
 {
     public class Collectible : MonoBehaviour, IAbsorbable
     {
-        private float _xRadius;
-        private float _yRadius;
-        private float _time = 0;
-        private bool _collected;
-        [SerializeField] private CollectibleType _collectibleType;
+        [SerializeField] private bool _canAbosrb = false;
         [SerializeField] private sbyte _powerUpAmount;
         [SerializeField] private float _speed;
+        [SerializeField] private CollectibleType _collectibleType;
         [SerializeField] private LayerMask _collectorLayerMask;
-        [SerializeField] private bool _canAbosrb = false;
-        public bool CanAbsorb { get { return _canAbosrb; } }
+        private bool _collected;
         private float _deltaTime;
+        private float _time = 0;
+        private float _x, _y, _z = 0;
+        private float _xRadius, _yRadius;
+        private Transform _transform;
+        public bool CanAbsorb { get { return _canAbosrb; } }
 
         private void Start()
         {
+            _transform = transform;
             _xRadius = Random.Range(-0.05f, 0.05f);
             _yRadius = Random.Range(-0.05f, 0.05f);
         }
@@ -28,9 +30,9 @@ namespace Veganimus.Platformer
             if (Time.timeScale > 0)
             {
                 _time += _deltaTime;
-                float x = _xRadius * Mathf.Cos(_time * _speed);
-                float y = _yRadius * Mathf.Sin(_time * _speed);
-                transform.position += new Vector3(x, y, 0);
+                _x = _xRadius * Mathf.Cos(_time * _speed);
+                _y = _yRadius * Mathf.Sin(_time * _speed);
+                _transform.position += new Vector3(_x, _y, _z);
             }
         }
         private void OnTriggerEnter(Collider other)

@@ -6,19 +6,18 @@ namespace Veganimus.Platformer
 {
     public class Weapon : MonoBehaviour
     {
-        [SerializeField] protected Transform _fireOffset;
-        [SerializeField] protected GameObject _bulletPrefab, _missilePrefab;
         [SerializeField] private InputManagerSO _inputManager;
-        [SerializeField] protected float _fireRate = 0.5f, _secondaryFireRate = 0.5f;
         [SerializeField] protected bool _isSecondaryFireOn = false;
-        protected bool _secondaryFireTriggered;
         [SerializeField] protected int _secondaryAmmo = 5;
-        public int SecondaryAmmo { get { return _secondaryAmmo; } }
+        [SerializeField] protected float _fireRate = 0.5f, _secondaryFireRate = 0.5f;
+        [SerializeField] protected GameObject _bulletPrefab, _missilePrefab;
+        [SerializeField] protected Transform _fireOffset;
+        protected bool _secondaryFireTriggered;
         protected float _canFire = -1.0f;
         protected PoolManager _poolManager;
         protected Transform _pmTransform;
-        protected WaitForSeconds _shootCoolDown;
-        protected WaitForSeconds _secondaryCoolDown;
+        protected WaitForSeconds _secondaryCoolDown, _shootCoolDown;
+        public int SecondaryAmmo { get { return _secondaryAmmo; } }
 
         protected virtual IEnumerator Start()
         {

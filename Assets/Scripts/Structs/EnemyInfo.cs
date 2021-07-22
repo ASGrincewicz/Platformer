@@ -4,18 +4,29 @@
     public struct EnemyInfo
     {
         public sbyte hitPoints;
-        public float speed;
+        public float attackRange;
         public float chaseSpeed;
         public float sightDistance;
-        public float attackRange;
+        public float speed;
 
-        public EnemyInfo(sbyte hp, float speed, float chaseSpeed, float sightDistance, float attackRange)
+        public EnemyInfo(sbyte hp, float attackRange, float chaseSpeed, float sightDistance, float speed)
         {
             hitPoints = hp;
-            this.speed = speed;
+            this.attackRange = attackRange;
             this.chaseSpeed = chaseSpeed;
             this.sightDistance = sightDistance;
-            this.attackRange = attackRange;
+            this.speed = speed;
+        }
+
+        public static EnemyInfo operator+(EnemyInfo e1, EnemyInfo e2)
+        {
+            EnemyInfo newEnemyInfo = new EnemyInfo();
+            newEnemyInfo.hitPoints = (sbyte)(e1.hitPoints + e2.hitPoints);
+            newEnemyInfo.attackRange = e1.attackRange + e2.attackRange;
+            newEnemyInfo.chaseSpeed = e1.chaseSpeed + e2.chaseSpeed;
+            newEnemyInfo.sightDistance = e1.sightDistance + e2.sightDistance;
+            newEnemyInfo.speed = e1.speed + e2.speed;
+            return newEnemyInfo;
         }
     }
 }

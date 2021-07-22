@@ -4,34 +4,36 @@ namespace Veganimus.Platformer
 {
     public class Bullet : MonoBehaviour, ICanOpenDoor
     {
-        [SerializeField] private float _lifeTime = 5.0f;
-        [SerializeField] private float _speed = 10.0f;
         [SerializeField] private sbyte _damageAmount = 1;
         [SerializeField] private byte _maxDoorLevel = 0;
+        [SerializeField] private float _lifeTime = 5.0f;
+        [SerializeField] private float _speed = 10.0f;
         public byte MaxDoorLevel { get { return _maxDoorLevel; } set { value = _maxDoorLevel; } }
+        private float _deltaTime;
+        private IDamageable _iDamageable;
+        private Door _door;
         private Transform _transform;
-        private float _globalDeltaTime;
 
         private void Start() => _transform = transform;
 
-        private void FixedUpdate()
+        private void Update()
         {
-            _globalDeltaTime = Time.deltaTime;
-            _transform.Translate(Vector3.forward * _speed * _globalDeltaTime);
+            _deltaTime = Time.deltaTime;
+            _transform.Translate(Vector3.forward * _speed * _deltaTime);
             Destroy(gameObject, _lifeTime);
         }
         private void OnCollisionEnter(Collision collision)
         {
             if (collision != null)
             {
-                var damage = collision.collider.GetComponentInParent<IDamageable>();
-                var door = collision.collider.GetComponentInParent<Door>();
-                if (damage != null)
+                _iDamageable = collision.collider.GetComponentInParent<IDamageable>();
+                _door = collision.collider.GetComponentInParent<Door>();
+                if (_iDamageable != null)
                 {
-                    damage.Damage(_damageAmount);
+                    _iDamageable.Damage(_damageAmount);
                     Destroy(gameObject);
                 }
-                else if (damage == null && door != null && door.DoorLevel > _maxDoorLevel)
+                else if (_iDamageable == null && _door != null && _door.DoorLevel > _maxDoorLevel)
                     Destroy(gameObject);
                 else
                     Destroy(gameObject);

@@ -5,27 +5,27 @@ namespace Veganimus.Platformer
 {
     public class Enemy : MonoBehaviour
     {
-        [SerializeField] private EnemyInfo _enemyInfo;
-        [SerializeField] private AIState _aiState;
-        [SerializeField] private LayerMask _targetLayer;
         [SerializeField] private byte _destinationPoint;
-        [SerializeField] Transform[] _navPoints;
+        [SerializeField] private AIState _aiState;
+        [SerializeField] private EnemyInfo _enemyInfo;
+        [SerializeField] private LayerMask _targetLayer;
         [SerializeField] EnemyWeapon _weapon;
-        private NavMeshAgent _agent;
-        private MeshRenderer _meshRenderer;
-        private Health _health;
+        [SerializeField] Transform[] _navPoints;
+        private Color _enemyColor;
+        private RaycastHit _hitInfo;
         private Vector3 _chaseDestination;
-        public Color currentColor;
-        private WaitForSeconds _chaseCoolDown;
+        private Health _health;
+        private NavMeshAgent _agent;
         private Transform _agentTransform;
+        private WaitForSeconds _chaseCoolDown;
+        public Color currentColor;
 
         private void Start()
         {
-            
             _health = GetComponent<Health>();
             _health.HP = _enemyInfo.hitPoints;
             _agent = GetComponentInChildren<NavMeshAgent>();
-            _meshRenderer = GetComponentInChildren<MeshRenderer>();
+            _enemyColor = GetComponentInChildren<MeshRenderer>().material.color;
             _weapon = GetComponent<EnemyWeapon>();
             _chaseCoolDown = new WaitForSeconds(3f);
             _agent.speed = _enemyInfo.speed;
@@ -53,19 +53,19 @@ namespace Veganimus.Platformer
             switch (state)
             {
                 case AIState.Idle:
-                    _meshRenderer.material.color = Color.gray;
+                    _enemyColor = Color.gray;
                     currentColor = Color.gray;
                     break;
                 case AIState.Patrolling:
                     _agent.isStopped = false;
                     _agent.speed = _enemyInfo.speed;
-                    _meshRenderer.material.color = Color.blue;
+                    _enemyColor = Color.blue;
                     currentColor = Color.blue;
                     _aiState = AIState.Patrolling;
                     break;
                 case AIState.Chasing:
                     _agent.isStopped = false;
-                    _meshRenderer.material.color = Color.yellow;
+                    _enemyColor = Color.yellow;
                     currentColor = Color.yellow;
                     _aiState = AIState.Chasing;
                     _agent.SetDestination(_chaseDestination);
@@ -73,7 +73,7 @@ namespace Veganimus.Platformer
                     break;
                 case AIState.Attacking:
                     _agent.isStopped = true;
-                    _meshRenderer.material.color = Color.red;
+                    _enemyColor = Color.red;
                     currentColor = Color.red;
                     _aiState = AIState.Attacking;
                     break;
@@ -100,14 +100,13 @@ namespace Veganimus.Platformer
         private void Detect()
         {
             Ray ray = new Ray(_agentTransform.position, _agentTransform.forward);
-            RaycastHit hitInfo;
 
-            if (Physics.Raycast(ray, out hitInfo, _enemyInfo.sightDistance, _targetLayer))
+            if (Physics.Raycast(ray, out _hitInfo, _enemyInfo.sightDistance, _targetLayer))
             {
-                if (hitInfo.collider != null)
+                if (_hitInfo.collider != null)
                 {
                     ChangeAIState(AIState.Chasing);
-                    _chaseDestination = hitInfo.transform.position;
+                    _chaseDestination = _hitInfo.transform.position;
                     if (_aiState == AIState.Chasing)
                     {
                         if (Vector3.Distance(_agent.transform.position, _agent.destination) <= _enemyInfo.attackRange)
@@ -115,7 +114,7 @@ namespace Veganimus.Platformer
                     }
                 }
             }
-            else if (hitInfo.collider == null && _aiState != AIState.Patrolling)
+            else if (_hitInfo.collider == null && _aiState != AIState.Patrolling)
                 StartCoroutine(ChaseCoolDown());
             
         }
