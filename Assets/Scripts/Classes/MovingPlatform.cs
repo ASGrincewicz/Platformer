@@ -5,15 +5,20 @@ namespace Veganimus.Platformer
 {
     public class MovingPlatform : Platform, IMoving
     {
-        [SerializeField] private List<Transform> _waypoints = new List<Transform>();
         [SerializeField] private float _speed;
+        [SerializeField] private List<Transform> _waypoints = new List<Transform>();
         [SerializeField] private Transform _playerParent;
         private byte _targetWaypont;
+        private float _deltaTime;
+        private Transform _transform;
+
+        private void Start() => _transform = transform;
 
         private void Update()
         {
-            transform.position = Vector3.MoveTowards(transform.position, _waypoints[_targetWaypont].position , _speed * Time.deltaTime);
-            if (transform.position == _waypoints[_targetWaypont].position)
+            _deltaTime = Time.deltaTime;
+            _transform.position = Vector3.MoveTowards(_transform.position, _waypoints[_targetWaypont].position , _speed * _deltaTime);
+            if (_transform.position == _waypoints[_targetWaypont].position)
                 MoveToWayPoint();
         }
         private void MoveToWayPoint()

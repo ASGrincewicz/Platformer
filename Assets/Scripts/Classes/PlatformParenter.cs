@@ -13,13 +13,12 @@ namespace Veganimus.Platformer
                 var ballForm = _childObject.GetComponent<Character>().InBallForm;
                 if (ballForm)
                 {
-                    Debug.Log("Player entered Ball Form!");
+                    //Debug.Log("Player entered Ball Form!");
                     _childObject.transform.parent = null;
                     _childObject = null;
                 }
             }
         }
-
 
         private void OnTriggerEnter(Collider other)
         {
@@ -28,7 +27,7 @@ namespace Veganimus.Platformer
                 var ballForm = other.GetComponent<Character>().InBallForm;
                 if (!ballForm)
                 {
-                    Debug.Log("Found Character!");
+                    //Debug.Log("Found Character!");
                     other.transform.parent = this.transform;
                     _childObject = other.gameObject;
                 }

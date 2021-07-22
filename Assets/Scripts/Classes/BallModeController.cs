@@ -10,7 +10,14 @@ namespace Veganimus.Platformer
         [SerializeField] private float _bombRechargeTime = 3.0f;
         [SerializeField] private sbyte _bombCount = 3;
         private float _canDropBomb = -1.0f;
-       
+        private Transform _transform;
+
+        private void Start()
+        {
+            _transform = transform;
+        }
+
+
         private void Update()
         {
             if (Time.time > _canDropBomb)
@@ -31,7 +38,7 @@ namespace Veganimus.Platformer
                 _bombCount--;
                 UIManager.Instance.BombUpdate(_bombCount);
                 _canDropBomb = Time.time + _dropRate;
-                Instantiate(_bombPrefab,new Vector3(transform.position.x,transform.position.y, transform.position.z - 0.5f), Quaternion.identity);
+                Instantiate(_bombPrefab,new Vector3(_transform.position.x,_transform.position.y, _transform.position.z - 0.5f), Quaternion.identity);
                 Invoke("RechargeBomb", _bombRechargeTime);
             }
         }

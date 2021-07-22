@@ -6,11 +6,12 @@ namespace Veganimus.Platformer
     public class Door : MonoBehaviour
     {
         [SerializeField] private byte _doorLevel = 1;
-        public byte DoorLevel { get { return _doorLevel; } }
         private int _doorOpenAP = Animator.StringToHash("isDoorOpen");
         private int _doorOpenSpeedAP = Animator.StringToHash("doorSpeed");
+        private ICanOpenDoor _iCanOpenDoor;
         private Animator _animator;
         private WaitForSeconds _closeDelay;
+        public byte DoorLevel { get { return _doorLevel; } }
 
         private void Start()
         {
@@ -22,11 +23,11 @@ namespace Veganimus.Platformer
         {
             if(other.collider != null)
             {
-                var iCanOpenDoor = other.collider.GetComponent<ICanOpenDoor>();
-                if(iCanOpenDoor != null)
+                _iCanOpenDoor = other.collider.GetComponent<ICanOpenDoor>();
+                if(_iCanOpenDoor != null)
                 {
-                    Debug.Log("Who disturbs my slumber!");
-                    if (iCanOpenDoor.MaxDoorLevel >= _doorLevel)
+                   // Debug.Log("Who disturbs my slumber!");
+                    if (_iCanOpenDoor.MaxDoorLevel >= _doorLevel)
                     {
                         _animator.SetFloat(_doorOpenSpeedAP, 1.0f);
                         _animator.SetBool(_doorOpenAP, true);

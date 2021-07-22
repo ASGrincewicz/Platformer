@@ -7,16 +7,16 @@ namespace Veganimus.Platformer
     [CreateAssetMenu(menuName ="Input Manager")]
     public class InputManagerSO : ScriptableObject
     {
-        public UnityAction<float, float> moveAction;
-        public UnityAction<float> crouchAction;
-        public UnityAction<float> upAimAction;
-        public UnityAction<float> downAimAction;
+        public Controls controls;
         public UnityAction<bool> pauseAction;
-        public UnityAction shootAction;
+        public UnityAction<float> crouchAction;
+        public UnityAction<float> downAimAction;
+        public UnityAction<float> upAimAction;
+        public UnityAction<float, float> moveAction;
         public UnityAction ballModeAction;
         public UnityAction jumpAction;
-
-        public Controls controls;
+        public UnityAction secondaryFireAction;
+        public UnityAction shootAction;
 
         private void OnEnable()
         {

@@ -6,19 +6,20 @@ namespace Veganimus.Platformer
     public class Bomb : MonoBehaviour, ICanOpenDoor
     {
         [SerializeField] private byte _maxDoorLevel = 1;
-        public byte MaxDoorLevel { get { return _maxDoorLevel; } set { value = _maxDoorLevel; } }
         [SerializeField] private byte _maxColliders = 50;
         [SerializeField] private float _bombTimer;
         [SerializeField] private float _explosionForce;
         [SerializeField] private float _explosionRadius;
         [SerializeField] private float _upForce;
         [SerializeField] private sbyte _damageAmount = 2;
-        [SerializeField] private LayerMask _targetLayers;
-        private WaitForSeconds _explosionDelay;
+        [SerializeField] private LayerMask _targetLayers = 0;
         private Collider[] _hitColliders;
+        private IBombable _iBombable;
+        private IDamageable _idamageable;
+        private WaitForSeconds _explosionDelay;
+        public byte MaxDoorLevel { get { return _maxDoorLevel; } set { value = _maxDoorLevel; } }
 
-        private void OnDrawGizmosSelected() => Gizmos.DrawWireSphere(transform.position, _explosionRadius)
-;
+        //private void OnDrawGizmosSelected() => Gizmos.DrawWireSphere(transform.position, _explosionRadius)
 
         private void Start()
         {
@@ -32,18 +33,18 @@ namespace Veganimus.Platformer
             for(byte i = 0; i< numberColliders; i++)
             {
                 Rigidbody rigidbody = _hitColliders[i].GetComponent<Rigidbody>();
-                var bombable = _hitColliders[i].GetComponentInParent<IBombable>();
-                var damageable = _hitColliders[i].GetComponentInParent<IDamageable>();
-                if (rigidbody != null && bombable != null)
+                _iBombable = _hitColliders[i].GetComponentInParent<IBombable>();
+                _idamageable = _hitColliders[i].GetComponentInParent<IDamageable>();
+                if (rigidbody != null && _iBombable != null)
                 {
                     rigidbody.useGravity = true;
                     rigidbody.isKinematic = false;
                     rigidbody.AddExplosionForce(_explosionForce, transform.position, _explosionRadius, _upForce, ForceMode.Impulse);
-                    if (damageable != null && damageable.IsPlayer == false)
+                    if (_idamageable != null && !_idamageable.IsPlayer)
                     {
-                        damageable.Damage(_damageAmount);
+                        _idamageable.Damage(_damageAmount);
                     }
-                    else if (damageable == null)
+                    else if (_idamageable == null)
                         Destroy(_hitColliders[i].gameObject, 1.0f);
                 }
             }
