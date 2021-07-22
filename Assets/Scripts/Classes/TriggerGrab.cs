@@ -8,8 +8,8 @@ namespace Veganimus.Platformer
 
         private void OnTriggerEnter(Collider other)
         {
-            if(other.tag == "Player")
-            other.GetComponent<Character>().GrabLedge(_anchorPos.transform);
+            //if(other.tag == "Player")
+            //other.GetComponent<Character>().GrabLedge(_anchorPos.transform);
         }
     }
 }

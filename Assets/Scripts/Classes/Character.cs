@@ -44,12 +44,14 @@ namespace Veganimus.Platformer
         private float _vertical;
         private const float _z = 0;
         private float _yVelocity;
+        private RaycastHit _hitInfo;
         private Vector3 _direction;
         private Vector3 _velocity;
         private Vector3 _wallSurfaceNormal;
         private Animator _animator;
         private CharacterController _controller;
         private Collider[] _collectiblesDetected = new Collider[5];
+        private Ledge _activeLedge;
         private PlayerAim _playerAim;
         private Rigidbody _rigidbody;
         private Transform _aimTransform;
@@ -84,13 +86,10 @@ namespace Veganimus.Platformer
             _playerAim = _characterModel.GetComponent<PlayerAim>();
             _gravity = _adjustGravity;
         }
-        //private void FixedUpdate()
-        //{
-        //    AnimLerp();
-        //}
+        
         private void FixedUpdate()
         {
-            DetectSurface();
+           // DetectSurface();
             DetectCollectible();
         }
         private void Update()
@@ -108,8 +107,8 @@ namespace Veganimus.Platformer
                 _controller.enabled = false;
                 BallMovement();
             }
-            else if (!_controller.enabled && _grabbingLedge)
-             LedgeMovement();
+            //else if (!_controller.enabled && _grabbingLedge)
+            // LedgeMovement();
             
             if(_controller.enabled || _inBallForm)
             {
@@ -204,24 +203,22 @@ namespace Veganimus.Platformer
             Array.Clear(_collectiblesDetected, 0, _collectiblesDetected.Length);
         }
 
-        private void DetectSurface()
-        {
-            RaycastHit hitInfo;
-            if (Physics.Raycast(_transform.localPosition, Vector3.up, out hitInfo, 2.0f, _detectSurfaceLayers))
-            {
-                var hangable = hitInfo.collider.GetComponent<IHang>();
-                if (hangable != null && _vertical > 0)
-                    _isHanging = true;
-            }
+        //private void DetectSurface()
+        //{
+        //    if (Physics.Raycast(_transform.localPosition, Vector3.up, out _hitInfo, 2.0f, _detectSurfaceLayers))
+        //    {
+        //        var hangable = _hitInfo.collider.GetComponent<IHang>();
+        //        if (hangable != null && _vertical > 0)
+        //            _isHanging = true;
+        //    }
 
-            else
-            {
-                _animator.SetFloat(_hangingAP, 0);
-                _isHanging = false;
-                _gravity = _adjustGravity;
-            }
-        }
-
+        //    else
+        //    {
+        //        _animator.SetFloat(_hangingAP, 0);
+        //        _isHanging = false;
+        //        _gravity = _adjustGravity;
+        //    }
+        //}
 
         private void FaceDirection()
         {
@@ -232,18 +229,18 @@ namespace Veganimus.Platformer
                 _characterModelTransform.localRotation = Quaternion.Euler(0, 90, 0);
         }
 
-        private void LedgeMovement()
-        {
-            if (_vertical < 0)
-            {
-                _animator.SetFloat(_grabLedgeAP, 0f);
-                _grabbingLedge = false;
-                _animatorRoot = null;
-                _characterModelTransform.localPosition = _modelPosition;
-                _controller.enabled = true;
-                _yVelocity -= _gravity;
-            }
-        }
+        //private void LedgeMovement()
+        //{
+        //    if (_vertical < 0)
+        //    {
+        //        _animator.SetFloat(_grabLedgeAP, 0f);
+        //        _grabbingLedge = false;
+        //        _animatorRoot = null;
+        //        _characterModelTransform.localPosition = _modelPosition;
+        //        _controller.enabled = true;
+        //        _yVelocity -= _gravity;
+        //    }
+        //}
 
         private void Movement()
         {
@@ -331,14 +328,21 @@ namespace Veganimus.Platformer
             _vertical = y;
         }
 
-        public void GrabLedge(Transform anchorPos)
+        public void GrabLedge(Vector3 handPos, Ledge currentLedge)
         {
             if (!_inBallForm)
             {
-                _animatorRoot = anchorPos;
-                _animator.SetFloat(_grabLedgeAP, 1.0f);
-                _grabbingLedge = true;
                 _controller.enabled = false;
+                _animator.SetFloat(_grabLedgeAP, 1.0f);
+                _animator.SetFloat(_jumpingAP, 0);
+                _animator.SetFloat(_hangingAP, 1.0f);
+                _playerAim.AimWeight = 0;
+                _velocity = Vector3.zero;
+                _isHanging = true;
+                _grabbingLedge = true;
+                _activeLedge = currentLedge;
+                
+                _transform.localPosition = Vector3.MoveTowards(_transform.localPosition, handPos, 2f);
             }
         }
     }
