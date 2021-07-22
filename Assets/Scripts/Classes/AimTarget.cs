@@ -6,55 +6,61 @@ namespace Veganimus.Platformer
     {
         [SerializeField] private float _lerpSpeed = 20.0f;
         [SerializeField] private GameObject _aimTargetObject;
-        [SerializeField] private Transform _upAimTarget;
-        [SerializeField] private Transform _downAimTarget;
-        [SerializeField] private Transform _centerAimTarget;
-        [SerializeField] private Transform _overHeadTarget;
-        [SerializeField] private Transform _belowTarget;
         [SerializeField] private InputManagerSO _inputManager;
-        private Transform _targetPosition;
+        [SerializeField] private Transform _belowTarget;
+        [SerializeField] private Transform _centerAimTarget;
+        [SerializeField] private Transform _downAimTarget;
+        [SerializeField] private Transform _overHeadTarget;
+        [SerializeField] private Transform _upAimTarget;
+        private float _deltaTime;
         private float _vertical;
+        private Transform _target;
+        private Transform _targetPosition;
+       
 
         private void OnEnable()
         {
-            _inputManager.upAimAction += OnUpAimInput;
             _inputManager.downAimAction += OnDownAimInput;
             _inputManager.moveAction += OnMoveInput;
+            _inputManager.upAimAction += OnUpAimInput;
         }
         private void OnDisable()
         {
-            _inputManager.upAimAction -= OnUpAimInput;
             _inputManager.downAimAction -= OnDownAimInput;
             _inputManager.moveAction -= OnMoveInput;
+            _inputManager.upAimAction -= OnUpAimInput;
         }
 
         private void Update()
         {
-
-            Transform target = _targetPosition;
+            _deltaTime = Time.deltaTime;
+            _target = _targetPosition;
             if(_targetPosition != null)
             {
                 if(_targetPosition == _upAimTarget && _vertical > 0.5f)
-                    target = _overHeadTarget;
+                    _target = _overHeadTarget;
                 
                 else if(_targetPosition == _downAimTarget && _vertical < -0.5f)
-                    target = _belowTarget;
+                    _target = _belowTarget;
                 
                 else
-                    target = _targetPosition;
+                    _target = _targetPosition;
                 
-                _aimTargetObject.transform.position = Vector3.Lerp(_aimTargetObject.transform.position, target.position, _lerpSpeed * Time.deltaTime);
+                _aimTargetObject.transform.position = Vector3.Lerp(_aimTargetObject.transform.position, _target.position, _lerpSpeed * _deltaTime);
             }
           
         }
-        private void OnUpAimInput(float input)
-        {
-           _targetPosition =  input > 0 ? _targetPosition = _upAimTarget : _targetPosition = _centerAimTarget;
-        }
+       
         private void OnDownAimInput(float input)
         {
             _targetPosition = input > 0 ? _targetPosition = _downAimTarget : _targetPosition = _centerAimTarget;
         }
+
         private void OnMoveInput(float h, float v) => _vertical = v;
+
+        private void OnUpAimInput(float input)
+        {
+            _targetPosition = input > 0 ? _targetPosition = _upAimTarget : _targetPosition = _centerAimTarget;
+        }
     }
 }

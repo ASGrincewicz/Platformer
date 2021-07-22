@@ -2951,10 +2951,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _player: {fileID: 280230923}
-  _spawnPoint: {fileID: 1767335318}
-  _respawnPlayerChannel: {fileID: 11400000, guid: 0f68ca6cc2ae24693b41f1665e567c41, type: 2}
   _gameStateChannel: {fileID: 11400000, guid: 5bf970827b15a4540b4b577cc056ee92, type: 2}
   _inputManager: {fileID: 11400000, guid: dd1b3bcafa2d14223b26263fbcec61a1, type: 2}
+  _respawnPlayerChannel: {fileID: 11400000, guid: 0f68ca6cc2ae24693b41f1665e567c41, type: 2}
+  _spawnPoint: {fileID: 1767335318}
 --- !u!1 &601366066
 GameObject:
   m_ObjectHideFlags: 0
@@ -5859,17 +5859,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7202f4aee10764154a02d30e8a171809, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trackedObject: {fileID: 280230923}
   _scrollMultiplier: 2.45
   _movementWindowSize: {x: 4, y: 4}
   _windowOffset: {x: -3, y: -2.17}
-  _areaID: 1
   _isCamMovementLimited: 1
+  _areaID: 1
+  _bottomLimit: 0
   _leftLimit: 30
   _rightLimit: 30
-  _bottomLimit: 0
   _topLimit: 20
   _showDebug: 0
+  trackedObject: {fileID: 280230923}
 --- !u!1 &983762244
 GameObject:
   m_ObjectHideFlags: 0
@@ -7285,10 +7285,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd764ef87b627496d88974bf0202b662, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _healthText: {fileID: 633912607}
-  _missilesText: {fileID: 903151813}
-  _collectibleText: {fileID: 1313045639}
+  _pauseMenu: {fileID: 812979578}
   _missileActiveBox: {fileID: 1097415134}
+  _bombImages:
+  - {fileID: 2126227963}
+  - {fileID: 270319618}
+  - {fileID: 288423458}
   _livesImages:
   - {fileID: 1692517749}
   - {fileID: 559479486}
@@ -7300,11 +7302,9 @@ MonoBehaviour:
   - {fileID: 1719852916}
   - {fileID: 1395444991}
   - {fileID: 731562214}
-  _bombImages:
-  - {fileID: 2126227963}
-  - {fileID: 270319618}
-  - {fileID: 288423458}
-  _pauseMenu: {fileID: 812979578}
+  _collectibleText: {fileID: 1313045639}
+  _healthText: {fileID: 633912607}
+  _missilesText: {fileID: 903151813}
 --- !u!4 &1180631719 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2838100763654845188, guid: 02afac942e1304acc91918ab1a8134c0, type: 3}

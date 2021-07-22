@@ -42,6 +42,7 @@ namespace Veganimus.Platformer
         private float _deltaTime;
         private float _horizontal;
         private float _vertical;
+        private const float _z = 0;
         private float _yVelocity;
         private Vector3 _direction;
         private Vector3 _velocity;
@@ -97,6 +98,8 @@ namespace Veganimus.Platformer
             _deltaTime = Time.deltaTime;
             _ballModeTriggered = _inputManager.controls.Standard.BallMode.triggered;
             _jumpTriggered = _inputManager.controls.Standard.Jump.triggered;
+            if (_transform.position.z != 0)
+                _transform.position = new Vector3(_transform.position.x, _transform.position.y, _z);
             if (!_inBallForm && !_isCrouching && _controller.enabled)
              Movement();
             
@@ -124,12 +127,12 @@ namespace Veganimus.Platformer
                 else if (_ballModeTriggered && _inBallForm)
                 {
                     _mainCamera.trackedObject = this.gameObject;
-                    _transform.position = _ballFormTransform.position;
+                    _transform.position = new Vector3(_ballFormTransform.position.x, _ballFormTransform.position.y, _z);
                     _controller.enabled = true;
                     _characterModel.SetActive(true);
                     _ballForm.SetActive(false);
                     _inBallForm = false;
-                    _ballFormTransform.position = _transform.position;
+                    _ballFormTransform.position = new Vector3(_transform.position.x, _transform.position.y, _z);
                     _rigidbody.velocity = Vector3.zero;
                 }
             }
@@ -181,7 +184,7 @@ namespace Veganimus.Platformer
 
         private void BallMovement()
         {
-            _direction = new Vector3(_horizontal, 0, 0);
+            _direction = new Vector3(_horizontal, 0, _z);
             _velocity = _direction * _speed * 1.5f;
             _rigidbody.AddForce(_velocity, ForceMode.Force);
         }
@@ -244,7 +247,7 @@ namespace Veganimus.Platformer
 
         private void Movement()
         {
-            _direction = new Vector3(_horizontal, 0, 0);
+            _direction = new Vector3(_horizontal, 0, _z);
             _velocity = _direction * _speed;
 
             if (_controller.isGrounded)

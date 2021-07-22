@@ -16,6 +16,7 @@ namespace Veganimus.Platformer
         protected float _canFire = -1.0f;
         protected PoolManager _poolManager;
         protected Transform _pmTransform;
+        private UIManager _uIManager;
         protected WaitForSeconds _secondaryCoolDown, _shootCoolDown;
         public int SecondaryAmmo { get { return _secondaryAmmo; } }
 
@@ -26,7 +27,8 @@ namespace Veganimus.Platformer
             _secondaryCoolDown = new WaitForSeconds(_secondaryFireRate);
             _poolManager = PoolManager.Instance;
             _pmTransform = _poolManager.transform;
-           UIManager.Instance.MissilesTextUpdate(_secondaryAmmo);
+            _uIManager = UIManager.Instance;
+           _uIManager.MissilesTextUpdate(_secondaryAmmo);
         }
 
         protected virtual void Update()
@@ -67,7 +69,7 @@ namespace Veganimus.Platformer
             {
                 _canFire = Time.time + _secondaryFireRate;
                 _secondaryAmmo--;
-                UIManager.Instance.MissilesTextUpdate(_secondaryAmmo);
+                _uIManager.MissilesTextUpdate(_secondaryAmmo);
                 Instantiate(_missilePrefab, _fireOffset.position, _fireOffset.rotation, _pmTransform);
             }
             StartCoroutine(ShootCoolDownRoutine());
@@ -82,7 +84,7 @@ namespace Veganimus.Platformer
         private void SecondaryUIUpdate(bool isOn)
         {
             _isSecondaryFireOn = isOn;
-            UIManager.Instance.SecondaryFireActive(isOn);
+            _uIManager.SecondaryFireActive(isOn);
         }
     }
 }

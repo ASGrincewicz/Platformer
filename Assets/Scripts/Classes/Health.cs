@@ -13,15 +13,19 @@ namespace Veganimus.Platformer
         [SerializeField] private GameStateChannel _gameStateChannel;
         [SerializeField] private RespawnPlayerChannel _respawnPlayerChannel;
         private bool _gameStart = true;
+        private byte _maxLifeHP = 99;
+        private UIManager _uIManager;
         public bool IsPlayer { get { return _isPlayer; } }
+        public sbyte HP { get { return _hp; } set { _hp = value; } }
         public sbyte Lives { get { return _lives; }private set { _lives = value; } }
-        public sbyte HP { get { return _hp; }set { _hp = value; } }
+       
 
         private IEnumerator Start()
         {
             if (_characterType == CharacterType.Player)
             {
                 yield return new WaitForSeconds(0.5f);
+                _uIManager = UIManager.Instance;
                 Heal(0);
                 _gameStart = false;
             }
@@ -30,7 +34,7 @@ namespace Veganimus.Platformer
         {
             if (_characterType == CharacterType.Player)
             {
-                if (_hp > 99 && _lives != _maxLives)
+                if (_hp > _maxLifeHP && _lives != _maxLives)
                 {
                     sbyte amount = (sbyte)(_hp - 100);
                     _hp = amount;
@@ -41,7 +45,7 @@ namespace Veganimus.Platformer
                 if (_hp <= 0 && _lives > 1)
                 {
                     _lives--;
-                    sbyte amount = (sbyte)(99 + _hp);
+                    sbyte amount = (sbyte)(_maxLifeHP + _hp);
                     _hp = amount;
                     UIManagerUpdate();
                 }
@@ -53,8 +57,8 @@ namespace Veganimus.Platformer
         }
         private void UIManagerUpdate()
         {
-            UIManager.Instance.HealthTextUpdate(_hp);
-            UIManager.Instance.LivesUpdate(_lives);
+            _uIManager.HealthTextUpdate(_hp);
+            _uIManager.LivesUpdate(_lives);
         }
 
         public void Damage(sbyte hpDamage)
@@ -76,9 +80,9 @@ namespace Veganimus.Platformer
         public void Heal(sbyte amount)
         {
             _hp += amount;
-            if(_hp + amount > 99 && _lives == _maxLives)
+            if(_hp + amount > _maxLifeHP && _lives == _maxLives)
             {
-                _hp = 99;
+                _hp = (sbyte)_maxLifeHP;
             }
             UIManagerUpdate();
         }
@@ -86,7 +90,7 @@ namespace Veganimus.Platformer
         {
             _maxLives += 1;
             _lives = (sbyte)_maxLives;
-            _hp = 99;
+            _hp = (sbyte)_maxLifeHP;
             UIManagerUpdate();
         }
     }

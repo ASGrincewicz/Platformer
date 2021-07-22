@@ -11,10 +11,10 @@ namespace Veganimus.Platformer
         [SerializeField] private LayerMask _targetLayer;
         [SerializeField] EnemyWeapon _weapon;
         [SerializeField] Transform[] _navPoints;
-        private Color _enemyColor;
         private RaycastHit _hitInfo;
         private Vector3 _chaseDestination;
         private Health _health;
+        private MeshRenderer _enemyColor;
         private NavMeshAgent _agent;
         private Transform _agentTransform;
         private WaitForSeconds _chaseCoolDown;
@@ -25,7 +25,7 @@ namespace Veganimus.Platformer
             _health = GetComponent<Health>();
             _health.HP = _enemyInfo.hitPoints;
             _agent = GetComponentInChildren<NavMeshAgent>();
-            _enemyColor = GetComponentInChildren<MeshRenderer>().material.color;
+            _enemyColor = GetComponentInChildren<MeshRenderer>();
             _weapon = GetComponent<EnemyWeapon>();
             _chaseCoolDown = new WaitForSeconds(3f);
             _agent.speed = _enemyInfo.speed;
@@ -53,19 +53,19 @@ namespace Veganimus.Platformer
             switch (state)
             {
                 case AIState.Idle:
-                    _enemyColor = Color.gray;
+                    _enemyColor.material.color = Color.gray;
                     currentColor = Color.gray;
                     break;
                 case AIState.Patrolling:
                     _agent.isStopped = false;
                     _agent.speed = _enemyInfo.speed;
-                    _enemyColor = Color.blue;
+                    _enemyColor.material.color = Color.blue;
                     currentColor = Color.blue;
                     _aiState = AIState.Patrolling;
                     break;
                 case AIState.Chasing:
                     _agent.isStopped = false;
-                    _enemyColor = Color.yellow;
+                    _enemyColor.material.color = Color.yellow;
                     currentColor = Color.yellow;
                     _aiState = AIState.Chasing;
                     _agent.SetDestination(_chaseDestination);
@@ -73,7 +73,7 @@ namespace Veganimus.Platformer
                     break;
                 case AIState.Attacking:
                     _agent.isStopped = true;
-                    _enemyColor = Color.red;
+                    _enemyColor.material.color = Color.red;
                     currentColor = Color.red;
                     _aiState = AIState.Attacking;
                     break;
