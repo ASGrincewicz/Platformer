@@ -12,7 +12,6 @@ namespace Veganimus.Platformer
         [SerializeField] private float _jumpHeight = 15.0f;
         [SerializeField] private float _speed = 5f;
         [SerializeField] private LayerMask _collectibleLayerMask;
-        [SerializeField] private LayerMask _detectSurfaceLayers;
         [SerializeField] private Vector3 _modelPosition;
         [SerializeField] private CameraController _mainCamera;
         [SerializeField] private GameObject _aimTarget;
@@ -29,8 +28,10 @@ namespace Veganimus.Platformer
         private bool _isHanging;
         private bool _isWallJumping;
         //Animator Parameters
+        private readonly int _bracedAP = Animator.StringToHash("braced");
         private readonly int _crouchAP = Animator.StringToHash("crouch");
         private readonly int _droppingAP = Animator.StringToHash("dropping");
+        private readonly int _fallingAP = Animator.StringToHash("falling");
         private readonly int _grabLedgeAP = Animator.StringToHash("grabLedge");
         private readonly int _groundedAP = Animator.StringToHash("grounded");
         private readonly int _hangingAP = Animator.StringToHash("hanging");
@@ -44,19 +45,20 @@ namespace Veganimus.Platformer
         private float _vertical;
         private const float _z = 0;
         private float _yVelocity;
+        private RaycastHit _hitInfo;
         private Vector3 _direction;
         private Vector3 _velocity;
         private Vector3 _wallSurfaceNormal;
         private Animator _animator;
         private CharacterController _controller;
         private Collider[] _collectiblesDetected = new Collider[5];
+        private Ledge _activeLedge;
         private PlayerAim _playerAim;
         private Rigidbody _rigidbody;
         private Transform _aimTransform;
-        private Transform _animatorRoot;
-        private Transform _transform;
         private Transform _characterModelTransform;
         private Transform _ballFormTransform;
+        private Transform _transform;
         public bool InBallForm { get { return _inBallForm; } }
         public InputManagerSO InputManager { get; set; }
 
@@ -84,13 +86,9 @@ namespace Veganimus.Platformer
             _playerAim = _characterModel.GetComponent<PlayerAim>();
             _gravity = _adjustGravity;
         }
-        //private void FixedUpdate()
-        //{
-        //    AnimLerp();
-        //}
+        
         private void FixedUpdate()
-        {
-            DetectSurface();
+        {          
             DetectCollectible();
         }
         private void Update()
@@ -108,8 +106,6 @@ namespace Veganimus.Platformer
                 _controller.enabled = false;
                 BallMovement();
             }
-            else if (!_controller.enabled && _grabbingLedge)
-             LedgeMovement();
             
             if(_controller.enabled || _inBallForm)
             {
@@ -161,26 +157,6 @@ namespace Veganimus.Platformer
                 _animator.SetFloat(_wallJumpingAP, 0);
             }
         }
-        //private void AnimLerp()
-        //{
-        //    if (!_animatorRoot) return;
-
-        //    if (Vector3.Distance(_transform.position, _animatorRoot.position) > 0.1f)
-        //    {
-        //        float lerpSpeed = 60.0f;
-        //        _characterModelTransform.rotation = Quaternion.Lerp(_characterModelTransform.rotation,
-        //                                             _animatorRoot.rotation,
-        //                                             _deltaTime * lerpSpeed);
-        //        _characterModelTransform.position = Vector3.Lerp(_characterModelTransform.position,
-        //                                          _animatorRoot.position,
-        //                                          _deltaTime * lerpSpeed);
-        //    }
-        //    else
-        //    {
-        //        _characterModelTransform.position = _animatorRoot.position;
-        //        _characterModelTransform.rotation = _animatorRoot.rotation;
-        //    }
-        //}
 
         private void BallMovement()
         {
@@ -204,25 +180,6 @@ namespace Veganimus.Platformer
             Array.Clear(_collectiblesDetected, 0, _collectiblesDetected.Length);
         }
 
-        private void DetectSurface()
-        {
-            RaycastHit hitInfo;
-            if (Physics.Raycast(_transform.localPosition, Vector3.up, out hitInfo, 2.0f, _detectSurfaceLayers))
-            {
-                var hangable = hitInfo.collider.GetComponent<IHang>();
-                if (hangable != null && _vertical > 0)
-                    _isHanging = true;
-            }
-
-            else
-            {
-                _animator.SetFloat(_hangingAP, 0);
-                _isHanging = false;
-                _gravity = _adjustGravity;
-            }
-        }
-
-
         private void FaceDirection()
         {
             if (_horizontal < 0)
@@ -232,23 +189,11 @@ namespace Veganimus.Platformer
                 _characterModelTransform.localRotation = Quaternion.Euler(0, 90, 0);
         }
 
-        private void LedgeMovement()
-        {
-            if (_vertical < 0)
-            {
-                _animator.SetFloat(_grabLedgeAP, 0f);
-                _grabbingLedge = false;
-                _animatorRoot = null;
-                _characterModelTransform.localPosition = _modelPosition;
-                _controller.enabled = true;
-                _yVelocity -= _gravity;
-            }
-        }
-
         private void Movement()
         {
             _direction = new Vector3(_horizontal, 0, _z);
             _velocity = _direction * _speed;
+            _characterModelTransform.localPosition = _modelPosition;
 
             if (_controller.isGrounded)
             {
@@ -263,6 +208,7 @@ namespace Veganimus.Platformer
                     _animator.SetFloat(_groundedAP, 0);
                 }
             }
+
             else
             {
                 _animator.SetFloat(_groundedAP, 0);
@@ -301,6 +247,11 @@ namespace Veganimus.Platformer
                 }
                 _yVelocity -= _gravity;
             }
+            //if (!_controller.isGrounded && !_isHanging && !_isWallJumping && !_jumpTriggered && !_grabbingLedge && _controller.enabled)
+            //    _animator.SetFloat(_fallingAP, 1.0f);
+            //else
+            //    _animator.SetFloat(_fallingAP, 0f);
+
             _velocity.y = _yVelocity;
             _controller.Move(_velocity * _deltaTime);
         }
@@ -331,15 +282,43 @@ namespace Veganimus.Platformer
             _vertical = y;
         }
 
-        public void GrabLedge(Transform anchorPos)
+        public void GrabLedge(Vector3 handPos, Ledge currentLedge, bool freeHang)
         {
             if (!_inBallForm)
             {
-                _animatorRoot = anchorPos;
-                _animator.SetFloat(_grabLedgeAP, 1.0f);
-                _grabbingLedge = true;
                 _controller.enabled = false;
+                _animator.SetFloat(_grabLedgeAP, 1.0f);
+              
+                if (!freeHang)
+                {
+                    _animator.SetFloat(_hangingAP, 1.0f);
+                    _animator.SetTrigger(_bracedAP);
+                }
+                else
+                    _animator.SetFloat(_hangingAP, 1.0f);
+
+                _playerAim.AimWeight = 0;
+                _velocity = Vector3.zero;
+                _isHanging = true;
+                _grabbingLedge = true;
+                _activeLedge = currentLedge;
+                _transform.localPosition = Vector3.MoveTowards(_transform.localPosition, handPos, 5f);
             }
+        }
+
+        public void ClimbUp()
+        {
+            _animator.SetFloat(_grabLedgeAP, 0f);
+            _animator.SetFloat(_hangingAP, 0f);
+            _animator.SetFloat(_jumpingAP, 0f);
+            _playerAim.AimWeight = 1;
+            _isHanging = false;
+            _grabbingLedge = false;
+            _jumpTriggered = false;
+            _transform.localPosition = _activeLedge.GetStandPosition().localPosition;
+            _controller.enabled = true;
+            _activeLedge = null;
+            _transform.parent = null;
         }
     }
 }
