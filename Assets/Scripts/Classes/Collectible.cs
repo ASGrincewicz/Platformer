@@ -7,24 +7,24 @@ namespace Veganimus.Platformer
         [SerializeField] private bool _canAbosrb = false;
         [SerializeField] private sbyte _powerUpAmount;
         [SerializeField] private float _speed;
-        [SerializeField] private CollectibleType _collectibleType;
-        [SerializeField] private LayerMask _collectorLayerMask;
-        private bool _collected;
+        [SerializeField] protected CollectibleType _collectibleType;
+        [SerializeField] protected LayerMask _collectorLayerMask;
+        protected bool _collected;
         private float _deltaTime;
         private float _time = 0;
         private float _x, _y, _z = 0;
         private float _xRadius, _yRadius;
-        private Transform _transform;
+        protected Transform _transform;
         public bool CanAbsorb { get { return _canAbosrb; } }
 
-        private void Start()
+        protected virtual void Start()
         {
             _transform = transform;
             _xRadius = Random.Range(-0.05f, 0.05f);
             _yRadius = Random.Range(-0.05f, 0.05f);
         }
 
-        private void Update()
+        protected virtual void Update()
         {
             _deltaTime = Time.deltaTime;
             if (Time.timeScale > 0)
@@ -54,6 +54,9 @@ namespace Veganimus.Platformer
                             break;
                         case CollectibleType.Bomb:
                             //Increase Bomb Capacity.
+                            break;
+                        case CollectibleType.Upgrade:
+                            //enable upgrade
                             break;
                         default:
                             break;

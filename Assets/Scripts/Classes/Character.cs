@@ -12,6 +12,7 @@ namespace Veganimus.Platformer
         [SerializeField] private float _jumpHeight = 15.0f;
         [SerializeField] private float _speed = 5f;
         [SerializeField] private LayerMask _collectibleLayerMask;
+        [SerializeField] private PlayerUpgrades _upgrades;
         [SerializeField] private Vector3 _modelPosition;
         [SerializeField] private CameraController _mainCamera;
         [SerializeField] private GameObject _aimTarget;
@@ -45,6 +46,7 @@ namespace Veganimus.Platformer
         private float _vertical;
         private const float _z = 0;
         private float _yVelocity;
+       
         private RaycastHit _hitInfo;
         private Vector3 _direction;
         private Vector3 _velocity;
@@ -110,7 +112,7 @@ namespace Veganimus.Platformer
             if(_controller.enabled || _inBallForm)
             {
                 FaceDirection();
-                if (_ballModeTriggered && !_inBallForm && _controller.isGrounded)
+                if (_ballModeTriggered && !_inBallForm && _controller.isGrounded && _upgrades.ballMode)
                 {
                     _mainCamera.trackedObject = _ballForm;
                    _ballFormTransform.position = _transform.position;
@@ -171,13 +173,17 @@ namespace Veganimus.Platformer
                                                                 _collectibleDetectionRadius,
                                                                 _collectiblesDetected,
                                                                 _collectibleLayerMask);
-
-           for (byte i = 0; i < numberColliders; i++)
-           {
-            _collectiblesDetected[i].transform.localPosition = Vector3.MoveTowards(_collectiblesDetected[i].transform.localPosition, _transform.localPosition, 3f * _deltaTime);
-
-           }
-            Array.Clear(_collectiblesDetected, 0, _collectiblesDetected.Length);
+            if (numberColliders != 0)
+            {
+                for (byte i = 0; i < numberColliders; i++)
+                {
+                    if (_collectiblesDetected[i].GetComponent<Collectible>().CanAbsorb)
+                        _collectiblesDetected[i].transform.localPosition = Vector3.MoveTowards(_collectiblesDetected[i].transform.localPosition, _transform.localPosition, 3f * _deltaTime);
+                    else
+                        return;
+                }
+                Array.Clear(_collectiblesDetected, 0, _collectiblesDetected.Length);
+            }
         }
 
         private void FaceDirection()
@@ -214,7 +220,7 @@ namespace Veganimus.Platformer
                 _animator.SetFloat(_groundedAP, 0);
                 if (_jumpTriggered && !_isWallJumping)
                 {
-                    if (_canDoubleJump || _canWallJump)
+                    if (_canDoubleJump && _upgrades.doubleJump || _canWallJump)
                     {
                         if (_canWallJump && !_isWallJumping)
                         {
@@ -282,6 +288,21 @@ namespace Veganimus.Platformer
             _vertical = y;
         }
 
+        public void ClimbUp()
+        {
+            _animator.SetFloat(_grabLedgeAP, 0f);
+            _animator.SetFloat(_hangingAP, 0f);
+            _animator.SetFloat(_jumpingAP, 0f);
+            _playerAim.AimWeight = 1;
+            _isHanging = false;
+            _grabbingLedge = false;
+            _jumpTriggered = false;
+            _transform.localPosition = _activeLedge.GetStandPosition().localPosition;
+            _controller.enabled = true;
+            _activeLedge = null;
+            _transform.parent = null;
+        }
+
         public void GrabLedge(Vector3 handPos, Ledge currentLedge, bool freeHang)
         {
             if (!_inBallForm)
@@ -306,19 +327,29 @@ namespace Veganimus.Platformer
             }
         }
 
-        public void ClimbUp()
+        public void ActivateUpgrade(int upgradeID)
         {
-            _animator.SetFloat(_grabLedgeAP, 0f);
-            _animator.SetFloat(_hangingAP, 0f);
-            _animator.SetFloat(_jumpingAP, 0f);
-            _playerAim.AimWeight = 1;
-            _isHanging = false;
-            _grabbingLedge = false;
-            _jumpTriggered = false;
-            _transform.localPosition = _activeLedge.GetStandPosition().localPosition;
-            _controller.enabled = true;
-            _activeLedge = null;
-            _transform.parent = null;
+            switch(upgradeID)
+            {
+                case 0:
+                    _upgrades.ballBombs = true;
+                    break;
+                case 1:
+                    _upgrades.ballMode = true;
+                    break;
+                case 2:
+                    _upgrades.chargeBeam = true;
+                    break;
+                case 3:
+                    _upgrades.doubleJump = true;
+                    break;
+                case 4:
+                    _upgrades.missiles = true;
+                    break;
+                default:
+                    Debug.Log("No upgrade specified.");
+                    break;
+            }
         }
     }
 }
