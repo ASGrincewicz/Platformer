@@ -20,6 +20,4 @@ namespace Veganimus.Platformer
 
         public void RotateThis(Vector3 rotationVector) => transform.Rotate(rotationVector * _speed * _deltaTime);
     }
-
-
 }
