@@ -294,24 +294,6 @@ AnimatorStateTransition:
   m_PrefabAsset: {fileID: 0}
   m_Name: 
   m_Conditions:
-  - m_ConditionMode: 2
-    m_ConditionEvent: dropping
-    m_EventTreshold: 0
-  - m_ConditionMode: 4
-    m_ConditionEvent: grounded
-    m_EventTreshold: 1
-  - m_ConditionMode: 4
-    m_ConditionEvent: jumping
-    m_EventTreshold: 1
-  - m_ConditionMode: 4
-    m_ConditionEvent: wallJumping
-    m_EventTreshold: 1
-  - m_ConditionMode: 4
-    m_ConditionEvent: hanging
-    m_EventTreshold: 1
-  - m_ConditionMode: 4
-    m_ConditionEvent: grabLedge
-    m_EventTreshold: 1
   - m_ConditionMode: 3
     m_ConditionEvent: falling
     m_EventTreshold: 0
@@ -326,7 +308,7 @@ AnimatorStateTransition:
   m_ExitTime: 0.75
   m_HasExitTime: 0
   m_HasFixedDuration: 1
-  m_InterruptionSource: 0
+  m_InterruptionSource: 2
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
 --- !u!114 &-819799579198564120
