@@ -327,7 +327,7 @@ namespace Veganimus.Platformer
             }
         }
 
-        public void ActivateUpgrade(int upgradeID)
+        public void ActivateUpgrade(int upgradeID, string upgradeName)
         {
             switch(upgradeID)
             {
@@ -350,6 +350,7 @@ namespace Veganimus.Platformer
                     Debug.Log("No upgrade specified.");
                     break;
             }
+            StartCoroutine(UIManager.Instance.AcquireUpgrade(upgradeName));
         }
     }
 }

@@ -7,6 +7,7 @@ namespace Veganimus.Platformer
     {
         [Tooltip("0 = BallBombs, 1 = BallMode, 2 = ChargeBeam, 3 = DoubleJump, 4 = Missiles")]
         [SerializeField] private int _upgradeID;
+        [SerializeField] private string _upgradeName;
 
         protected override void Start() => _transform = transform;
 
@@ -20,7 +21,7 @@ namespace Veganimus.Platformer
                 //Enable upgrade on player
                 var player = other.gameObject.GetComponentInParent<Character>();
                 if (player != null)
-                    player.ActivateUpgrade(_upgradeID);
+                    player.ActivateUpgrade(_upgradeID, _upgradeName);
                 else
                     Debug.Log("Player not found.");
             }

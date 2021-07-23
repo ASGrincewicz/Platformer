@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections.Generic;
+using System.Collections;
 
 namespace Veganimus.Platformer
 {
@@ -25,6 +26,7 @@ namespace Veganimus.Platformer
         [SerializeField] private TMP_Text _collectibleText;
         [SerializeField] private TMP_Text _healthText;
         [SerializeField] private TMP_Text _missilesText;
+        [SerializeField] private TMP_Text _upgradeText;
         private byte _collectiblesCollected;
         private byte _maxBombs;
         private byte _maxHealth;
@@ -67,6 +69,17 @@ namespace Veganimus.Platformer
 
         public void ActivatePauseMenu(bool isActive) => _pauseMenu.SetActive(isActive);
 
+        public IEnumerator AcquireUpgrade(string upgradeName)
+        {
+            _upgradeText.gameObject.SetActive(true);
+            _upgradeText.text = $"{upgradeName} Acquired!";
+            Time.timeScale = 0.25f;
+            yield return new WaitForSeconds(0.5f);
+            _upgradeText.text = string.Empty;
+            Time.timeScale = 1.0f;
+            _upgradeText.gameObject.SetActive(false);
+        }
+
         public void BombUpdate(sbyte amount)
         {
             _currentBombs = amount;
@@ -104,7 +117,5 @@ namespace Veganimus.Platformer
             else
                 _missileActiveBox.canvasRenderer.SetAlpha(0.75f);
         }
-
-        
     }
 }
