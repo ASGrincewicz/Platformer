@@ -46,7 +46,6 @@ namespace Veganimus.Platformer
         private float _vertical;
         private const float _z = 0;
         private float _yVelocity;
-       
         private RaycastHit _hitInfo;
         private Vector3 _direction;
         private Vector3 _velocity;
@@ -61,7 +60,9 @@ namespace Veganimus.Platformer
         private Transform _characterModelTransform;
         private Transform _ballFormTransform;
         private Transform _transform;
+        private Weapon _weapon;
         public bool InBallForm { get { return _inBallForm; } }
+        public PlayerUpgrades Upgrades { get { return _upgrades; } }
         public InputManagerSO InputManager { get; set; }
 
         private void OnEnable()
@@ -86,6 +87,7 @@ namespace Veganimus.Platformer
             _rigidbody = GetComponentInChildren<Rigidbody>();
             _animator = _characterModel.GetComponent<Animator>();
             _playerAim = _characterModel.GetComponent<PlayerAim>();
+            _weapon = GetComponentInChildren<Weapon>();
             _gravity = _adjustGravity;
         }
         
@@ -345,12 +347,15 @@ namespace Veganimus.Platformer
                     break;
                 case 4:
                     _upgrades.missiles = true;
+                    _weapon.SecondaryAmmo += 5;
+                    UIManager.Instance.MissileText.gameObject.SetActive(true);
+                    UIManager.Instance.MissilesTextUpdate(5);
                     break;
                 default:
                     Debug.Log("No upgrade specified.");
                     break;
             }
-            StartCoroutine(UIManager.Instance.AcquireUpgrade(upgradeName));
+            StartCoroutine(UIManager.Instance.AcquireUpgradeRoutine(upgradeName));
         }
     }
 }

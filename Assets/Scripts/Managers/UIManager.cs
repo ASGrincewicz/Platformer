@@ -36,6 +36,8 @@ namespace Veganimus.Platformer
         private sbyte _currentLives;
         private int _maxMissileCount;
         private int _missileCount;
+        private WaitForSeconds _upgradeTextRoutineDelay;
+        public TMP_Text MissileText { get { return _missilesText; } set { } } 
 
         private void Awake() => _instance = this;
 
@@ -44,6 +46,7 @@ namespace Veganimus.Platformer
             HealthTextUpdate(_currentHealth);
             LivesUpdate(_currentLives);
             SecondaryFireActive(false);
+            _upgradeTextRoutineDelay = new WaitForSeconds(0.5f);
         }
        
         private void ClearAmount(List<Image> toClear)
@@ -68,17 +71,6 @@ namespace Veganimus.Platformer
         }
 
         public void ActivatePauseMenu(bool isActive) => _pauseMenu.SetActive(isActive);
-
-        public IEnumerator AcquireUpgrade(string upgradeName)
-        {
-            _upgradeText.gameObject.SetActive(true);
-            _upgradeText.text = $"{upgradeName} Acquired!";
-            Time.timeScale = 0.25f;
-            yield return new WaitForSeconds(0.5f);
-            _upgradeText.text = string.Empty;
-            Time.timeScale = 1.0f;
-            _upgradeText.gameObject.SetActive(false);
-        }
 
         public void BombUpdate(sbyte amount)
         {
@@ -116,6 +108,17 @@ namespace Veganimus.Platformer
                 _missileActiveBox.canvasRenderer.SetAlpha(0);
             else
                 _missileActiveBox.canvasRenderer.SetAlpha(0.75f);
+        }
+
+        public IEnumerator AcquireUpgradeRoutine(string upgradeName)
+        {
+            _upgradeText.gameObject.SetActive(true);
+            _upgradeText.text = $"{upgradeName} Acquired!";
+            Time.timeScale = 0.25f;
+            yield return _upgradeTextRoutineDelay;
+            _upgradeText.text = string.Empty;
+            Time.timeScale = 1.0f;
+            _upgradeText.gameObject.SetActive(false);
         }
     }
 }
