@@ -29,6 +29,7 @@ namespace Veganimus.Platformer
         private bool _isHanging;
         private bool _isWallJumping;
         //Animator Parameters
+        private readonly int _bracedAP = Animator.StringToHash("braced");
         private readonly int _crouchAP = Animator.StringToHash("crouch");
         private readonly int _droppingAP = Animator.StringToHash("dropping");
         private readonly int _grabLedgeAP = Animator.StringToHash("grabLedge");
@@ -246,6 +247,7 @@ namespace Veganimus.Platformer
         {
             _direction = new Vector3(_horizontal, 0, _z);
             _velocity = _direction * _speed;
+            _characterModelTransform.localPosition = _modelPosition;
 
             if (_controller.isGrounded)
             {
@@ -328,22 +330,44 @@ namespace Veganimus.Platformer
             _vertical = y;
         }
 
-        public void GrabLedge(Vector3 handPos, Ledge currentLedge)
+        public void GrabLedge(Vector3 handPos, Ledge currentLedge, bool freeHang)
         {
             if (!_inBallForm)
             {
                 _controller.enabled = false;
                 _animator.SetFloat(_grabLedgeAP, 1.0f);
-                _animator.SetFloat(_jumpingAP, 0);
-                _animator.SetFloat(_hangingAP, 1.0f);
+                //_animator.SetFloat(_jumpingAP, 0);
+                if (!freeHang)
+                {
+                    _animator.SetFloat(_hangingAP, 1.0f);
+                    _animator.SetTrigger(_bracedAP);
+                }
+                else
+                    _animator.SetFloat(_hangingAP, 1.0f);
+
                 _playerAim.AimWeight = 0;
                 _velocity = Vector3.zero;
                 _isHanging = true;
                 _grabbingLedge = true;
                 _activeLedge = currentLedge;
                 
-                _transform.localPosition = Vector3.MoveTowards(_transform.localPosition, handPos, 2f);
+                _transform.localPosition = Vector3.MoveTowards(_transform.localPosition, handPos, 5f);
             }
+        }
+
+        public void ClimbUp()
+        {
+            _animator.SetFloat(_grabLedgeAP, 0f);
+            _animator.SetFloat(_hangingAP, 0f);
+            _animator.SetFloat(_jumpingAP, 0f);
+            _playerAim.AimWeight = 1;
+            _isHanging = false;
+            _grabbingLedge = false;
+            _transform.localPosition = _activeLedge.GetStandPosition().localPosition;
+            _controller.enabled = true;
+            _activeLedge = null;
+            _transform.parent = null;
+           // _characterModelTransform.localPosition = new Vector3(0, -0.8f, 0);
         }
     }
 }
