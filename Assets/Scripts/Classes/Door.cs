@@ -5,18 +5,26 @@ namespace Veganimus.Platformer
 {
     public class Door : MonoBehaviour
     {
+        [SerializeField] private bool _locked = false;
         [SerializeField] private byte _doorLevel = 1;
+        [SerializeField] private Material[] _doorMat = new Material[2];//0 is unlocked, 1 is locked.
         private int _doorOpenAP = Animator.StringToHash("isDoorOpen");
         private int _doorOpenSpeedAP = Animator.StringToHash("doorSpeed");
         private ICanOpenDoor _iCanOpenDoor;
         private Animator _animator;
+        private MeshRenderer _meshRenderer;
         private WaitForSeconds _closeDelay;
         public byte DoorLevel { get { return _doorLevel; } }
 
         private void Start()
         {
             _animator = GetComponentInParent<Animator>();
+            _meshRenderer = GetComponent<MeshRenderer>();
             _closeDelay = new WaitForSeconds(5.0f);
+            if (_locked)
+                _meshRenderer.material = _doorMat[1];
+            else
+                _meshRenderer.material = _doorMat[0];
         }
 
         private void OnCollisionEnter(Collision other)
@@ -26,9 +34,14 @@ namespace Veganimus.Platformer
                 _iCanOpenDoor = other.collider.GetComponent<ICanOpenDoor>();
                 if(_iCanOpenDoor != null)
                 {
-                   // Debug.Log("Who disturbs my slumber!");
                     if (_iCanOpenDoor.MaxDoorLevel >= _doorLevel)
                     {
+                        if(_locked)
+                        {
+                            _locked = false;
+                            _doorLevel = 1;
+                            _meshRenderer.material = _doorMat[0];
+                        }
                         _animator.SetFloat(_doorOpenSpeedAP, 1.0f);
                         _animator.SetBool(_doorOpenAP, true);
                         StartCoroutine(DoorCloseRoutine());
