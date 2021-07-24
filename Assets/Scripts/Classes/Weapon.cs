@@ -1,6 +1,5 @@
 ﻿// Aaron Grincewicz Veganimus@icloud.com 6/5/2021
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 namespace Veganimus.Platformer
 {
@@ -8,7 +7,7 @@ namespace Veganimus.Platformer
     {
         [SerializeField] private InputManagerSO _inputManager;
         [SerializeField] protected bool _isSecondaryFireOn = false;
-        [SerializeField] protected int _secondaryAmmo = 5;
+        [SerializeField] protected int _secondaryAmmo = 0;
         [SerializeField] protected float _fireRate = 0.5f, _secondaryFireRate = 0.5f;
         [SerializeField] protected GameObject _bulletPrefab, _missilePrefab;
         [SerializeField] protected Transform _fireOffset;
@@ -16,9 +15,15 @@ namespace Veganimus.Platformer
         protected float _canFire = -1.0f;
         protected PoolManager _poolManager;
         protected Transform _pmTransform;
+        private Character _player;
         private UIManager _uIManager;
         protected WaitForSeconds _secondaryCoolDown, _shootCoolDown;
-        public int SecondaryAmmo { get { return _secondaryAmmo; } }
+        public int SecondaryAmmo { get { return _secondaryAmmo; } set { _secondaryAmmo = value; } }
+
+        private void OnEnable()
+        {
+            _player = this.GetComponentInParent<Character>();
+        }
 
         protected virtual IEnumerator Start()
         {
@@ -33,16 +38,19 @@ namespace Veganimus.Platformer
 
         protected virtual void Update()
         {
-            _secondaryFireTriggered = _inputManager.controls.Standard.SecondaryFire.triggered;
-            if (_secondaryFireTriggered && !_isSecondaryFireOn)
-                SecondaryUIUpdate(true);
-            else if (_secondaryFireTriggered && _isSecondaryFireOn || _secondaryAmmo <= 0)
-                SecondaryUIUpdate(false);
+            if (_player.Upgrades.missiles)
+            {
+                _secondaryFireTriggered = _inputManager.controls.Standard.SecondaryFire.triggered;
+                if (_secondaryFireTriggered && !_isSecondaryFireOn)
+                    SecondaryUIUpdate(true);
+                else if (_secondaryFireTriggered && _isSecondaryFireOn || _secondaryAmmo <= 0)
+                    SecondaryUIUpdate(false);
+            }
             
             switch(_isSecondaryFireOn)
             {
                 case true:
-                    if (Time.time > _canFire && _secondaryAmmo > 0)
+                    if (Time.time > _canFire && _secondaryAmmo > 0 && _player.Upgrades.missiles)
                         SecondaryShoot();
                         break;
                 case false:

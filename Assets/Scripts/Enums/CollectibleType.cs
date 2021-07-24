@@ -3,6 +3,6 @@ namespace Veganimus.Platformer
 {
     public enum CollectibleType
     {
-        Health, Life, Missile, Bomb
+        Health, Life, Missile, Bomb, Upgrade
     }
 }

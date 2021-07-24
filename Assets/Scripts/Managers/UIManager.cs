@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections.Generic;
+using System.Collections;
 
 namespace Veganimus.Platformer
 {
@@ -25,6 +26,7 @@ namespace Veganimus.Platformer
         [SerializeField] private TMP_Text _collectibleText;
         [SerializeField] private TMP_Text _healthText;
         [SerializeField] private TMP_Text _missilesText;
+        [SerializeField] private TMP_Text _upgradeText;
         private byte _collectiblesCollected;
         private byte _maxBombs;
         private byte _maxHealth;
@@ -34,6 +36,8 @@ namespace Veganimus.Platformer
         private sbyte _currentLives;
         private int _maxMissileCount;
         private int _missileCount;
+        private WaitForSeconds _upgradeTextRoutineDelay;
+        public TMP_Text MissileText { get { return _missilesText; } set { } } 
 
         private void Awake() => _instance = this;
 
@@ -42,6 +46,7 @@ namespace Veganimus.Platformer
             HealthTextUpdate(_currentHealth);
             LivesUpdate(_currentLives);
             SecondaryFireActive(false);
+            _upgradeTextRoutineDelay = new WaitForSeconds(0.5f);
         }
        
         private void ClearAmount(List<Image> toClear)
@@ -105,6 +110,15 @@ namespace Veganimus.Platformer
                 _missileActiveBox.canvasRenderer.SetAlpha(0.75f);
         }
 
-        
+        public IEnumerator AcquireUpgradeRoutine(string upgradeName)
+        {
+            _upgradeText.gameObject.SetActive(true);
+            _upgradeText.text = $"{upgradeName} Acquired!";
+            Time.timeScale = 0.25f;
+            yield return _upgradeTextRoutineDelay;
+            _upgradeText.text = string.Empty;
+            Time.timeScale = 1.0f;
+            _upgradeText.gameObject.SetActive(false);
+        }
     }
 }

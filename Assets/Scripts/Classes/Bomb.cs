@@ -13,9 +13,9 @@ namespace Veganimus.Platformer
         [SerializeField] private float _upForce;
         [SerializeField] private sbyte _damageAmount = 2;
         [SerializeField] private LayerMask _targetLayers = 0;
-        private Collider[] _hitColliders;
         private IBombable _iBombable;
         private IDamageable _idamageable;
+        private Collider[] _hitColliders;
         private WaitForSeconds _explosionDelay;
         public byte MaxDoorLevel { get { return _maxDoorLevel; } set { value = _maxDoorLevel; } }
 
