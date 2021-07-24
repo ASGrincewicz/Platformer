@@ -17,11 +17,18 @@ namespace Veganimus.Platformer
         {
             if(other.tag == "Player" && _collectibleType == CollectibleType.Upgrade)
             {
-                _collected = true;
-                //Enable upgrade on player
                 var player = other.gameObject.GetComponentInParent<Character>();
+
                 if (player != null)
-                    player.ActivateUpgrade(_upgradeID, _upgradeName);
+                {
+                    if (!player.Upgrades.ballMode && _upgradeID == 0)
+                        return;
+                    else
+                    {
+                        _collected = true;
+                        player.ActivateUpgrade(_upgradeID, _upgradeName);
+                    }
+                }
                 else
                     Debug.Log("Player not found.");
             }

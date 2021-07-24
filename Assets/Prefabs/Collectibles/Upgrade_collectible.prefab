@@ -64,7 +64,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 5a26de236ce89e94b963be8fa2b7ade6, type: 2}
+  - {fileID: 2100000, guid: 36bce9ab6cae8ce43962938466458044, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -147,8 +147,8 @@ MonoBehaviour:
   _collectorLayerMask:
     serializedVersion: 2
     m_Bits: 64
-  _upgradeID: 4
-  _upgradeName: Missile Launcher
+  _upgradeID: 1
+  _upgradeName: Ball Mode
 --- !u!114 &1159676564
 MonoBehaviour:
   m_ObjectHideFlags: 0

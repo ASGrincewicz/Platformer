@@ -10,17 +10,18 @@ namespace Veganimus.Platformer
         [SerializeField] private float _bombRechargeTime = 3.0f;
         [SerializeField] private sbyte _bombCount = 3;
         private float _canDropBomb = -1.0f;
+        private Character _player;
         private Transform _transform;
 
         private void Start()
         {
             _transform = transform;
+            _player = GetComponentInParent<Character>();
         }
-
 
         private void Update()
         {
-            if (Time.time > _canDropBomb)
+            if (Time.time > _canDropBomb && _player.Upgrades.ballBombs)
             {
                 var bombTriggered = _inputManager.controls.Standard.Shoot.triggered;
                 if (bombTriggered && _bombCount > 0)
