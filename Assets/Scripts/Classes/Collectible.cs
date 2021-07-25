@@ -35,7 +35,7 @@ namespace Veganimus.Platformer
                 _transform.position += new Vector3(_x, _y, _z);
             }
         }
-        private void OnTriggerEnter(Collider other)
+        protected virtual void OnTriggerEnter(Collider other)
         {
             if (other.GetComponent<Character>())
             {
@@ -64,6 +64,8 @@ namespace Veganimus.Platformer
                 }
                 _collected = true;
                 UIManager.Instance.CollectibleTextUpdate(1);
+                GameManager.Instance.Collectibles++;
+                Debug.Log(GameManager.Instance.Collectibles);
                 Destroy(this.gameObject);
             }
         }

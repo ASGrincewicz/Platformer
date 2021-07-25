@@ -4,8 +4,12 @@ namespace Veganimus.Platformer
 {
     public class BallSlot : MonoBehaviour
     {
-        [SerializeField] private GameObject _centerPos;
         [SerializeField] private bool _ballInSlot;
+        [SerializeField] private bool _isGoal;
+        [SerializeField] private GameObject _centerPos;
+        [SerializeField] private Goal _goal;
+        private bool _conditionsChecked;
+        
         private Rigidbody _insertedRB;
 
         private void OnTriggerEnter(Collider other)
@@ -17,7 +21,7 @@ namespace Veganimus.Platformer
                 if (_insertedRB != null)
                 {
                     _insertedRB.useGravity = false;
-                    if (_insertedRB.useGravity == false)
+                    if (!_insertedRB.useGravity)
                     {
                         _insertedRB.constraints = RigidbodyConstraints.FreezeAll;
                     }
@@ -30,7 +34,7 @@ namespace Veganimus.Platformer
         {
             if (_insertedRB != null)
             {
-                if (_insertedRB.useGravity == false)
+                if (!_insertedRB.useGravity)
                 {
                     _insertedRB.constraints = RigidbodyConstraints.FreezeAll;
                 }
@@ -41,16 +45,22 @@ namespace Veganimus.Platformer
                     _insertedRB.constraints = RigidbodyConstraints.FreezeRotationY;
                 }
             }
+            if (_isGoal && !_conditionsChecked)
+            {
+                _conditionsChecked = true;
+                _goal.CheckWinConditions();
+            }
         }
         private void OnTriggerExit(Collider other)
         {
-            if(_insertedRB != null)
+            if (_insertedRB != null)
             {
                 _insertedRB.useGravity = true;
                 _insertedRB.constraints = RigidbodyConstraints.FreezePositionZ;
                 _insertedRB.constraints = RigidbodyConstraints.FreezeRotationX;
                 _insertedRB.constraints = RigidbodyConstraints.FreezeRotationY;
                 _ballInSlot = false;
+                _conditionsChecked = false;
             }
         }
     }

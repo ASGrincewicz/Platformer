@@ -5,6 +5,16 @@ namespace Veganimus.Platformer
 {
     public class Character : MonoBehaviour
     {
+        #region Singleton
+        public static Character Instance
+        {
+            get
+            {
+                return _instance;
+            }
+        }
+        private static Character _instance;
+        #endregion
         [SerializeField] private byte _collectibles;
         [SerializeField] private float _adjustGravity;
         [SerializeField] private float _collectibleDetectionRadius;
@@ -64,6 +74,8 @@ namespace Veganimus.Platformer
         public bool InBallForm { get { return _inBallForm; } }
         public PlayerUpgrades Upgrades { get { return _upgrades; } }
         public InputManagerSO InputManager { get; set; }
+
+        private void Awake() => _instance = this;
 
         private void OnEnable()
         {
@@ -311,6 +323,7 @@ namespace Veganimus.Platformer
             {
                 _controller.enabled = false;
                 _animator.SetFloat(_grabLedgeAP, 1.0f);
+                _animator.SetFloat(_jumpingAP, 0);
               
                 if (!freeHang)
                 {

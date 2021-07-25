@@ -4,6 +4,16 @@ namespace Veganimus.Platformer
 {
     public class GameManager : MonoBehaviour
     {
+        #region Singleton
+        public static GameManager Instance
+        {
+            get
+            {
+                return _instance;
+            }
+        }
+        private static GameManager _instance;
+        #endregion
         [SerializeField] private GameObject _player;
         [SerializeField] private GameStateChannel _gameStateChannel;
         [SerializeField] private InputManagerSO _inputManager;
@@ -12,7 +22,15 @@ namespace Veganimus.Platformer
         private bool _isGameOver;
         private bool _isPaused;
         private bool _isPlayerDead;
+        private int _collectibles = 0;
+        [SerializeField] private int _enemyKills = 0;
+        private int _upgradesCollected = 0;
         private GameState _gameState;
+        public int Collectibles { get { return _collectibles; } set { _collectibles = value; } }
+        public int EnemyKills { get { return _enemyKills; } set { _enemyKills = value; } }
+        public int UpgradesCollected { get { return _upgradesCollected; } set { _upgradesCollected = value; } }
+
+        private void Awake() => _instance = this;
 
         private void OnEnable()
         {
@@ -42,11 +60,14 @@ namespace Veganimus.Platformer
                 case GameState.GameOver:
                     _isGameOver = true;
                     break;
+                case GameState.Finish:
+                    //Display Win UI
+                    Debug.Log("Level Complete!");
+                    break;
                 default:
                     break;
             }
         }
-
        
         private void RespawnPlayer()
         {
