@@ -65,7 +65,6 @@ namespace Veganimus.Platformer
                 _collected = true;
                 UIManager.Instance.CollectibleTextUpdate(1);
                 GameManager.Instance.Collectibles++;
-                Debug.Log(GameManager.Instance.Collectibles);
                 Destroy(this.gameObject);
             }
         }
