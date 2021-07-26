@@ -142,9 +142,7 @@ namespace Veganimus.Platformer
         {
             if (!_controller.isGrounded && !_isWallJumping && !_grabbingLedge)
             {
-                var wall = hit.collider.GetComponent<IWall>();
-
-                if (wall != null)
+                if (hit.transform.CompareTag("Wall"))
                 {
                     _wallSurfaceNormal = hit.normal;
                     _canWallJump = true;

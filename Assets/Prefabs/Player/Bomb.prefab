@@ -63,9 +63,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 335219554f24841169956dac14e4691a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _maxDoorLevel: 1
   _maxColliders: 50
   _bombTimer: 1
-  _explosionForce: 7
+  _explosionForce: 5
   _explosionRadius: 1
   _upForce: 2.5
   _damageAmount: 2

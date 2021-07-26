@@ -56,6 +56,7 @@ namespace Veganimus.Platformer
             else
                 _weapon.IsShooting = false;
         }
+       
         private void ChangeAIState(AIState state)
         {
             switch (state)
