@@ -1013,6 +1013,7 @@ GameObject:
   - component: {fileID: 3648882455283779074}
   - component: {fileID: 3648882455283779073}
   - component: {fileID: 3648882455283779072}
+  - component: {fileID: 9027482353972876690}
   m_Layer: 6
   m_Name: BallForm
   m_TagString: Player
@@ -1129,6 +1130,22 @@ MonoBehaviour:
   _dropRate: 0.5
   _bombRechargeTime: 1.25
   _bombCount: 3
+--- !u!114 &9027482353972876690
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3648882455283779583}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97831ab0b8b5a4836aa716de936630d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _collectibleDetectionRadius: 2
+  _collectibleLayerMask:
+    serializedVersion: 2
+    m_Bits: 4096
 --- !u!1 &3648882455336380594
 GameObject:
   m_ObjectHideFlags: 0
@@ -2130,6 +2147,7 @@ GameObject:
   - component: {fileID: 3648882456030760717}
   - component: {fileID: 3648882456030760716}
   - component: {fileID: 280230924}
+  - component: {fileID: 6182013149702965411}
   m_Layer: 6
   m_Name: Character
   m_TagString: Player
@@ -2168,13 +2186,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _collectibles: 0
   _adjustGravity: 0.98
-  _collectibleDetectionRadius: 3
   _gravity: 0.98
   _jumpHeight: 15
   _speed: 6
-  _collectibleLayerMask:
-    serializedVersion: 2
-    m_Bits: 4096
   _upgrades:
     ballBombs: 0
     ballMode: 0
@@ -2236,6 +2250,22 @@ MonoBehaviour:
   _characterType: 0
   _gameStateChannel: {fileID: 11400000, guid: 5bf970827b15a4540b4b577cc056ee92, type: 2}
   _respawnPlayerChannel: {fileID: 11400000, guid: 0f68ca6cc2ae24693b41f1665e567c41, type: 2}
+--- !u!114 &6182013149702965411
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3648882456030760715}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97831ab0b8b5a4836aa716de936630d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _collectibleDetectionRadius: 2
+  _collectibleLayerMask:
+    serializedVersion: 2
+    m_Bits: 4096
 --- !u!1 &3648882456042948984
 GameObject:
   m_ObjectHideFlags: 0
@@ -2845,6 +2875,7 @@ GameObject:
   - component: {fileID: 3648882456565828080}
   - component: {fileID: 3648882456565828079}
   - component: {fileID: 510268557815485905}
+  - component: {fileID: 7398803707006325689}
   m_Layer: 6
   m_Name: CharacterModel
   m_TagString: Player
@@ -2918,6 +2949,22 @@ CapsuleCollider:
   m_Height: 1.92
   m_Direction: 1
   m_Center: {x: 0, y: 0.93, z: 0}
+--- !u!114 &7398803707006325689
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3648882456565828077}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97831ab0b8b5a4836aa716de936630d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _collectibleDetectionRadius: 3
+  _collectibleLayerMask:
+    serializedVersion: 2
+    m_Bits: 4096
 --- !u!1 &3648882456580828063
 GameObject:
   m_ObjectHideFlags: 0

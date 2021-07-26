@@ -22,7 +22,6 @@ namespace Veganimus.Platformer
 		[SerializeField] private bool _showDebug = false;
 		private bool _activeTracking = true;
 		private float _deltaTime;
-		
 		private Rect _windowRect;
 		private Vector3 _cameraPosition;
 		private Vector3 _playerPosition;
@@ -256,7 +255,7 @@ namespace Veganimus.Platformer
 
 			while (_transform.position != targetPosition)
 			{
-				_transform.position = Vector3.SmoothDamp(_transform.position, targetPosition, ref _smoothVelocity ,_smoothTime * 1.5f);
+				_transform.position = Vector3.SmoothDamp(_transform.position, targetPosition, ref _smoothVelocity, _smoothTime);
 				yield return 0;
 			}
 			_activeTracking = true;

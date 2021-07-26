@@ -10,7 +10,6 @@ namespace Veganimus.Platformer
         [SerializeField] protected CollectibleType _collectibleType;
         [SerializeField] protected LayerMask _collectorLayerMask;
         protected bool _collected;
-        private float _deltaTime;
         private float _time = 0;
         private float _x, _y, _z = 0;
         private float _xRadius, _yRadius;
@@ -26,10 +25,9 @@ namespace Veganimus.Platformer
 
         protected virtual void Update()
         {
-            _deltaTime = Time.deltaTime;
             if (Time.timeScale > 0)
             {
-                _time += _deltaTime;
+                _time += GameManager.DeltaTime;
                 _x = _xRadius * Mathf.Cos(_time * _speed);
                 _y = _yRadius * Mathf.Sin(_time * _speed);
                 _transform.position += new Vector3(_x, _y, _z);
@@ -37,17 +35,17 @@ namespace Veganimus.Platformer
         }
         protected virtual void OnTriggerEnter(Collider other)
         {
-            if (other.GetComponent<Character>())
+            if (other.CompareTag("Player"))
             {
                 if(_canAbosrb)
                 {
                     switch(_collectibleType)
                     {
                         case CollectibleType.Health:
-                            other.GetComponent<PlayerHealth>().Heal((sbyte)(_powerUpAmount / 2));
+                            other.GetComponentInParent<PlayerHealth>().Heal((sbyte)(_powerUpAmount / 2));
                             break;
                         case CollectibleType.Life:
-                            other.GetComponent<PlayerHealth>().IncreaseMaxLives();
+                            other.GetComponentInParent<PlayerHealth>().IncreaseMaxLives();
                             break;
                         case CollectibleType.Missile:
                             //Increase Missile Capacity.

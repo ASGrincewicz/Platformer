@@ -23,6 +23,7 @@ namespace Veganimus.Platformer
         public int Collectibles { get { return _collectibles; } set { _collectibles = value; } }
         public int EnemyKills { get { return _enemyKills; } set { _enemyKills = value; } }
         public int UpgradesCollected { get { return _upgradesCollected; } set { _upgradesCollected = value; } }
+        public static float DeltaTime;
 
         private void Awake() => _instance = this;
 
@@ -40,6 +41,11 @@ namespace Veganimus.Platformer
             
         }
         private void Start() => ChangeGameState(GameState.Start);
+
+        private void Update()
+        {
+            DeltaTime = Time.deltaTime;
+        }
 
         private void ChangeGameState(GameState gameState)
         {
