@@ -10,23 +10,15 @@ namespace Veganimus.Platformer
     public class UIManager : MonoBehaviour
     {
         #region Singleton
-        public static UIManager Instance
-        {
-            get
-            {
-                return _instance;
-            }
-        }
+        public static UIManager Instance { get { return _instance; } }
         private static UIManager _instance;
         #endregion
         [SerializeField] private GameObject _pauseMenu;
         [SerializeField] private Image _missileActiveBox;
         [SerializeField] private List<Image> _bombImages = new List<Image>();
         [SerializeField] private List<Image> _livesImages = new List<Image>();
-        [SerializeField] private TMP_Text _collectibleText;
-        [SerializeField] private TMP_Text _healthText;
-        [SerializeField] private TMP_Text _missilesText;
-        [SerializeField] private TMP_Text _upgradeText;
+        [SerializeField] private TMP_Text _collectibleText, _healthText, _missilesText;
+        [SerializeField] private TMP_Text _levelCompleteText, _upgradeText;
         private byte _collectiblesCollected;
         private byte _maxBombs;
         private byte _maxHealth;
@@ -82,6 +74,11 @@ namespace Veganimus.Platformer
         {
             _collectiblesCollected += amount;
             _collectibleText.text = $"{_collectiblesCollected}";
+        }
+        public void DisplayLevelComplete()
+        {
+            _levelCompleteText.text = "Level Complete!";
+            _levelCompleteText.gameObject.SetActive(true);
         }
 
         public void HealthTextUpdate(sbyte amount)

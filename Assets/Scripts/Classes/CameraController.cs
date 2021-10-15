@@ -8,6 +8,7 @@ namespace Veganimus.Platformer
 		[Header("Setup")]
 		[Range(1.1f, 10f)]
 		[SerializeField] private float _scrollMultiplier = 1.8f;
+		[SerializeField] private float _smoothTime = 0.35f;
 		[SerializeField] private Vector2 _movementWindowSize = new Vector2(8, 6);
 		[SerializeField] private Vector2 _windowOffset;
 		[Header("Camera Boundaries")]
@@ -20,11 +21,12 @@ namespace Veganimus.Platformer
 		[Header("Debug Visuals")]
 		[SerializeField] private bool _showDebug = false;
 		private bool _activeTracking = true;
-		private float _globalDeltaTime;
+		private float _deltaTime;
 		private Rect _windowRect;
 		private Vector3 _cameraPosition;
 		private Vector3 _playerPosition;
 		private Vector3 _previousPlayerPosition;
+		private Vector3 _smoothVelocity = Vector3.zero;
 		private Transform _transform;
 		public byte AreaID { get { return _areaID; } }
 		public GameObject trackedObject;
@@ -55,7 +57,7 @@ namespace Veganimus.Platformer
 		}
 		private void LateUpdate()
 		{
-			_globalDeltaTime = Time.deltaTime;
+			_deltaTime = Time.deltaTime;
 			CameraUpdate();
 			if (_showDebug)
 				DrawDebugBox();
@@ -100,7 +102,7 @@ namespace Veganimus.Platformer
 					_cameraPosition.x = Mathf.Clamp(_cameraPosition.x, _leftLimit, _rightLimit);
 				}
 				// and now we're updating the camera position using what came of all the calculations above.
-				_transform.position = _cameraPosition;
+				_transform.position = Vector3.SmoothDamp(_transform.position,_cameraPosition, ref _smoothVelocity, _smoothTime,100f);
 			}
 			_previousPlayerPosition = _playerPosition;
 		}
@@ -253,10 +255,9 @@ namespace Veganimus.Platformer
 
 			while (_transform.position != targetPosition)
 			{
-				_transform.position = Vector3.MoveTowards(_transform.position, targetPosition, moveSpeed * _globalDeltaTime);
+				_transform.position = Vector3.SmoothDamp(_transform.position, targetPosition, ref _smoothVelocity, _smoothTime);
 				yield return 0;
 			}
-
 			_activeTracking = true;
 		}
 	}

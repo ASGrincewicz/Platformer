@@ -8,6 +8,7 @@ namespace Veganimus.Platformer
         [SerializeField] protected sbyte _hp;
         [SerializeField] protected sbyte _lives;
         [SerializeField] protected byte _maxLives;
+        [SerializeField] protected CharacterType _characterType;
         protected bool _gameStart = true;
         protected byte _maxLifeHP = 99;
         protected UIManager _uIManager;
@@ -18,8 +19,13 @@ namespace Veganimus.Platformer
         public virtual void Damage(sbyte hpDamage)
         {
             _hp -= hpDamage;
-           
-            if (_hp <= 0)
+
+            if (_hp <= 0 && _characterType == CharacterType.Enemy)
+            {
+                
+                Destroy(gameObject);
+            }
+            else if(_hp <= 0 && _characterType != CharacterType.Enemy)
                 Destroy(gameObject);
         }
         public virtual void Heal(sbyte amount)

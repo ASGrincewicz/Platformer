@@ -15,15 +15,14 @@ namespace Veganimus.Platformer
         private readonly int _chasingAP = Animator.StringToHash("Chasing");
         private readonly int _deadAP = Animator.StringToHash("Dead");
         private readonly int _patrollingAP = Animator.StringToHash("Patrolling");
+        private Ray _ray;
         private RaycastHit _hitInfo;
         private Vector3 _chaseDestination;
         private Animator _animator;
         private Health _health;
-        private MeshRenderer _enemyColor;
         private NavMeshAgent _agent;
         private Transform _agentTransform;
         private WaitForSeconds _chaseCoolDown;
-        public Color currentColor;
 
         private void Start()
         {
@@ -31,12 +30,15 @@ namespace Veganimus.Platformer
             _health = GetComponent<Health>();
             _health.HP = _enemyInfo.hitPoints;
             _agent = GetComponentInChildren<NavMeshAgent>();
-            _enemyColor = GetComponentInChildren<MeshRenderer>();
             _weapon = GetComponent<EnemyWeapon>();
             _chaseCoolDown = new WaitForSeconds(3f);
             _agent.speed = _enemyInfo.speed;
             _agentTransform = _agent.transform;
             ChangeAIState(AIState.Patrolling);
+        }
+        private void OnDestroy()
+        {
+            GameManager.Instance.EnemyKills++;
         }
         private void FixedUpdate()
         {
@@ -54,6 +56,7 @@ namespace Veganimus.Platformer
             else
                 _weapon.IsShooting = false;
         }
+       
         private void ChangeAIState(AIState state)
         {
             switch (state)
@@ -91,6 +94,7 @@ namespace Veganimus.Platformer
                     break;
                 case AIState.Dead:
                     _animator.SetBool(_deadAP, true);
+                    GameManager.Instance.EnemyKills++;
                     break;
                 default:
                     break;
@@ -108,9 +112,9 @@ namespace Veganimus.Platformer
         }
         private void Detect()
         {
-            Ray ray = new Ray(_agentTransform.position, _agentTransform.forward);
+            _ray = new Ray(_agentTransform.position, _agentTransform.forward);
 
-            if (Physics.SphereCast(ray, 2f,out _hitInfo, _enemyInfo.sightDistance, _targetLayer))
+            if (Physics.SphereCast(_ray, 1f,out _hitInfo, _enemyInfo.sightDistance, _targetLayer))
             {
                 if (_hitInfo.collider != null)
                 {
@@ -125,7 +129,6 @@ namespace Veganimus.Platformer
             }
             else if (_hitInfo.collider == null && _aiState != AIState.Patrolling)
                 StartCoroutine(ChaseCoolDown());
-            
         }
        
         private IEnumerator ChaseCoolDown()

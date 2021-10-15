@@ -16,7 +16,7 @@ namespace Veganimus.Platformer
         private void Start()
         {
             _transform = transform;
-            _player = GetComponentInParent<Character>();
+            _player = Character.Instance;
         }
 
         private void Update()

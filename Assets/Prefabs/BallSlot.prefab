@@ -64,8 +64,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02cdee7425e004444beaf1d6ec3949a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _centerPos: {fileID: 4838152057462040964}
   _ballInSlot: 0
+  _isGoal: 0
+  _centerPos: {fileID: 4838152057462040964}
+  _goal: {fileID: 0}
 --- !u!1 &4838152057462040964
 GameObject:
   m_ObjectHideFlags: 0
@@ -78,6 +80,7 @@ GameObject:
   - component: {fileID: 4838152057462040960}
   - component: {fileID: 4838152057462040963}
   - component: {fileID: 4838152057462040962}
+  - component: {fileID: 1396741232}
   m_Layer: 0
   m_Name: Sphere
   m_TagString: Untagged
@@ -161,6 +164,22 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 3.33
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1396741232
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4838152057462040964}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08b2f79bd6aec4c478bd3568a7007bef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _collectiblesRequired: 7
+  _enemyKillsRequired: 2
+  _upgradesRequired: 3
+  _gameStateChannel: {fileID: 11400000, guid: 5bf970827b15a4540b4b577cc056ee92, type: 2}
 --- !u!1 &5403593649038411840
 GameObject:
   m_ObjectHideFlags: 0

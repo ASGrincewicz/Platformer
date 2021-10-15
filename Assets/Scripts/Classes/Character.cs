@@ -5,13 +5,15 @@ namespace Veganimus.Platformer
 {
     public class Character : MonoBehaviour
     {
+        #region Singleton
+        public static Character Instance { get { return _instance; } }
+        private static Character _instance;
+        #endregion
         [SerializeField] private byte _collectibles;
         [SerializeField] private float _adjustGravity;
-        [SerializeField] private float _collectibleDetectionRadius;
         [SerializeField] private float _gravity;
         [SerializeField] private float _jumpHeight = 15.0f;
         [SerializeField] private float _speed = 5f;
-        [SerializeField] private LayerMask _collectibleLayerMask;
         [SerializeField] private PlayerUpgrades _upgrades;
         [SerializeField] private Vector3 _modelPosition;
         [SerializeField] private CameraController _mainCamera;
@@ -41,7 +43,6 @@ namespace Veganimus.Platformer
         private readonly int _wallJumpingAP = Animator.StringToHash("wallJumping");
         private float _aimTargetCrouchingPos = 0.85f;
         private float _aimTargetStandingPos = 1.4f;
-        private float _deltaTime;
         private float _horizontal;
         private float _vertical;
         private const float _z = 0;
@@ -52,7 +53,6 @@ namespace Veganimus.Platformer
         private Vector3 _wallSurfaceNormal;
         private Animator _animator;
         private CharacterController _controller;
-        private Collider[] _collectiblesDetected = new Collider[5];
         private Ledge _activeLedge;
         private PlayerAim _playerAim;
         private Rigidbody _rigidbody;
@@ -62,8 +62,11 @@ namespace Veganimus.Platformer
         private Transform _transform;
         private Weapon _weapon;
         public bool InBallForm { get { return _inBallForm; } }
+        public float DeltaTime { get; private set; }
         public PlayerUpgrades Upgrades { get { return _upgrades; } }
         public InputManagerSO InputManager { get; set; }
+
+        private void Awake() => _instance = this;
 
         private void OnEnable()
         {
@@ -91,13 +94,9 @@ namespace Veganimus.Platformer
             _gravity = _adjustGravity;
         }
         
-        private void FixedUpdate()
-        {          
-            DetectCollectible();
-        }
         private void Update()
         {
-            _deltaTime = Time.deltaTime;
+            DeltaTime = Time.deltaTime;
             _ballModeTriggered = _inputManager.controls.Standard.BallMode.triggered;
             _jumpTriggered = _inputManager.controls.Standard.Jump.triggered;
             if (_transform.position.z != 0)
@@ -143,9 +142,7 @@ namespace Veganimus.Platformer
         {
             if (!_controller.isGrounded && !_isWallJumping && !_grabbingLedge)
             {
-                var wall = hit.collider.GetComponent<IWall>();
-
-                if (wall != null)
+                if (hit.transform.CompareTag("Wall"))
                 {
                     _wallSurfaceNormal = hit.normal;
                     _canWallJump = true;
@@ -167,25 +164,6 @@ namespace Veganimus.Platformer
             _direction = new Vector3(_horizontal, 0, _z);
             _velocity = _direction * _speed * 1.5f;
             _rigidbody.AddForce(_velocity, ForceMode.Force);
-        }
-
-        private void DetectCollectible()
-        {
-            byte numberColliders = (byte)Physics.OverlapSphereNonAlloc(_transform.localPosition,
-                                                                _collectibleDetectionRadius,
-                                                                _collectiblesDetected,
-                                                                _collectibleLayerMask);
-            if (numberColliders != 0)
-            {
-                for (byte i = 0; i < numberColliders; i++)
-                {
-                    if (_collectiblesDetected[i].GetComponent<Collectible>().CanAbsorb)
-                        _collectiblesDetected[i].transform.localPosition = Vector3.MoveTowards(_collectiblesDetected[i].transform.localPosition, _transform.localPosition, 3f * _deltaTime);
-                    else
-                        return;
-                }
-                Array.Clear(_collectiblesDetected, 0, _collectiblesDetected.Length);
-            }
         }
 
         private void FaceDirection()
@@ -261,7 +239,7 @@ namespace Veganimus.Platformer
             //    _animator.SetFloat(_fallingAP, 0f);
 
             _velocity.y = _yVelocity;
-            _controller.Move(_velocity * _deltaTime);
+            _controller.Move(_velocity * DeltaTime);
         }
 
         private void OnCrouchInput(float c)

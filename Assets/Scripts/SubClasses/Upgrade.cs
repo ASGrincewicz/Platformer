@@ -13,20 +13,24 @@ namespace Veganimus.Platformer
 
         protected override void Update() { }
 
-        private void OnTriggerStay(Collider other)
+        protected override void OnTriggerEnter(Collider other)
         {
             if(other.tag == "Player" && _collectibleType == CollectibleType.Upgrade)
             {
-                var player = other.gameObject.GetComponentInParent<Character>();
+                var player = Character.Instance;
 
                 if (player != null)
                 {
                     if (!player.Upgrades.ballMode && _upgradeID == 0)
+                    {
+                        _collected = false;
                         return;
+                    }
                     else
                     {
                         _collected = true;
                         player.ActivateUpgrade(_upgradeID, _upgradeName);
+                        GameManager.Instance.UpgradesCollected++;
                     }
                 }
                 else

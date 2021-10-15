@@ -12,11 +12,9 @@ namespace Veganimus.Platformer
 
         private void Start()
         {
-            _player = GameObject.Find("Character").GetComponent<Character>();
+            _player = Character.Instance;
             if (_player == null)
                 Debug.LogError("Character is NULL!");
-            else if (_player != null)
-                Debug.Log("Found Player.");
         }
 
         private void OnTriggerEnter(Collider other)

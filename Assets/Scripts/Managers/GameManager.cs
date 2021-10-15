@@ -4,6 +4,10 @@ namespace Veganimus.Platformer
 {
     public class GameManager : MonoBehaviour
     {
+        #region Singleton
+        public static GameManager Instance { get { return _instance; } }
+        private static GameManager _instance;
+        #endregion
         [SerializeField] private GameObject _player;
         [SerializeField] private GameStateChannel _gameStateChannel;
         [SerializeField] private InputManagerSO _inputManager;
@@ -12,7 +16,16 @@ namespace Veganimus.Platformer
         private bool _isGameOver;
         private bool _isPaused;
         private bool _isPlayerDead;
+        private int _collectibles = 0;
+        private int _enemyKills = 0;
+        private int _upgradesCollected = 0;
         private GameState _gameState;
+        public int Collectibles { get { return _collectibles; } set { _collectibles = value; } }
+        public int EnemyKills { get { return _enemyKills; } set { _enemyKills = value; } }
+        public int UpgradesCollected { get { return _upgradesCollected; } set { _upgradesCollected = value; } }
+        public static float DeltaTime;
+
+        private void Awake() => _instance = this;
 
         private void OnEnable()
         {
@@ -29,6 +42,11 @@ namespace Veganimus.Platformer
         }
         private void Start() => ChangeGameState(GameState.Start);
 
+        private void Update()
+        {
+            DeltaTime = Time.deltaTime;
+        }
+
         private void ChangeGameState(GameState gameState)
         {
             switch (gameState)
@@ -42,11 +60,15 @@ namespace Veganimus.Platformer
                 case GameState.GameOver:
                     _isGameOver = true;
                     break;
+                case GameState.Finish:
+                    //Display Win UI
+                    Time.timeScale = 0;
+                    UIManager.Instance.DisplayLevelComplete();
+                    break;
                 default:
                     break;
             }
         }
-
        
         private void RespawnPlayer()
         {
