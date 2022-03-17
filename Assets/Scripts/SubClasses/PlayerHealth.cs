@@ -61,6 +61,9 @@ namespace Veganimus.Platformer
             base.Heal(amount);
             UIManagerUpdate();
         }
+        /// <summary>
+        /// Increase the object's max life count.
+        /// </summary>
         public void IncreaseMaxLives()
         {
             _maxLives += 1;

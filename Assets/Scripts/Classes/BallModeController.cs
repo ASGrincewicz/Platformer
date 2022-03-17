@@ -24,11 +24,8 @@ namespace Veganimus.Platformer
             if (Time.time > _canDropBomb && _player.Upgrades.ballBombs)
             {
                 var bombTriggered = _inputManager.controls.Standard.Shoot.triggered;
-                if (bombTriggered && _bombCount > 0)
-                    DropBomb();
-                
-                else
-                    return;
+                if (bombTriggered && _bombCount! > 0) return;
+                DropBomb();
             }
         }
         private void DropBomb()
