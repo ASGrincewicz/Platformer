@@ -22,7 +22,7 @@ PrefabInstance:
     - target: {fileID: 2695550011087060804, guid: 4899bddf3d63244e2bbd00a07832d5aa, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: c852af001dae0064e9acaa832f1dadb7, type: 2}
+      objectReference: {fileID: 2100000, guid: a57845ec3f2254da0a0c45227874e28d, type: 2}
     - target: {fileID: 4874575737357313677, guid: 4899bddf3d63244e2bbd00a07832d5aa, type: 3}
       propertyPath: m_Name
       value: PowerBeam

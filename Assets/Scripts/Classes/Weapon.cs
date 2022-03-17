@@ -22,7 +22,7 @@ namespace Veganimus.Platformer
 
         private void OnEnable()
         {
-            _player = this.GetComponentInParent<Character>();
+            _player = GetComponentInParent<Character>();
         }
 
         protected virtual IEnumerator Start()

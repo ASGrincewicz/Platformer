@@ -18,6 +18,11 @@ namespace Veganimus.Platformer
 
         private void Update()
         {
+            CheckHealth();
+        }
+
+        private void CheckHealth()
+        {
             if (_hp > _maxLifeHP && _lives != _maxLives)
             {
                 sbyte amount = (sbyte)(_hp - 100);
@@ -65,5 +70,3 @@ namespace Veganimus.Platformer
         }
     }
 }
-
-

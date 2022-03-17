@@ -7478,7 +7478,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 5a26de236ce89e94b963be8fa2b7ade6, type: 2}
+  - {fileID: 2100000, guid: 1cef4595d528743748ef9e7a9c82bc73, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -7537,8 +7537,8 @@ MonoBehaviour:
   _locked: 1
   _doorLevel: 2
   _doorMat:
-  - {fileID: 2100000, guid: c852af001dae0064e9acaa832f1dadb7, type: 2}
-  - {fileID: 2100000, guid: 5a26de236ce89e94b963be8fa2b7ade6, type: 2}
+  - {fileID: 2100000, guid: f4a5790327cdf44dc8e00f3ddbb73230, type: 2}
+  - {fileID: 2100000, guid: 1cef4595d528743748ef9e7a9c82bc73, type: 2}
 --- !u!65 &9005900977778468854
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -1,9 +1,9 @@
 ﻿// Aaron Grincewicz ASGrincewicz@icloud.com 6/11/2021
+using System.Collections;
+using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
-using System.Collections.Generic;
-using System.Collections;
 
 namespace Veganimus.Platformer
 {

@@ -14,6 +14,7 @@ namespace Veganimus.Platformer
         [SerializeField] private float _gravity;
         [SerializeField] private float _jumpHeight = 15.0f;
         [SerializeField] private float _speed = 5f;
+        [SerializeField] private float _yVelocityDownLimit = -20.0f;
         [SerializeField] private PlayerUpgrades _upgrades;
         [SerializeField] private Vector3 _modelPosition;
         [SerializeField] private CameraController _mainCamera;
@@ -125,7 +126,7 @@ namespace Veganimus.Platformer
                 }
                 else if (_ballModeTriggered && _inBallForm)
                 {
-                    _mainCamera.trackedObject = this.gameObject;
+                    _mainCamera.trackedObject = gameObject;
                     _transform.position = new Vector3(_ballFormTransform.position.x, _ballFormTransform.position.y, _z);
                     _controller.enabled = true;
                     _characterModel.SetActive(true);
@@ -233,12 +234,19 @@ namespace Veganimus.Platformer
                 }
                 _yVelocity -= _gravity;
             }
-            //if (!_controller.isGrounded && !_isHanging && !_isWallJumping && !_jumpTriggered && !_grabbingLedge && _controller.enabled)
-            //    _animator.SetFloat(_fallingAP, 1.0f);
-            //else
-            //    _animator.SetFloat(_fallingAP, 0f);
+            _velocity.y = _yVelocity < _yVelocityDownLimit ? _yVelocityDownLimit : _yVelocity;
+            //Debug.Log($"Y Velocity = {_velocity.y}.");
 
-            _velocity.y = _yVelocity;
+            //if (!_controller.isGrounded && !_isHanging && !_isWallJumping && !_canDoubleJump && !_jumpTriggered && !_grabbingLedge && _controller.enabled)
+            //{
+
+            //    //_animator.SetFloat(_fallingAP, 1.0f);
+            //}
+            //else
+            // _animator.SetFloat(_fallingAP, 0f);
+
+
+
             _controller.Move(_velocity * DeltaTime);
         }
 
