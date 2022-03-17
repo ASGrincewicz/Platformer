@@ -5,7 +5,7 @@ namespace Veganimus.Platformer
 {
     public class Enemy : MonoBehaviour
     {
-        [SerializeField] private byte _destinationPoint;
+        [SerializeField] private int _destinationPoint;
         [SerializeField] private AIState _aiState;
         [SerializeField] private EnemyInfo _enemyInfo;
         [SerializeField] private LayerMask _targetLayer;
@@ -40,7 +40,7 @@ namespace Veganimus.Platformer
         {
             GameManager.Instance.EnemyKills++;
         }
-        private void FixedUpdate()
+        private void Update()
         {
             Detect();
             if (_aiState == AIState.Patrolling)
@@ -107,7 +107,7 @@ namespace Veganimus.Platformer
             else
             {
                 _agent.destination = _navPoints[_destinationPoint].position;
-                _destinationPoint = (byte)((_destinationPoint + 1) % _navPoints.Length);
+                _destinationPoint = (int)((_destinationPoint + 1) % _navPoints.Length);
             }
         }
         private void Detect()

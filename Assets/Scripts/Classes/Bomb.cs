@@ -5,8 +5,8 @@ namespace Veganimus.Platformer
 {
     public class Bomb : MonoBehaviour, ICanOpenDoor
     {
-        [SerializeField] private byte _maxDoorLevel = 1;
-        [SerializeField] private byte _maxColliders = 50;
+        [SerializeField] private int _maxDoorLevel = 1;
+        [SerializeField] private int _maxColliders = 50;
         [SerializeField] private float _bombTimer;
         [SerializeField] private float _explosionForce;
         [SerializeField] private float _explosionRadius;
@@ -17,7 +17,7 @@ namespace Veganimus.Platformer
         private IDamageable _idamageable;
         private Collider[] _hitColliders;
         private WaitForSeconds _explosionDelay;
-        public byte MaxDoorLevel { get { return _maxDoorLevel; } set { value = _maxDoorLevel; } }
+        public int MaxDoorLevel { get { return _maxDoorLevel; } set { } }
 
         //private void OnDrawGizmosSelected() => Gizmos.DrawWireSphere(transform.position, _explosionRadius)
 
@@ -29,8 +29,8 @@ namespace Veganimus.Platformer
         private void Detonate()
         {
             _hitColliders = new Collider[_maxColliders];
-            byte numberColliders =  (byte)Physics.OverlapSphereNonAlloc(transform.position, _explosionRadius, _hitColliders,_targetLayers);
-            for(byte i = 0; i< numberColliders; i++)
+            int numberColliders =  (int)Physics.OverlapSphereNonAlloc(transform.position, _explosionRadius, _hitColliders,_targetLayers);
+            for(int i = 0; i< numberColliders; i++)
             {
                 Rigidbody rigidbody = _hitColliders[i].GetComponent<Rigidbody>();
                 _iBombable = _hitColliders[i].GetComponentInParent<IBombable>();

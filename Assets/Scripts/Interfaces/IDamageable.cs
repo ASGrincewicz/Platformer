@@ -4,11 +4,11 @@ public interface IDamageable
     /// <summary>
     /// <value>Returns the object's current lives.</value>
     /// </summary>
-    public sbyte Lives { get; }
+    public int Lives { get; }
     /// <summary>
     /// <value>Returns current hit points.</value>
     /// </summary>
-    public sbyte HP { get; }
+    public int HP { get; }
     /// <summary>
     /// <value>Checks whether object is the player and not AI.</value>
     /// </summary>
@@ -17,5 +17,5 @@ public interface IDamageable
     /// Passes damage to the object.
     /// </summary>
     /// <param name="hpDamage"></param>
-    public void Damage(sbyte hpDamage);
+    public void Damage(int hpDamage);
 }

@@ -8,7 +8,7 @@ namespace Veganimus.Platformer
         [SerializeField] private float _speed;
         [SerializeField] private List<Transform> _waypoints = new List<Transform>();
         [SerializeField] private Transform _playerParent;
-        private byte _targetWaypont;
+        private int _targetWaypont;
         private float _deltaTime;
         private Transform _transform;
 

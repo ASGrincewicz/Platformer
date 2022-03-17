@@ -9,7 +9,7 @@ namespace Veganimus.Platformer
         public static Character Instance { get { return _instance; } }
         private static Character _instance;
         #endregion
-        [SerializeField] private byte _collectibles;
+        [SerializeField] private int _collectibles;
         [SerializeField] private float _adjustGravity;
         [SerializeField] private float _gravity;
         [SerializeField] private float _jumpHeight = 15.0f;

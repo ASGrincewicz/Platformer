@@ -5,9 +5,9 @@ namespace Veganimus.Platformer
     [CreateAssetMenu(menuName = "Scene Loader")]
     public class SceneLoader : ScriptableObject
     {
-        public byte sceneIndex;
+        public int sceneIndex;
 
-        public void LoadGame(byte index)
+        public void LoadGame(int index)
         {
             sceneIndex = index;
             var toUnload = SceneManager.GetActiveScene().buildIndex;

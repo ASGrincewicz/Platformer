@@ -25,7 +25,7 @@ namespace Veganimus.Platformer
         {
             if (_hp > _maxLifeHP && _lives != _maxLives)
             {
-                sbyte amount = (sbyte)(_hp - 100);
+                int amount = _hp - 100;
                 _hp = amount;
                 _lives++;
                 UIManagerUpdate();
@@ -34,7 +34,7 @@ namespace Veganimus.Platformer
             if (_hp <= 0 && _lives > 1)
             {
                 _lives--;
-                sbyte amount = (sbyte)(_maxLifeHP + _hp);
+                int amount = _maxLifeHP + _hp;
                 _hp = amount;
                 UIManagerUpdate();
             }
@@ -50,13 +50,13 @@ namespace Veganimus.Platformer
             _uIManager.LivesUpdate(_lives);
         }
 
-        public override void Damage(sbyte hpDamage)
+        public override void Damage(int hpDamage)
         {
             _hp -= hpDamage;
             UIManagerUpdate();
         }
 
-        public override void Heal(sbyte amount)
+        public override void Heal(int amount)
         {
             base.Heal(amount);
             UIManagerUpdate();
@@ -67,8 +67,8 @@ namespace Veganimus.Platformer
         public void IncreaseMaxLives()
         {
             _maxLives += 1;
-            _lives = (sbyte)_maxLives;
-            _hp = (sbyte)_maxLifeHP;
+            _lives = _maxLives;
+            _hp = _maxLifeHP;
             UIManagerUpdate();
         }
     }
