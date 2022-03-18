@@ -2,13 +2,21 @@
 using UnityEngine;
 namespace Veganimus.Platformer
 {
+    /// <summary>
+    /// This class should be used with any object the player can collect.
+    /// </summary>
     public class Collectible : MonoBehaviour, IAbsorbable
     {
-        [SerializeField] private bool _canAbosrb = false;
-        [SerializeField] private sbyte _powerUpAmount;
-        [SerializeField] private float _speed;
-        [SerializeField] protected CollectibleType _collectibleType;
-        [SerializeField] protected LayerMask _collectorLayerMask;
+        [SerializeField, Tooltip("Can this collectible be absorbed?")]
+        private bool _canAbosrb = false;
+        [SerializeField, Tooltip("Specify the amount this collectible adds to a stat.")]
+        private sbyte _powerUpAmount;
+        [SerializeField, Tooltip("This object's movement speed.")]
+        private float _speed;
+        [SerializeField, Tooltip("Specify the type of collectible.")]
+        protected CollectibleType _collectibleType;
+        [SerializeField,Tooltip("Allows the collectible to be collected only by objects on the specified layer mask")]
+        protected LayerMask _collectorLayerMask;
         protected bool _collected;
         private float _time = 0;
         private float _x, _y, _z = 0;
@@ -63,7 +71,7 @@ namespace Veganimus.Platformer
                 _collected = true;
                 UIManager.Instance.CollectibleTextUpdate(1);
                 GameManager.Instance.Collectibles++;
-                Destroy(this.gameObject);
+                Destroy(gameObject);
             }
         }
     }

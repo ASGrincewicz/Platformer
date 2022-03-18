@@ -23,13 +23,13 @@ namespace Veganimus.Platformer
 
         private void DetectCollectibles()
         {
-            byte numberColliders = (byte)Physics.OverlapSphereNonAlloc(_transform.localPosition,
+            int numberColliders = Physics.OverlapSphereNonAlloc(_transform.localPosition,
                                                                 _collectibleDetectionRadius,
                                                                 _collectiblesDetected,
                                                                 _collectibleLayerMask);
             if (numberColliders != 0)
             {
-                for (byte i = 0; i < numberColliders; i++)
+                for (int i = 0; i < numberColliders; i++)
                 {
                     if (_collectiblesDetected[i].GetComponent<Collectible>().CanAbsorb)
                         _collectiblesDetected[i].transform.localPosition = Vector3.MoveTowards(_collectiblesDetected[i].transform.localPosition, _transform.localPosition, 3f * Character.Instance.DeltaTime);

@@ -9,11 +9,15 @@ namespace Veganimus.Platformer
         public static Character Instance { get { return _instance; } }
         private static Character _instance;
         #endregion
-        [SerializeField] private byte _collectibles;
+        [SerializeField] private int _collectibles;
         [SerializeField] private float _adjustGravity;
         [SerializeField] private float _gravity;
         [SerializeField] private float _jumpHeight = 15.0f;
         [SerializeField] private float _speed = 5f;
+        [SerializeField] private float _yVelocityDownLimit = -20.0f;
+        [SerializeField] private float _yVelocityUpLimit = 10.0f;
+        [SerializeField] private float _ballModeXVelocityLimitRight = 10.0f;
+        [SerializeField] private float _ballModeXVelocityLimitLeft = -10.0f;
         [SerializeField] private PlayerUpgrades _upgrades;
         [SerializeField] private Vector3 _modelPosition;
         [SerializeField] private CameraController _mainCamera;
@@ -96,6 +100,7 @@ namespace Veganimus.Platformer
         
         private void Update()
         {
+            if (GameManager.Instance.IsPaused || GameManager.Instance.IsUpgrading) return;
             DeltaTime = Time.deltaTime;
             _ballModeTriggered = _inputManager.controls.Standard.BallMode.triggered;
             _jumpTriggered = _inputManager.controls.Standard.Jump.triggered;
@@ -125,7 +130,7 @@ namespace Veganimus.Platformer
                 }
                 else if (_ballModeTriggered && _inBallForm)
                 {
-                    _mainCamera.trackedObject = this.gameObject;
+                    _mainCamera.trackedObject = gameObject;
                     _transform.position = new Vector3(_ballFormTransform.position.x, _ballFormTransform.position.y, _z);
                     _controller.enabled = true;
                     _characterModel.SetActive(true);
@@ -164,6 +169,8 @@ namespace Veganimus.Platformer
             _direction = new Vector3(_horizontal, 0, _z);
             _velocity = _direction * _speed * 1.5f;
             _rigidbody.AddForce(_velocity, ForceMode.Force);
+            _velocity.x = _velocity.x > _ballModeXVelocityLimitRight ? _ballModeXVelocityLimitRight : _velocity.x;
+            _velocity.x = _velocity.x < _ballModeXVelocityLimitLeft ? _ballModeXVelocityLimitLeft : _velocity.x;
         }
 
         private void FaceDirection()
@@ -233,12 +240,20 @@ namespace Veganimus.Platformer
                 }
                 _yVelocity -= _gravity;
             }
-            //if (!_controller.isGrounded && !_isHanging && !_isWallJumping && !_jumpTriggered && !_grabbingLedge && _controller.enabled)
-            //    _animator.SetFloat(_fallingAP, 1.0f);
-            //else
-            //    _animator.SetFloat(_fallingAP, 0f);
+            _velocity.y = _yVelocity < _yVelocityDownLimit ? _yVelocityDownLimit : _yVelocity;
+            _velocity.y = _yVelocity > _yVelocityUpLimit ? _yVelocityUpLimit : _yVelocity;
+            //Debug.Log($"Y Velocity = {_velocity.y}.");
 
-            _velocity.y = _yVelocity;
+            //if (!_controller.isGrounded && !_isHanging && !_isWallJumping && !_canDoubleJump && !_jumpTriggered && !_grabbingLedge && _controller.enabled)
+            //{
+
+            //    //_animator.SetFloat(_fallingAP, 1.0f);
+            //}
+            //else
+            // _animator.SetFloat(_fallingAP, 0f);
+
+
+
             _controller.Move(_velocity * DeltaTime);
         }
 

@@ -4,19 +4,25 @@ namespace Veganimus.Platformer
 {
     public class Health : MonoBehaviour, IDamageable, IBombable
     {
-        [SerializeField] protected bool _isPlayer = false;
-        [SerializeField] protected sbyte _hp;
-        [SerializeField] protected sbyte _lives;
-        [SerializeField] protected byte _maxLives;
-        [SerializeField] protected CharacterType _characterType;
+        [SerializeField, Tooltip("Indicate if object is the player.")]
+        protected bool _isPlayer = false;
+        [SerializeField, Tooltip("Hit Points")]
+        protected int _hp;
+        [SerializeField, Tooltip("Lives and/or Energy Tanks")]
+        protected int _lives;
+        [SerializeField, Tooltip("Max Lives and/or Energy Tanks")]
+        protected int _maxLives;
+        [SerializeField, Tooltip("Set Friendliness.")]
+        protected CharacterType _characterType;
         protected bool _gameStart = true;
-        protected byte _maxLifeHP = 99;
+        protected int _maxLifeHP = 99;
         protected UIManager _uIManager;
-        public sbyte HP { get { return _hp; } set { _hp = value; } }
+        public int HP { get { return _hp; } set { _hp = value; } }
         public bool IsPlayer { get { return _isPlayer;} }
-        public sbyte Lives { get { return _lives; } private set { _lives = value; } }
+        
+        public int Lives { get { return _lives; } private set { _lives = value; } }
 
-        public virtual void Damage(sbyte hpDamage)
+        public virtual void Damage(int hpDamage)
         {
             _hp -= hpDamage;
 
@@ -28,12 +34,16 @@ namespace Veganimus.Platformer
             else if(_hp <= 0 && _characterType != CharacterType.Enemy)
                 Destroy(gameObject);
         }
-        public virtual void Heal(sbyte amount)
+        /// <summary>
+        /// Pass in the <value>amount to heal the implementing object.</value>
+        /// </summary>
+        /// <param name="amount"></param>
+        public virtual void Heal(int amount)
         {
             _hp += amount;
             if(_hp + amount > _maxLifeHP && _lives == _maxLives)
             {
-                _hp = (sbyte)_maxLifeHP;
+                _hp = (int)_maxLifeHP;
             }
         }
     }

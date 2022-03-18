@@ -1,9 +1,9 @@
 ﻿// Aaron Grincewicz ASGrincewicz@icloud.com 6/11/2021
+using System.Collections;
+using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
-using System.Collections.Generic;
-using System.Collections;
 
 namespace Veganimus.Platformer
 {
@@ -19,15 +19,15 @@ namespace Veganimus.Platformer
         [SerializeField] private List<Image> _livesImages = new List<Image>();
         [SerializeField] private TMP_Text _collectibleText, _healthText, _missilesText;
         [SerializeField] private TMP_Text _levelCompleteText, _upgradeText;
-        private byte _collectiblesCollected;
-        private byte _maxBombs;
-        private byte _maxHealth;
-        private byte _maxLives;
-        private sbyte _currentBombs;
-        private sbyte _currentHealth;
-        private sbyte _currentLives;
+        private int _collectiblesCollected;
+        private int _maxBombs;
+        private int _maxHealth;
+        private int _maxLives;
+        private int _currentBombs;
+        private int _currentHealth;
+        private int _currentLives;
         private int _maxMissileCount;
-        private int _missileCount;
+        private int  _missileCount;
         private WaitForSeconds _upgradeTextRoutineDelay;
         public TMP_Text MissileText { get { return _missilesText; } set { } } 
 
@@ -43,12 +43,12 @@ namespace Veganimus.Platformer
        
         private void ClearAmount(List<Image> toClear)
         {
-            for (byte i = 0; i < toClear.Count; i++)
+            for (int i = 0; i < toClear.Count; i++)
                 toClear[i].canvasRenderer.SetAlpha(0);
         }
-        private void ShowAmount(byte toShow, sbyte amount)
+        private void ShowAmount(int toShow, int amount)
         {
-            for (byte i = 0; i < amount; i++)
+            for (int i = 0; i < amount; i++)
             {
                 switch(toShow)
                 {
@@ -64,13 +64,13 @@ namespace Veganimus.Platformer
 
         public void ActivatePauseMenu(bool isActive) => _pauseMenu.SetActive(isActive);
 
-        public void BombUpdate(sbyte amount)
+        public void BombUpdate(int amount)
         {
             _currentBombs = amount;
             ClearAmount(_bombImages);
             ShowAmount(1, amount);
         }
-        public void CollectibleTextUpdate(byte amount)
+        public void CollectibleTextUpdate(int amount)
         {
             _collectiblesCollected += amount;
             _collectibleText.text = $"{_collectiblesCollected}";
@@ -81,16 +81,16 @@ namespace Veganimus.Platformer
             _levelCompleteText.gameObject.SetActive(true);
         }
 
-        public void HealthTextUpdate(sbyte amount)
+        public void HealthTextUpdate(int amount)
         {
             _currentHealth = amount;
             _healthText.text = $"Health: {_currentHealth}";
         }
-        public void LivesUpdate(sbyte amount)
+        public void LivesUpdate(int amount)
         {
-            _currentLives = (sbyte)(amount - 1);
+            _currentLives = amount - 1;
             ClearAmount(_livesImages);
-            ShowAmount((byte)0, _currentLives);
+            ShowAmount(0, _currentLives);
         }
 
         public void MissilesTextUpdate(int amount)
@@ -111,10 +111,10 @@ namespace Veganimus.Platformer
         {
             _upgradeText.gameObject.SetActive(true);
             _upgradeText.text = $"{upgradeName} Acquired!";
-            Time.timeScale = 0.25f;
+            GameManager.Instance.AcquireUpgradeEvent(true);
             yield return _upgradeTextRoutineDelay;
             _upgradeText.text = string.Empty;
-            Time.timeScale = 1.0f;
+            GameManager.Instance.AcquireUpgradeEvent(false);
             _upgradeText.gameObject.SetActive(false);
         }
     }

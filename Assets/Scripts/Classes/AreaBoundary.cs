@@ -4,7 +4,7 @@ namespace Veganimus.Platformer
     public class AreaBoundary : MonoBehaviour
     {
         //Camera Boundaries
-        [SerializeField] private byte _areaID;
+        [SerializeField] private int _areaID;
         [SerializeField] private float _bottonBounds;
         [SerializeField] private float _leftBounds;
         [SerializeField] private float _rightBounds;

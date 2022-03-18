@@ -62,7 +62,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a57845ec3f2254da0a0c45227874e28d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -109,10 +109,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f793cf84e0984463be8fa1828af6689, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _lifeTime: 5
-  _speed: 20
   _damageAmount: 1
   _maxDoorLevel: 0
+  _lifeTime: 5
+  _speed: 20
 --- !u!54 &777590450313649920
 Rigidbody:
   m_ObjectHideFlags: 0

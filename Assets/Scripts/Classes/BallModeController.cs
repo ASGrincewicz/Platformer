@@ -6,9 +6,12 @@ namespace Veganimus.Platformer
     {
         [SerializeField] private InputManagerSO _inputManager;
         [SerializeField] private GameObject _bombPrefab;
-        [SerializeField] private float _dropRate = 0.5f;
-        [SerializeField] private float _bombRechargeTime = 3.0f;
-        [SerializeField] private sbyte _bombCount = 3;
+        [SerializeField, Tooltip("The rate the player can drop bombs.")]
+        private float _dropRate = 0.5f;
+        [SerializeField, Tooltip("Rate ate which bomb count increases.")]
+        private float _bombRechargeTime = 3.0f;
+        [SerializeField, Tooltip("Set the player's max bomb count.")]
+        private int _bombCount = 3;
         private float _canDropBomb = -1.0f;
         private Character _player;
         private Transform _transform;
@@ -24,11 +27,8 @@ namespace Veganimus.Platformer
             if (Time.time > _canDropBomb && _player.Upgrades.ballBombs)
             {
                 var bombTriggered = _inputManager.controls.Standard.Shoot.triggered;
-                if (bombTriggered && _bombCount > 0)
+                if (bombTriggered && _bombCount > 0) 
                     DropBomb();
-                
-                else
-                    return;
             }
         }
         private void DropBomb()

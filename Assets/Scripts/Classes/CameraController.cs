@@ -13,7 +13,7 @@ namespace Veganimus.Platformer
 		[SerializeField] private Vector2 _windowOffset;
 		[Header("Camera Boundaries")]
 		[SerializeField] private bool _isCamMovementLimited = false;
-		[SerializeField] private byte _areaID;
+		[SerializeField] private int _areaID;
 		[SerializeField] private float _bottomLimit;
 		[SerializeField] private float _leftLimit;
 		[SerializeField] private float _rightLimit;
@@ -28,7 +28,7 @@ namespace Veganimus.Platformer
 		private Vector3 _previousPlayerPosition;
 		private Vector3 _smoothVelocity = Vector3.zero;
 		private Transform _transform;
-		public byte AreaID { get { return _areaID; } }
+		public int AreaID { get { return _areaID; } }
 		public GameObject trackedObject;
 
 
@@ -230,7 +230,7 @@ namespace Veganimus.Platformer
 			}
 		}
 
-		public void ActivateLimits(byte areaID, float leftLimit, float rightLimit, float bottomLimit, float topLimit)
+		public void ActivateLimits(int areaID, float leftLimit, float rightLimit, float bottomLimit, float topLimit)
 		{
 			_areaID = areaID;
 			_leftLimit = leftLimit;

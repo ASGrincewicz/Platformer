@@ -37,7 +37,7 @@ namespace Veganimus.Platformer
                     Debug.Log("Player not found.");
             }
             if (_collected)
-                Destroy(this.gameObject);
+                Destroy(gameObject);
         }
     }
 }

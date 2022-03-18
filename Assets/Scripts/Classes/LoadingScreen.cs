@@ -1,8 +1,8 @@
 ﻿using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using TMPro;
 namespace Veganimus.Platformer
 {
     public class LoadingScreen: MonoBehaviour
@@ -10,7 +10,7 @@ namespace Veganimus.Platformer
         [SerializeField] private Image _progessBar;
         [SerializeField] private SceneLoader _loader;
         [SerializeField] private TMP_Text _loadingProgress;
-        public byte sceneIndex;
+        public int sceneIndex;
 
         private void Start() => StartCoroutine(LoadLevelASync());
 

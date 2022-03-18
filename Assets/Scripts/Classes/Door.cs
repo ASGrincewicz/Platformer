@@ -5,16 +5,19 @@ namespace Veganimus.Platformer
 {
     public class Door : MonoBehaviour
     {
-        [SerializeField] private bool _locked = false;
-        [SerializeField] private byte _doorLevel = 1;
-        [SerializeField] private Material[] _doorMat = new Material[2];//0 is unlocked, 1 is locked.
+        [SerializeField,Tooltip("Indicates if the door is locked.")]
+        private bool _locked = false;
+        [SerializeField, Tooltip("Only a projectile with a 'Door Level' at or above this number can open this door.")]
+        private int _doorLevel = 1;
+        [SerializeField, Tooltip("The materials to used for locked and unlocked states.")]
+        private Material[] _doorMat = new Material[2];//0 is unlocked, 1 is locked.
         private int _doorOpenAP = Animator.StringToHash("isDoorOpen");
         private int _doorOpenSpeedAP = Animator.StringToHash("doorSpeed");
         private ICanOpenDoor _iCanOpenDoor;
         private Animator _animator;
         private MeshRenderer _meshRenderer;
         private WaitForSeconds _closeDelay;
-        public byte DoorLevel { get { return _doorLevel; } }
+        public int DoorLevel { get { return _doorLevel; } }
 
         private void Start()
         {

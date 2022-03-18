@@ -5,10 +5,10 @@ namespace Veganimus.Platformer
     public class Bullet : MonoBehaviour, ICanOpenDoor
     {
         [SerializeField] private sbyte _damageAmount = 1;
-        [SerializeField] private byte _maxDoorLevel = 0;
+        [SerializeField] private int _maxDoorLevel = 0;
         [SerializeField] private float _lifeTime = 5.0f;
         [SerializeField] private float _speed = 10.0f;
-        public byte MaxDoorLevel { get { return _maxDoorLevel; } set { value = _maxDoorLevel; } }
+        public int MaxDoorLevel { get { return _maxDoorLevel; } set { } }
         private float _deltaTime;
         private IDamageable _iDamageable;
         private Door _door;
