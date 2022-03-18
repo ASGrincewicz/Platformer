@@ -111,10 +111,10 @@ namespace Veganimus.Platformer
         {
             _upgradeText.gameObject.SetActive(true);
             _upgradeText.text = $"{upgradeName} Acquired!";
-            Time.timeScale = 0.25f;
+            GameManager.Instance.AcquireUpgradeEvent(true);
             yield return _upgradeTextRoutineDelay;
             _upgradeText.text = string.Empty;
-            Time.timeScale = 1.0f;
+            GameManager.Instance.AcquireUpgradeEvent(false);
             _upgradeText.gameObject.SetActive(false);
         }
     }

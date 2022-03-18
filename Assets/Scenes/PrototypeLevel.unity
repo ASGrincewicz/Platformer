@@ -12942,12 +12942,12 @@ PrefabInstance:
       value: Character
       objectReference: {fileID: 0}
     - target: {fileID: 3648882456030760719, guid: 32551223a82b24c66bd644e821a4159d, type: 3}
-      propertyPath: _speed
-      value: 6
+      propertyPath: _yVelocityUpLimit
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 3648882456030760719, guid: 32551223a82b24c66bd644e821a4159d, type: 3}
       propertyPath: _yVelocityDownLimit
-      value: -20
+      value: -10
       objectReference: {fileID: 0}
     - target: {fileID: 3648882456133508417, guid: 32551223a82b24c66bd644e821a4159d, type: 3}
       propertyPath: m_RootOrder

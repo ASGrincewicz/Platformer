@@ -23,6 +23,8 @@ namespace Veganimus.Platformer
         public int Collectibles { get { return _collectibles; } set { _collectibles = value; } }
         public int EnemyKills { get { return _enemyKills; } set { _enemyKills = value; } }
         public int UpgradesCollected { get { return _upgradesCollected; } set { _upgradesCollected = value; } }
+        public bool IsPaused { get => _isPaused; }
+        public bool IsUpgrading { get; private set; }
         public static float DeltaTime;
 
         private void Awake() => _instance = this;
@@ -38,7 +40,7 @@ namespace Veganimus.Platformer
             _gameStateChannel.OnGameStateChange.RemoveListener(ChangeGameState);
             _inputManager.pauseAction -= OnPauseInput;
             _respawnPlayerChannel.OnPlayerDeath.RemoveListener(RespawnPlayer);
-            
+
         }
         private void Start() => ChangeGameState(GameState.Start);
 
@@ -69,7 +71,7 @@ namespace Veganimus.Platformer
                     break;
             }
         }
-       
+
         private void RespawnPlayer()
         {
             if (!_isGameOver)
@@ -93,6 +95,20 @@ namespace Veganimus.Platformer
                 Time.timeScale = 1;
             }
             UIManager.Instance.ActivatePauseMenu(_isPaused);
+        }
+
+        public void AcquireUpgradeEvent(bool isActive)
+        {
+            if (isActive)
+            {
+                Time.timeScale = 0.25f;
+                IsUpgrading = true;
+            }
+            else
+            {
+                Time.timeScale = 1.0f;
+                IsUpgrading = false;
+            }
         }
     }
 }
