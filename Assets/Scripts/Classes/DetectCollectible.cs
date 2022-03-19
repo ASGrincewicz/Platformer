@@ -11,15 +11,9 @@ namespace Veganimus.Platformer
         private Collider[] _collectiblesDetected = new Collider[5];
         private Transform _transform;
 
-        private void Start()
-        {
-            _transform = transform;
-        }
+        private void Start() => _transform = transform;
 
-        private void FixedUpdate()
-        {
-            DetectCollectibles();
-        }
+        private void FixedUpdate() => DetectCollectibles();
 
         private void DetectCollectibles()
         {

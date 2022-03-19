@@ -81,6 +81,11 @@ namespace Veganimus.Platformer
             }
         }
 
+        /// <summary>
+        /// Pauses gameplay by changing Time Scale to 0 when true,
+        /// and 1 when false.
+        /// </summary>
+        /// <param name="isPaused"></param>
         public void OnPauseInput(bool isPaused)
         {
             //var isPaused = _inputManager.controls.Standard.Pause.triggered;
@@ -97,6 +102,10 @@ namespace Veganimus.Platformer
             UIManager.Instance.ActivatePauseMenu(_isPaused);
         }
 
+        /// <summary>
+        /// Triggers an effect when an upgrade is acquired.
+        /// </summary>
+        /// <param name="isActive"></param>
         public void AcquireUpgradeEvent(bool isActive)
         {
             if (isActive)
