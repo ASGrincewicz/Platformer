@@ -29,10 +29,7 @@ namespace Veganimus.Platformer
         protected WaitForSeconds _secondaryWeaponFireCooldownTime, _primaryWeaponFireCooldownTime;
         public int SecondaryAmmo { get { return _secondaryAmmo; } set { _secondaryAmmo = value; } }
 
-        private void OnEnable()
-        {
-            _player = GetComponentInParent<Character>();
-        }
+        private void OnEnable() => _player = GetComponentInParent<Character>();
 
         protected virtual IEnumerator Start()
         {
@@ -51,25 +48,25 @@ namespace Veganimus.Platformer
             {
                 _secondaryFireTriggered = _inputManager.controls.Standard.SecondaryFire.triggered;
                 if (_secondaryFireTriggered && !_isSecondaryFireOn)
-                    SecondaryUIUpdate(true);
+                    SecondaryWeaponActiveUIUpdate(true);
                 else if (_secondaryFireTriggered && _isSecondaryFireOn || _secondaryAmmo <= 0)
-                    SecondaryUIUpdate(false);
+                    SecondaryWeaponActiveUIUpdate(false);
             }
             
             switch(_isSecondaryFireOn)
             {
                 case true:
                     if (Time.time > _canFire && _secondaryAmmo > 0 && _player.Upgrades.missiles)
-                        SecondaryShoot();
+                        FireSecondaryWeapon();
                         break;
                 case false:
                     if (Time.time > _canFire)
-                        Shoot();
+                        FirePrimaryWeapon();
                     break;
             }
         }
        
-        protected virtual void Shoot()
+        protected virtual void FirePrimaryWeapon()
         {
             var shootTriggered = _inputManager.controls.Standard.Shoot.triggered;
             if (shootTriggered)
@@ -79,7 +76,7 @@ namespace Veganimus.Platformer
             }
             StartCoroutine(ShootCoolDownRoutine());
         }
-        protected virtual void SecondaryShoot()
+        protected virtual void FireSecondaryWeapon()
         {
             var shootTriggered = _inputManager.controls.Standard.Shoot.triggered;
             if (shootTriggered)
@@ -98,7 +95,7 @@ namespace Veganimus.Platformer
             else
                 yield return _secondaryWeaponFireCooldownTime;
         }
-        private void SecondaryUIUpdate(bool isOn)
+        private void SecondaryWeaponActiveUIUpdate(bool isOn)
         {
             _isSecondaryFireOn = isOn;
             _uIManager.SecondaryFireActive(isOn);

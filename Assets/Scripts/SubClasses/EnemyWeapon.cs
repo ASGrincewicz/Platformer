@@ -18,10 +18,10 @@ namespace Veganimus.Platformer
         protected override void Update()
         {
             if (Time.time > _canFire)
-                Shoot();
+                FirePrimaryWeapon();
         }
 
-        protected override void Shoot()
+        protected override void FirePrimaryWeapon()
         {
             if (IsShooting)
             {
@@ -31,6 +31,6 @@ namespace Veganimus.Platformer
                 StartCoroutine(ShootCoolDownRoutine());
             }
         }
-        protected override void SecondaryShoot(){}
+        protected override void FireSecondaryWeapon(){}
     }
 }
