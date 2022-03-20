@@ -28,9 +28,9 @@ namespace Veganimus.Platformer
         }
         private void Detonate()
         {
-            _hitColliders = new Collider[_maxColliders];
-            int numberColliders =  (int)Physics.OverlapSphereNonAlloc(transform.position, _explosionRadius, _hitColliders,_targetLayers);
-            for(int i = 0; i< numberColliders; i++)
+            _hitColliders = Physics.OverlapSphere(transform.position, _explosionRadius, _targetLayers);
+            //int numberColliders = Physics.OverlapSphere(transform.position, _explosionRadius,_targetLayers);
+            for(int i = 0; i< _hitColliders.Length; i++)
             {
                 Rigidbody rigidbody = _hitColliders[i].GetComponent<Rigidbody>();
                 _iBombable = _hitColliders[i].GetComponentInParent<IBombable>();
@@ -53,7 +53,7 @@ namespace Veganimus.Platformer
         {
             yield return _explosionDelay;
             Detonate();
-            Destroy(this.gameObject, 0.25f);
+            Destroy(gameObject, 0.25f);
         }
     }
 }

@@ -9,8 +9,8 @@ namespace Veganimus.Platformer
         protected override IEnumerator Start()
         {
             yield return new WaitForSeconds(1.0f);
-            _shootCoolDown = new WaitForSeconds(_fireRate);
-            _secondaryCoolDown = new WaitForSeconds(_secondaryFireRate);
+            _primaryWeaponFireCooldownTime = new WaitForSeconds(_primaryWeaponFireRate);
+            _secondaryWeaponFireCooldownTime = new WaitForSeconds(_secondaryWeaponFireRate);
             _poolManager = PoolManager.Instance;
             _pmTransform = _poolManager.transform;
         }
@@ -25,8 +25,8 @@ namespace Veganimus.Platformer
         {
             if (IsShooting)
             {
-                _canFire = Time.time + _fireRate;
-                Instantiate(_bulletPrefab, _fireOffset.position, _fireOffset.rotation, _pmTransform);
+                _canFire = Time.time + _primaryWeaponFireRate;
+                Instantiate(_primaryWeaponPrefab, _fireOffset.position, _fireOffset.rotation, _pmTransform);
                 
                 StartCoroutine(ShootCoolDownRoutine());
             }

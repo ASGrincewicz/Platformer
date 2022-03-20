@@ -12943,7 +12943,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3648882456030760719, guid: 32551223a82b24c66bd644e821a4159d, type: 3}
       propertyPath: _yVelocityUpLimit
-      value: 12
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 3648882456030760719, guid: 32551223a82b24c66bd644e821a4159d, type: 3}
       propertyPath: _yVelocityDownLimit
