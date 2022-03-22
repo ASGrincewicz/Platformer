@@ -61,31 +61,57 @@ namespace Veganimus.Platformer
                 }
             }
         }
-
+        /// <summary>
+        /// Sets the state of the pause menu.
+        /// </summary>
+        /// <param name="isActive"></param>
         public void ActivatePauseMenu(bool isActive) => _pauseMenu.SetActive(isActive);
 
+        /// <summary>
+        /// Updates the UI to show current available bombs.
+        /// </summary>
+        /// <param name="amount"></param>
         public void BombUpdate(int amount)
         {
             _currentBombs = amount;
             ClearAmount(_bombImages);
             ShowAmount(1, amount);
         }
+
+        /// <summary>
+        /// Updates the UI to show current amount of collectibles collected.
+        /// </summary>
+        /// <param name="amount"></param>
         public void CollectibleTextUpdate(int amount)
         {
             _collectiblesCollected += amount;
             _collectibleText.text = $"{_collectiblesCollected}";
         }
+
+        /// <summary>
+        /// Shows text on screen to indicate the current level's win conditions
+        /// have been met.
+        /// </summary>
         public void DisplayLevelComplete()
         {
             _levelCompleteText.text = "Level Complete!";
             _levelCompleteText.gameObject.SetActive(true);
         }
 
+        /// <summary>
+        /// Updates the player's health UI to show current health.
+        /// </summary>
+        /// <param name="amount"></param>
         public void HealthTextUpdate(int amount)
         {
             _currentHealth = amount;
             _healthText.text = $"Health: {_currentHealth}";
         }
+
+        /// <summary>
+        /// Updates the player's UI to show current lives available.
+        /// </summary>
+        /// <param name="amount"></param>
         public void LivesUpdate(int amount)
         {
             _currentLives = amount - 1;
@@ -93,12 +119,21 @@ namespace Veganimus.Platformer
             ShowAmount(0, _currentLives);
         }
 
+        /// <summary>
+        /// Updates the player's UI to show current missile count.
+        /// </summary>
+        /// <param name="amount"></param>
         public void MissilesTextUpdate(int amount)
         {
             _missileCount = amount;
             _missilesText.text = $"Missiles: {_missileCount}";
         }
 
+        /// <summary>
+        /// Toggles a highlight on the secondary fire mode UI to show it's
+        /// current state.
+        /// </summary>
+        /// <param name="isActive"></param>
         public void SecondaryFireActive(bool isActive)
         {
             if (!isActive)
@@ -107,6 +142,12 @@ namespace Veganimus.Platformer
                 _missileActiveBox.canvasRenderer.SetAlpha(0.75f);
         }
 
+
+        /// <summary>
+        /// Displays UI to show the upgrade acquired.
+        /// </summary>
+        /// <param name="upgradeName"></param>
+        /// <returns></returns>
         public IEnumerator AcquireUpgradeRoutine(string upgradeName)
         {
             _upgradeText.gameObject.SetActive(true);

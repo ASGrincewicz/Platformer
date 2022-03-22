@@ -2674,7 +2674,6 @@ MonoBehaviour:
   _navPoints:
   - {fileID: 2049905760810468498}
   - {fileID: 2049905760924808711}
-  currentColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &2049905760264124297
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2691,6 +2690,7 @@ MonoBehaviour:
   _hp: 10
   _lives: 0
   _maxLives: 0
+  _characterType: 0
 --- !u!114 &8607126281925572120
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2706,10 +2706,10 @@ MonoBehaviour:
   _inputManager: {fileID: 0}
   _isSecondaryFireOn: 0
   _secondaryAmmo: 5
-  _fireRate: 0.5
-  _secondaryFireRate: 0.5
-  _bulletPrefab: {fileID: 4874575737357313677, guid: 0366fde173f7b498c983c242537cf2ab, type: 3}
-  _missilePrefab: {fileID: 0}
+  _primaryWeaponFireRate: 0.5
+  _secondaryWeaponFireRate: 0.5
+  _primaryWeaponPrefab: {fileID: 4874575737357313677, guid: 0366fde173f7b498c983c242537cf2ab, type: 3}
+  _secondaryWeaponPrefab: {fileID: 0}
   _fireOffset: {fileID: 3289583231187172767}
 --- !u!1 &2049905760810468499
 GameObject:
@@ -3078,8 +3078,8 @@ MonoBehaviour:
   _inputManager: {fileID: 0}
   _isSecondaryFireOn: 0
   _secondaryAmmo: 5
-  _fireRate: 0.5
-  _secondaryFireRate: 0.5
-  _bulletPrefab: {fileID: 4874575737357313677, guid: 0366fde173f7b498c983c242537cf2ab, type: 3}
-  _missilePrefab: {fileID: 0}
+  _primaryWeaponFireRate: 0.5
+  _secondaryWeaponFireRate: 0.5
+  _primaryWeaponPrefab: {fileID: 0}
+  _secondaryWeaponPrefab: {fileID: 0}
   _fireOffset: {fileID: 3289583231187172767}

@@ -282,7 +282,10 @@ namespace Veganimus.Platformer
             _horizontal = x;
             _vertical = y;
         }
-
+        /// <summary>
+        /// Triggers animation for climbing up on a ledge and
+        /// sets required states.
+        /// </summary>
         public void ClimbUp()
         {
             _animator.SetFloat(_grabLedgeAP, 0f);
@@ -297,7 +300,12 @@ namespace Veganimus.Platformer
             _activeLedge = null;
             _transform.parent = null;
         }
-
+        /// <summary>
+        /// Logic for adjusting character to seamlessly grab a ledge.
+        /// </summary>
+        /// <param name="handPos"></param>
+        /// <param name="currentLedge"></param>
+        /// <param name="freeHang"></param>
         public void GrabLedge(Vector3 handPos, Ledge currentLedge, bool freeHang)
         {
             if (!_inBallForm)
@@ -322,6 +330,11 @@ namespace Veganimus.Platformer
             }
         }
 
+        /// <summary>
+        /// Pass in the ID and name of the upgrade to activate.
+        /// </summary>
+        /// <param name="upgradeID"></param>
+        /// <param name="upgradeName"></param>
         public void ActivateUpgrade(int upgradeID, string upgradeName)
         {
             switch(upgradeID)
