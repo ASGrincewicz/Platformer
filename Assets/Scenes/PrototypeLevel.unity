@@ -178,7 +178,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 286354733476761599, guid: deda3753a927b40f8817d1db2b76fc6f, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.75
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 286354733476761599, guid: deda3753a927b40f8817d1db2b76fc6f, type: 3}
       propertyPath: m_LocalPosition.x
@@ -186,7 +186,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 286354733476761599, guid: deda3753a927b40f8817d1db2b76fc6f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 7.63
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 286354733476761599, guid: deda3753a927b40f8817d1db2b76fc6f, type: 3}
       propertyPath: m_LocalPosition.z
@@ -5466,7 +5466,7 @@ Camera:
   m_TargetEye: 3
   m_HDR: 1
   m_AllowMSAA: 1
-  m_AllowDynamicResolution: 0
+  m_AllowDynamicResolution: 1
   m_ForceIntoRT: 0
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
@@ -5526,7 +5526,7 @@ MonoBehaviour:
   m_RequiresOpaqueTextureOption: 2
   m_CameraType: 0
   m_Cameras: []
-  m_RendererIndex: -1
+  m_RendererIndex: 0
   m_VolumeLayerMask:
     serializedVersion: 2
     m_Bits: 1
@@ -8382,7 +8382,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 286354733476761599, guid: deda3753a927b40f8817d1db2b76fc6f, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.75
+      value: 1.2
       objectReference: {fileID: 0}
     - target: {fileID: 286354733476761599, guid: deda3753a927b40f8817d1db2b76fc6f, type: 3}
       propertyPath: m_LocalPosition.x
@@ -8390,7 +8390,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 286354733476761599, guid: deda3753a927b40f8817d1db2b76fc6f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 11.7
+      value: 12.58
       objectReference: {fileID: 0}
     - target: {fileID: 286354733476761599, guid: deda3753a927b40f8817d1db2b76fc6f, type: 3}
       propertyPath: m_LocalPosition.z
@@ -13064,20 +13064,28 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 3710627864960694883, guid: 382a36414ce124970a43df9a06616a15, type: 3}
     - target: {fileID: 1548381139670413477, guid: 32551223a82b24c66bd644e821a4159d, type: 3}
+      propertyPath: _primaryWeaponFireRate
+      value: 0.35
+      objectReference: {fileID: 0}
+    - target: {fileID: 1548381139670413477, guid: 32551223a82b24c66bd644e821a4159d, type: 3}
       propertyPath: _secondaryWeaponPrefab
       value: 
       objectReference: {fileID: 9086352760503824447, guid: 42a8e8232e5ae4f92bce0e5ba3c9d07a, type: 3}
+    - target: {fileID: 3648882455283779073, guid: 32551223a82b24c66bd644e821a4159d, type: 3}
+      propertyPath: m_Mass
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3648882456030760715, guid: 32551223a82b24c66bd644e821a4159d, type: 3}
       propertyPath: m_Name
       value: Character
       objectReference: {fileID: 0}
     - target: {fileID: 3648882456030760719, guid: 32551223a82b24c66bd644e821a4159d, type: 3}
       propertyPath: _speed
-      value: 6.5
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 3648882456030760719, guid: 32551223a82b24c66bd644e821a4159d, type: 3}
       propertyPath: _jumpHeight
-      value: 10
+      value: 9.5
       objectReference: {fileID: 0}
     - target: {fileID: 3648882456030760719, guid: 32551223a82b24c66bd644e821a4159d, type: 3}
       propertyPath: _yVelocityUpLimit
@@ -13212,7 +13220,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4386040406046463382, guid: 5cd8532be61794433b0580c75663f850, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 11.251
+      value: 11.951
       objectReference: {fileID: 0}
     - target: {fileID: 4386040406046463382, guid: 5cd8532be61794433b0580c75663f850, type: 3}
       propertyPath: m_LocalPosition.z

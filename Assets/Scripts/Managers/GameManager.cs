@@ -27,7 +27,11 @@ namespace Veganimus.Platformer
         public bool IsUpgrading { get; private set; }
         public static float DeltaTime;
 
-        private void Awake() => _instance = this;
+        private void Awake()
+        {
+            _instance = this;
+            Application.targetFrameRate = 60;
+        }
 
         private void OnEnable()
         {

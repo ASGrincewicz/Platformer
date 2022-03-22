@@ -52,7 +52,7 @@ namespace Veganimus.Platformer
         private float _aimTargetStandingPos = 1.4f;
         private float _horizontal;
         private float _vertical;
-        private const float _z = 0;
+        private float _z = 0;
         private float _yVelocity;
         private RaycastHit _hitInfo;
         private Vector3 _direction;
@@ -69,7 +69,7 @@ namespace Veganimus.Platformer
         private Transform _transform;
         private Weapon _weapon;
         public bool InBallForm { get { return _inBallForm; } }
-        public float DeltaTime { get; private set; }
+        private float _deltaTime;
         public PlayerUpgrades Upgrades { get { return _upgrades; } }
         public InputManagerSO InputManager { get; set; }
 
@@ -100,11 +100,20 @@ namespace Veganimus.Platformer
             _weapon = GetComponentInChildren<Weapon>();
             _gravity = _adjustGravity;
         }
-        
+        private void FixedUpdate()
+        {
+            if (_inBallForm)
+            {
+                _controller.enabled = false;
+                BallMovement();
+            }
+            if (_z != 0)
+                _z = 0;
+        }
         private void Update()
         {
             if (GameManager.Instance.IsPaused || GameManager.Instance.IsUpgrading) return;
-            DeltaTime = Time.deltaTime;
+            _deltaTime = Time.deltaTime;
             _ballModeTriggered = _inputManager.controls.Standard.BallMode.triggered;
             _jumpTriggered = _inputManager.controls.Standard.Jump.triggered;
             if (_transform.position.z != 0)
@@ -112,11 +121,11 @@ namespace Veganimus.Platformer
             if (!_inBallForm && !_isCrouching && _controller.enabled)
              Movement();
             
-            else if (_inBallForm)
-            {
-                _controller.enabled = false;
-                BallMovement();
-            }
+            //else if (_inBallForm)
+            //{
+            //    _controller.enabled = false;
+            //    BallMovement();
+            //}
             
             if(_controller.enabled || _inBallForm)
             {
@@ -243,7 +252,7 @@ namespace Veganimus.Platformer
             //}
             //else
             // _animator.SetFloat(_fallingAP, 0f);
-            _controller.Move(_velocity * DeltaTime);
+            _controller.Move(_velocity * _deltaTime);
         }
 
         private void Jump()
@@ -256,7 +265,7 @@ namespace Veganimus.Platformer
         }
         private void DoubleJump()
         {
-            _yVelocity = _jumpHeight + +Mathf.Abs(_velocity.x);
+            _yVelocity = _jumpHeight + Mathf.Abs(_velocity.x);
             _canDoubleJump = false;
             Debug.Log($"Double Jump initiated at {_yVelocity}");
         }

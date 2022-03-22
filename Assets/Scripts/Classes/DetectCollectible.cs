@@ -26,7 +26,7 @@ namespace Veganimus.Platformer
                 for (int i = 0; i < numberColliders; i++)
                 {
                     if (_collectiblesDetected[i].GetComponent<Collectible>().CanAbsorb)
-                        _collectiblesDetected[i].transform.localPosition = Vector3.MoveTowards(_collectiblesDetected[i].transform.localPosition, _transform.localPosition, 3f * Character.Instance.DeltaTime);
+                        _collectiblesDetected[i].transform.localPosition = Vector3.MoveTowards(_collectiblesDetected[i].transform.localPosition, _transform.localPosition, 3f * Time.deltaTime);
                     else
                         return;
                 }

@@ -66,10 +66,11 @@ MonoBehaviour:
   _maxDoorLevel: 1
   _maxColliders: 50
   _bombTimer: 1
-  _explosionForce: 5
+  _explosionForce: 0.5
   _explosionRadius: 1
-  _upForce: 2.5
+  _upForce: 1.2
   _damageAmount: 2
+  _detonationTriggered: 0
   _targetLayers:
     serializedVersion: 2
     m_Bits: 17472
