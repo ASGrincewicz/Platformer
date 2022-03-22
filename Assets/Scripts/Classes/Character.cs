@@ -13,6 +13,9 @@ namespace Veganimus.Platformer
         [SerializeField] private float _adjustGravity;
         [SerializeField] private float _gravity;
         [SerializeField] private float _jumpHeight = 15.0f;
+        [SerializeField] private float _wallJumpBounceOffModifier = 1.5f;
+        [SerializeField] private int _wallJumpCount = 0;
+        [SerializeField] private int _wallJumpLimit = 1;
         [SerializeField] private float _speed = 5f;
         [SerializeField] private float _yVelocityDownLimit = -20.0f;
         [SerializeField] private float _yVelocityUpLimit = 10.0f;
@@ -145,7 +148,7 @@ namespace Veganimus.Platformer
 
         private void OnControllerColliderHit(ControllerColliderHit hit)
         {
-            if (!_controller.isGrounded && !_isWallJumping && !_grabbingLedge)
+            if (!_controller.isGrounded && !_isWallJumping && !_grabbingLedge && _wallJumpCount < _wallJumpLimit)
             {
                 if (hit.transform.CompareTag("Wall"))
                 {
@@ -193,13 +196,9 @@ namespace Veganimus.Platformer
                 _animator.SetFloat(_groundedAP, 1);
                 _animator.SetBool(_droppingAP, false);
                 _animator.SetFloat(_jumpingAP, 0);
+                _wallJumpCount = 0;
                 if (_jumpTriggered)
-                {
-                    _yVelocity = _jumpHeight;
-                    _canDoubleJump = true;
-                    _animator.SetFloat(_jumpingAP, 1);
-                    _animator.SetFloat(_groundedAP, 0);
-                }
+                 Jump();
             }
 
             else
@@ -210,16 +209,9 @@ namespace Veganimus.Platformer
                     if (_canDoubleJump && _upgrades.doubleJump || _canWallJump)
                     {
                         if (_canWallJump && !_isWallJumping)
-                        {
-                            _isWallJumping = true;
-                            _animator.SetFloat(_jumpingAP, 0);
-                            _animator.SetFloat(_wallJumpingAP, 1);
-                            _velocity = _wallSurfaceNormal * (_speed * 5);
-                            _canDoubleJump = false;
-                            _canWallJump = false;
-                        }
-                        _yVelocity = _jumpHeight;
-                        _canDoubleJump = false;
+                             WallJump();
+                        
+                        DoubleJump();
                     }
                     _animator.SetFloat(_jumpingAP, 1);
                 }
@@ -251,10 +243,34 @@ namespace Veganimus.Platformer
             //}
             //else
             // _animator.SetFloat(_fallingAP, 0f);
-
-
-
             _controller.Move(_velocity * DeltaTime);
+        }
+
+        private void Jump()
+        {
+            _yVelocity = _jumpHeight + Mathf.Abs(_velocity.x);
+            _canDoubleJump = true;
+            _animator.SetFloat(_jumpingAP, 1);
+            _animator.SetFloat(_groundedAP, 0);
+            Debug.Log($"Jump initiated at {_yVelocity}");
+        }
+        private void DoubleJump()
+        {
+            _yVelocity = _jumpHeight + +Mathf.Abs(_velocity.x);
+            _canDoubleJump = false;
+            Debug.Log($"Double Jump initiated at {_yVelocity}");
+        }
+
+        private void WallJump()
+        {
+            _wallJumpCount++;
+            _isWallJumping = true;
+            _animator.SetFloat(_jumpingAP, 0);
+            _animator.SetFloat(_wallJumpingAP, 1);
+            _velocity = _wallSurfaceNormal * (_speed * _wallJumpBounceOffModifier);
+            _canDoubleJump = false;
+            _canWallJump = false;
+            Debug.Log($"Wall Jump initiated at {_yVelocity}");
         }
 
         private void OnCrouchInput(float c)
