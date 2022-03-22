@@ -11,7 +11,8 @@ namespace Veganimus.Platformer
         [SerializeField] private float _explosionForce;
         [SerializeField] private float _explosionRadius;
         [SerializeField] private float _upForce;
-        [SerializeField] private sbyte _damageAmount = 2;
+        [SerializeField] private int _damageAmount = 2;
+        [SerializeField] private bool _detonationTriggered = false;
         [SerializeField] private LayerMask _targetLayers = 0;
         private IBombable _iBombable;
         private IDamageable _idamageable;
@@ -20,16 +21,21 @@ namespace Veganimus.Platformer
         public int MaxDoorLevel { get { return _maxDoorLevel; } set { } }
 
         //private void OnDrawGizmosSelected() => Gizmos.DrawWireSphere(transform.position, _explosionRadius)
-
         private void Start()
         {
             _explosionDelay = new WaitForSeconds(_bombTimer);
             StartCoroutine(ExplosionRoutine());
         }
+
+        private void FixedUpdate()
+        {
+            if (_detonationTriggered)
+                Detonate();
+        }
         private void Detonate()
         {
             _hitColliders = Physics.OverlapSphere(transform.position, _explosionRadius, _targetLayers);
-            //int numberColliders = Physics.OverlapSphere(transform.position, _explosionRadius,_targetLayers);
+           
             for(int i = 0; i< _hitColliders.Length; i++)
             {
                 Rigidbody rigidbody = _hitColliders[i].GetComponent<Rigidbody>();
@@ -52,7 +58,7 @@ namespace Veganimus.Platformer
         private IEnumerator ExplosionRoutine()
         {
             yield return _explosionDelay;
-            Detonate();
+            _detonationTriggered = true;
             Destroy(gameObject, 0.25f);
         }
     }

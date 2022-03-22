@@ -13,6 +13,9 @@ namespace Veganimus.Platformer
         [SerializeField] private float _adjustGravity;
         [SerializeField] private float _gravity;
         [SerializeField] private float _jumpHeight = 15.0f;
+        [SerializeField] private float _wallJumpBounceOffModifier = 1.5f;
+        [SerializeField] private int _wallJumpCount = 0;
+        [SerializeField] private int _wallJumpLimit = 1;
         [SerializeField] private float _speed = 5f;
         [SerializeField] private float _yVelocityDownLimit = -20.0f;
         [SerializeField] private float _yVelocityUpLimit = 10.0f;
@@ -49,7 +52,7 @@ namespace Veganimus.Platformer
         private float _aimTargetStandingPos = 1.4f;
         private float _horizontal;
         private float _vertical;
-        private const float _z = 0;
+        private float _z = 0;
         private float _yVelocity;
         private RaycastHit _hitInfo;
         private Vector3 _direction;
@@ -66,7 +69,7 @@ namespace Veganimus.Platformer
         private Transform _transform;
         private Weapon _weapon;
         public bool InBallForm { get { return _inBallForm; } }
-        public float DeltaTime { get; private set; }
+        private float _deltaTime;
         public PlayerUpgrades Upgrades { get { return _upgrades; } }
         public InputManagerSO InputManager { get; set; }
 
@@ -97,11 +100,20 @@ namespace Veganimus.Platformer
             _weapon = GetComponentInChildren<Weapon>();
             _gravity = _adjustGravity;
         }
-        
+        private void FixedUpdate()
+        {
+            if (_inBallForm)
+            {
+                _controller.enabled = false;
+                BallMovement();
+            }
+            if (_z != 0)
+                _z = 0;
+        }
         private void Update()
         {
             if (GameManager.Instance.IsPaused || GameManager.Instance.IsUpgrading) return;
-            DeltaTime = Time.deltaTime;
+            _deltaTime = Time.deltaTime;
             _ballModeTriggered = _inputManager.controls.Standard.BallMode.triggered;
             _jumpTriggered = _inputManager.controls.Standard.Jump.triggered;
             if (_transform.position.z != 0)
@@ -109,11 +121,11 @@ namespace Veganimus.Platformer
             if (!_inBallForm && !_isCrouching && _controller.enabled)
              Movement();
             
-            else if (_inBallForm)
-            {
-                _controller.enabled = false;
-                BallMovement();
-            }
+            //else if (_inBallForm)
+            //{
+            //    _controller.enabled = false;
+            //    BallMovement();
+            //}
             
             if(_controller.enabled || _inBallForm)
             {
@@ -145,7 +157,7 @@ namespace Veganimus.Platformer
 
         private void OnControllerColliderHit(ControllerColliderHit hit)
         {
-            if (!_controller.isGrounded && !_isWallJumping && !_grabbingLedge)
+            if (!_controller.isGrounded && !_isWallJumping && !_grabbingLedge && _wallJumpCount < _wallJumpLimit)
             {
                 if (hit.transform.CompareTag("Wall"))
                 {
@@ -193,13 +205,9 @@ namespace Veganimus.Platformer
                 _animator.SetFloat(_groundedAP, 1);
                 _animator.SetBool(_droppingAP, false);
                 _animator.SetFloat(_jumpingAP, 0);
+                _wallJumpCount = 0;
                 if (_jumpTriggered)
-                {
-                    _yVelocity = _jumpHeight;
-                    _canDoubleJump = true;
-                    _animator.SetFloat(_jumpingAP, 1);
-                    _animator.SetFloat(_groundedAP, 0);
-                }
+                 Jump();
             }
 
             else
@@ -210,16 +218,9 @@ namespace Veganimus.Platformer
                     if (_canDoubleJump && _upgrades.doubleJump || _canWallJump)
                     {
                         if (_canWallJump && !_isWallJumping)
-                        {
-                            _isWallJumping = true;
-                            _animator.SetFloat(_jumpingAP, 0);
-                            _animator.SetFloat(_wallJumpingAP, 1);
-                            _velocity = _wallSurfaceNormal * (_speed * 5);
-                            _canDoubleJump = false;
-                            _canWallJump = false;
-                        }
-                        _yVelocity = _jumpHeight;
-                        _canDoubleJump = false;
+                             WallJump();
+                        
+                        DoubleJump();
                     }
                     _animator.SetFloat(_jumpingAP, 1);
                 }
@@ -251,10 +252,34 @@ namespace Veganimus.Platformer
             //}
             //else
             // _animator.SetFloat(_fallingAP, 0f);
+            _controller.Move(_velocity * _deltaTime);
+        }
 
+        private void Jump()
+        {
+            _yVelocity = _jumpHeight + Mathf.Abs(_velocity.x);
+            _canDoubleJump = true;
+            _animator.SetFloat(_jumpingAP, 1);
+            _animator.SetFloat(_groundedAP, 0);
+            Debug.Log($"Jump initiated at {_yVelocity}");
+        }
+        private void DoubleJump()
+        {
+            _yVelocity = _jumpHeight + Mathf.Abs(_velocity.x);
+            _canDoubleJump = false;
+            Debug.Log($"Double Jump initiated at {_yVelocity}");
+        }
 
-
-            _controller.Move(_velocity * DeltaTime);
+        private void WallJump()
+        {
+            _wallJumpCount++;
+            _isWallJumping = true;
+            _animator.SetFloat(_jumpingAP, 0);
+            _animator.SetFloat(_wallJumpingAP, 1);
+            _velocity = _wallSurfaceNormal * (_speed * _wallJumpBounceOffModifier);
+            _canDoubleJump = false;
+            _canWallJump = false;
+            Debug.Log($"Wall Jump initiated at {_yVelocity}");
         }
 
         private void OnCrouchInput(float c)

@@ -40,9 +40,14 @@ namespace Veganimus.Platformer
         {
             GameManager.Instance.EnemyKills++;
         }
-        private void Update()
+
+        private void FixedUpdate()
         {
             Detect();
+        }
+        private void Update()
+        {
+            //Detect();
             if (_aiState == AIState.Patrolling)
             {
                 if (!_agent.pathPending && _agent.remainingDistance < 0.5f)
@@ -107,7 +112,7 @@ namespace Veganimus.Platformer
             else
             {
                 _agent.destination = _navPoints[_destinationPoint].position;
-                _destinationPoint = (int)((_destinationPoint + 1) % _navPoints.Length);
+                _destinationPoint = (_destinationPoint + 1) % _navPoints.Length;
             }
         }
         private void Detect()
