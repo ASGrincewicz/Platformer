@@ -6,8 +6,9 @@ namespace Veganimus.Platformer
 {
     public class DetectCollectible : MonoBehaviour
     {
-        [SerializeField] private float _collectibleDetectionRadius;
-        [SerializeField] private LayerMask _collectibleLayerMask;
+        [SerializeField, Tooltip("The area around the player in which collectibles are detected.")]
+        private float _collectibleDetectionRadius;
+        [SerializeField,Tooltip("Layer on which collectible objects exist.")] private LayerMask _collectibleLayerMask;
         private Collider[] _collectiblesDetected = new Collider[5];
         private Transform _transform;
 

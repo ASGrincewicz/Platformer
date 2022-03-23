@@ -13,8 +13,10 @@ namespace Veganimus.Platformer
         public static UIManager Instance { get { return _instance; } }
         private static UIManager _instance;
         #endregion
-        [SerializeField] private GameObject _pauseMenu;
-        [SerializeField] private Image _missileActiveBox;
+        [SerializeField, Tooltip("UI Object for Pause Menu.")]
+        private GameObject _pauseMenu;
+        [SerializeField, Tooltip("Highlight to show secondary weapon is active.")]
+        private Image _secondaryWeaponActive;
         [SerializeField] private List<Image> _bombImages = new List<Image>();
         [SerializeField] private List<Image> _livesImages = new List<Image>();
         [SerializeField] private TMP_Text _collectibleText, _healthText, _missilesText;
@@ -26,8 +28,8 @@ namespace Veganimus.Platformer
         private int _currentBombs;
         private int _currentHealth;
         private int _currentLives;
-        private int _maxMissileCount;
-        private int  _missileCount;
+        private int _MaxSecondaryAmmo;
+        private int  _secondaryAmmoCount;
         private WaitForSeconds _upgradeTextRoutineDelay;
         public TMP_Text MissileText { get { return _missilesText; } set { } } 
 
@@ -125,8 +127,8 @@ namespace Veganimus.Platformer
         /// <param name="amount"></param>
         public void MissilesTextUpdate(int amount)
         {
-            _missileCount = amount;
-            _missilesText.text = $"Missiles: {_missileCount}";
+            _secondaryAmmoCount = amount;
+            _missilesText.text = $"Missiles: {_secondaryAmmoCount}";
         }
 
         /// <summary>
@@ -137,9 +139,9 @@ namespace Veganimus.Platformer
         public void SecondaryFireActive(bool isActive)
         {
             if (!isActive)
-                _missileActiveBox.canvasRenderer.SetAlpha(0);
+                _secondaryWeaponActive.canvasRenderer.SetAlpha(0);
             else
-                _missileActiveBox.canvasRenderer.SetAlpha(0.75f);
+                _secondaryWeaponActive.canvasRenderer.SetAlpha(0.75f);
         }
 
 
