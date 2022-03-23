@@ -28,6 +28,7 @@ namespace Veganimus.Platformer
         [SerializeField] private GameObject _ballForm;
         [SerializeField] private GameObject _characterModel;
         [SerializeField] private InputManagerSO _inputManager;
+        [SerializeField] private Player_Audio _playerAudio;
         private bool _ballModeTriggered;
         private bool _canDoubleJump;
         private bool _canWallJump;
@@ -77,6 +78,7 @@ namespace Veganimus.Platformer
 
         private void OnEnable()
         {
+            _playerAudio = GetComponent<Player_Audio>();
             _inputManager.moveAction += OnMoveInput;
             _inputManager.crouchAction += OnCrouchInput;
         }

@@ -6,6 +6,7 @@ namespace Veganimus.Platformer
     public class Weapon : MonoBehaviour
     {
         [SerializeField] private InputManagerSO _inputManager;
+        [SerializeField] private Weapon_Audio _weaponAudio;
         [SerializeField, Tooltip("Indicates if alternate weapon active.")]
         protected bool _isSecondaryFireOn = false;
         [SerializeField, Tooltip("Secondary Weapon Ammo Count")]
@@ -29,7 +30,11 @@ namespace Veganimus.Platformer
         protected WaitForSeconds _secondaryWeaponFireCooldownTime, _primaryWeaponFireCooldownTime;
         public int SecondaryAmmo { get { return _secondaryAmmo; } set { _secondaryAmmo = value; } }
 
-        private void OnEnable() => _player = GetComponentInParent<Character>();
+        private void OnEnable()
+        {
+            _player = GetComponentInParent<Character>();
+            _weaponAudio = GetComponent<Weapon_Audio>();
+        }
 
         protected virtual IEnumerator Start()
         {
@@ -73,6 +78,7 @@ namespace Veganimus.Platformer
             {
                 _canFire = Time.time + _primaryWeaponFireRate;
                 Instantiate(_primaryWeaponPrefab, _fireOffset.position, _fireOffset.rotation, _pmTransform);
+                _weaponAudio.PlaySound(_weaponAudio.PrimaryWeaponFireSound);
             }
             StartCoroutine(ShootCoolDownRoutine());
         }
