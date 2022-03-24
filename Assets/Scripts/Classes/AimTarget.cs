@@ -37,18 +37,22 @@ namespace Veganimus.Platformer
             _target = _targetPosition;
             if(_targetPosition != null)
             {
-                if(_targetPosition == _upAimTarget && _vertical > 0.5f)
-                    _target = _overHeadTarget;
-                
-                else if(_targetPosition == _downAimTarget && _vertical < -0.5f)
-                    _target = _belowTarget;
-                
-                else
-                    _target = _targetPosition;
-                
-                _aimTargetObject.transform.position = Vector3.Lerp(_aimTargetObject.transform.position, _target.position, _lerpSpeed * _deltaTime);
+                SetTarget();
             }
           
+        }
+        private void SetTarget()
+        {
+            if (_targetPosition == _upAimTarget && _vertical > 0.5f)
+                _target = _overHeadTarget;
+
+            else if (_targetPosition == _downAimTarget && _vertical < -0.5f)
+                _target = _belowTarget;
+
+            else
+                _target = _targetPosition;
+
+            _aimTargetObject.transform.position = Vector3.Lerp(_aimTargetObject.transform.position, _target.position, _lerpSpeed * _deltaTime);
         }
        
         private void OnDownAimInput(float input)

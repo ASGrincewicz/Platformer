@@ -30,7 +30,10 @@ namespace Veganimus.Platformer
                     return;
             }
         }
-
+        /// <summary>
+        /// Returns position at which character stands after climbing animation.
+        /// </summary>
+        /// <returns></returns>
         public Transform GetStandPosition() => _standPos;
     }
 }

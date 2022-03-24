@@ -5,15 +5,17 @@ namespace Veganimus.Platformer
 {
     public class Bomb : MonoBehaviour, ICanOpenDoor
     {
-        [SerializeField] private int _maxDoorLevel = 1;
+        [SerializeField,Tooltip("Max Level of Doors which can be opened by this bomb.")]
+        private int _maxDoorLevel = 1;
         [SerializeField] private int _maxColliders = 50;
-        [SerializeField] private float _bombTimer;
+        [SerializeField, Tooltip("Time after instantiation when bomb detonates.")]
+        private float _bombTimer;
         [SerializeField] private float _explosionForce;
         [SerializeField] private float _explosionRadius;
         [SerializeField] private float _upForce;
-        [SerializeField] private int _damageAmount = 2;
-        [SerializeField] private bool _detonationTriggered = false;
+        [SerializeField] private int _damageAmount = 2;       
         [SerializeField] private LayerMask _targetLayers = 0;
+        private bool _detonationTriggered = false;
         private IBombable _iBombable;
         private IDamageable _idamageable;
         private Collider[] _hitColliders;

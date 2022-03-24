@@ -5,12 +5,17 @@ namespace Veganimus.Platformer
 {
     public class Enemy : MonoBehaviour
     {
-        [SerializeField] private int _destinationPoint;
         [SerializeField] private AIState _aiState;
-        [SerializeField] private EnemyInfo _enemyInfo;
-        [SerializeField] private LayerMask _targetLayer;
+        [SerializeField, Tooltip("Stats for this enemy.")]
+        private EnemyInfo _enemyInfo;
+        [SerializeField, Tooltip("Layers with objects that enemy can target.")]
+        private LayerMask _targetLayer;
         [SerializeField] EnemyWeapon _weapon;
-        [SerializeField] Transform[] _navPoints;
+        [Header("Navigation")]
+        [SerializeField, Tooltip("Current Waypoint Nav Mesh Agent moving towards.")]
+        private int _destinationPoint;
+        [SerializeField, Tooltip("Positions the nav mesh agent sets as destinations.")]
+        private Transform[] _navPoints;
         private readonly int _attackingAP = Animator.StringToHash("Attacking");
         private readonly int _chasingAP = Animator.StringToHash("Chasing");
         private readonly int _deadAP = Animator.StringToHash("Dead");

@@ -28,6 +28,7 @@ namespace Veganimus.Platformer
         [SerializeField] private GameObject _ballForm;
         [SerializeField] private GameObject _characterModel;
         [SerializeField] private InputManagerSO _inputManager;
+        [SerializeField] private Player_Audio _playerAudio;
         private bool _ballModeTriggered;
         private bool _canDoubleJump;
         private bool _canWallJump;
@@ -77,6 +78,7 @@ namespace Veganimus.Platformer
 
         private void OnEnable()
         {
+            _playerAudio = GetComponent<Player_Audio>();
             _inputManager.moveAction += OnMoveInput;
             _inputManager.crouchAction += OnCrouchInput;
         }
@@ -132,24 +134,11 @@ namespace Veganimus.Platformer
                 FaceDirection();
                 if (_ballModeTriggered && !_inBallForm && _controller.isGrounded && _upgrades.ballMode)
                 {
-                    _mainCamera.trackedObject = _ballForm;
-                   _ballFormTransform.position = _transform.position;
-                    _characterModel.SetActive(false);
-                    _ballForm.SetActive(true);
-                    _inBallForm = true;
-                    _rigidbody = GetComponentInChildren<Rigidbody>();
-                    _rigidbody.velocity = Vector3.zero;
+                    TransformToBallMode(true);
                 }
                 else if (_ballModeTriggered && _inBallForm)
                 {
-                    _mainCamera.trackedObject = gameObject;
-                    _transform.position = new Vector3(_ballFormTransform.position.x, _ballFormTransform.position.y, _z);
-                    _controller.enabled = true;
-                    _characterModel.SetActive(true);
-                    _ballForm.SetActive(false);
-                    _inBallForm = false;
-                    _ballFormTransform.position = new Vector3(_transform.position.x, _transform.position.y, _z);
-                    _rigidbody.velocity = Vector3.zero;
+                    TransformToBallMode(false);
                 }
             }
              _animator.SetFloat(_horizontalAP, _horizontal != 0 ? 1 : 0);
@@ -174,6 +163,31 @@ namespace Veganimus.Platformer
                 _playerAim.AimWeight = 1;
                 _animator.SetFloat(_wallJumpingAP, 0);
             }
+        }
+        private void TransformToBallMode(bool enterBallMode)
+        {
+            if (enterBallMode)
+            {
+                _mainCamera.trackedObject = _ballForm;
+                _ballFormTransform.position = _transform.position;
+                _characterModel.SetActive(false);
+                _ballForm.SetActive(true);
+                _inBallForm = enterBallMode;
+                _rigidbody = GetComponentInChildren<Rigidbody>();
+                _rigidbody.velocity = Vector3.zero;
+            }
+            else
+            {
+                _mainCamera.trackedObject = gameObject;
+                _transform.position = new Vector3(_ballFormTransform.position.x, _ballFormTransform.position.y, _z);
+                _controller.enabled = true;
+                _characterModel.SetActive(true);
+                _ballForm.SetActive(false);
+                _inBallForm = false;
+                _ballFormTransform.position = new Vector3(_transform.position.x, _transform.position.y, _z);
+                _rigidbody.velocity = Vector3.zero;
+            }
+            _playerAudio.PlaySound(_playerAudio.PlayerTransformSound);
         }
 
         private void BallMovement()
@@ -267,6 +281,7 @@ namespace Veganimus.Platformer
         {
             _yVelocity = _jumpHeight + Mathf.Abs(_velocity.x);
             _canDoubleJump = false;
+            _playerAudio.PlaySound(_playerAudio.PlayerJumpSound);
             Debug.Log($"Double Jump initiated at {_yVelocity}");
         }
 
@@ -279,6 +294,7 @@ namespace Veganimus.Platformer
             _velocity = _wallSurfaceNormal * (_speed * _wallJumpBounceOffModifier);
             _canDoubleJump = false;
             _canWallJump = false;
+            _playerAudio.PlaySound(_playerAudio.PlayerJumpSound);
             Debug.Log($"Wall Jump initiated at {_yVelocity}");
         }
 
@@ -386,6 +402,7 @@ namespace Veganimus.Platformer
                     Debug.Log("No upgrade specified.");
                     break;
             }
+            _playerAudio.PlaySound(_playerAudio.PlayerUpgradeSound);
             StartCoroutine(UIManager.Instance.AcquireUpgradeRoutine(upgradeName));
         }
     }

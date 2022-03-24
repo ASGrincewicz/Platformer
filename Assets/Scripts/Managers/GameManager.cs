@@ -12,7 +12,8 @@ namespace Veganimus.Platformer
         [SerializeField] private GameStateChannel _gameStateChannel;
         [SerializeField] private InputManagerSO _inputManager;
         [SerializeField] private RespawnPlayerChannel _respawnPlayerChannel;
-        [SerializeField] private Transform _spawnPoint;
+        [SerializeField,Tooltip("Position where player is spawned.")]
+        private Transform _spawnPoint;
         private bool _isGameOver;
         private bool _isPaused;
         private bool _isPlayerDead;

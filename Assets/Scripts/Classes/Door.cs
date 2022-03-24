@@ -3,8 +3,10 @@ using System.Collections;
 using UnityEngine;
 namespace Veganimus.Platformer
 {
+    [RequireComponent(typeof(Door_Audio))]
     public class Door : MonoBehaviour
     {
+        [SerializeField] private Door_Audio _doorAudio;
         [SerializeField,Tooltip("Indicates if the door is locked.")]
         private bool _locked = false;
         [SerializeField, Tooltip("Only a projectile with a 'Door Level' at or above this number can open this door.")]
@@ -23,6 +25,7 @@ namespace Veganimus.Platformer
         {
             _animator = GetComponentInParent<Animator>();
             _meshRenderer = GetComponent<MeshRenderer>();
+            _doorAudio = GetComponent<Door_Audio>();
             _closeDelay = new WaitForSeconds(5.0f);
             if (_locked)
                 _meshRenderer.material = _doorMat[1];
@@ -44,9 +47,12 @@ namespace Veganimus.Platformer
                             _locked = false;
                             _doorLevel = 1;
                             _meshRenderer.material = _doorMat[0];
+                            _doorAudio.PlaySound(_doorAudio.DoorUnlockSound);
+                            return;
                         }
                         _animator.SetFloat(_doorOpenSpeedAP, 1.0f);
                         _animator.SetBool(_doorOpenAP, true);
+                        _doorAudio.PlaySound(_doorAudio.DoorOpensound);
                         StartCoroutine(DoorCloseRoutine());
                     }
                 }
@@ -57,6 +63,7 @@ namespace Veganimus.Platformer
             yield return _closeDelay;
             _animator.SetFloat(_doorOpenSpeedAP, -1.0f);
             _animator.SetBool(_doorOpenAP, false);
+            _doorAudio.PlaySound(_doorAudio.DoorCloseSound);
         }
     }
 }
