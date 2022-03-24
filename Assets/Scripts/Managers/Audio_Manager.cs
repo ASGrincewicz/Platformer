@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[RequireComponent(typeof(AudioSource))]
 public class Audio_Manager : MonoBehaviour
 {
     [SerializeField] protected AudioSource _audioSource;
@@ -7,7 +8,7 @@ public class Audio_Manager : MonoBehaviour
     private void Start()
     {
         _audioSource = GetComponent<AudioSource>();
-        if (_audioSource == null)
+        if (!_audioSource)
             Debug.Log($"{this} Audio Source is null!");
     }
 
