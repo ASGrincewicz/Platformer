@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
@@ -29,7 +30,7 @@ namespace Veganimus.Platformer
         private Transform _agentTransform;
         private WaitForSeconds _chaseCoolDown;
 
-        private void Start()
+        private void Awake()
         {
             _animator = GetComponentInChildren<Animator>();
             _health = GetComponent<Health>();
@@ -39,17 +40,13 @@ namespace Veganimus.Platformer
             _chaseCoolDown = new WaitForSeconds(3f);
             _agent.speed = _enemyInfo.speed;
             _agentTransform = _agent.transform;
-            ChangeAIState(AIState.Patrolling);
-        }
-        private void OnDestroy()
-        {
-            GameManager.Instance.EnemyKills++;
         }
 
-        private void FixedUpdate()
-        {
-            Detect();
-        }
+        private void Start() => ChangeAIState(AIState.Patrolling);
+        private void OnDestroy() => GameManager.Instance.EnemyKills++;
+
+        private void FixedUpdate() => Detect();
+
         private void Update()
         {
             //Detect();

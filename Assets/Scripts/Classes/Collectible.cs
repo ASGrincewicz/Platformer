@@ -8,7 +8,7 @@ namespace Veganimus.Platformer
     public class Collectible : MonoBehaviour, IAbsorbable
     {
         [SerializeField, Tooltip("Can this collectible be absorbed?")]
-        private bool _canAbosrb = false;
+        private bool _canAbsorb = false;
         [SerializeField, Tooltip("Specify the amount this collectible adds to a stat.")]
         private sbyte _powerUpAmount;
         [SerializeField, Tooltip("This object's movement speed.")]
@@ -22,7 +22,7 @@ namespace Veganimus.Platformer
         private float _x, _y, _z = 0;
         private float _xRadius, _yRadius;
         protected Transform _transform;
-        public bool CanAbsorb { get { return _canAbosrb; } }
+        public bool CanAbsorb => _canAbsorb;
 
         protected virtual void Start()
         {
@@ -45,7 +45,7 @@ namespace Veganimus.Platformer
         {
             if (other.CompareTag("Player"))
             {
-                if(_canAbosrb)
+                if(_canAbsorb)
                 {
                     switch(_collectibleType)
                     {

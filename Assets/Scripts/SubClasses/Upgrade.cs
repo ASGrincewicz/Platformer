@@ -15,7 +15,7 @@ namespace Veganimus.Platformer
 
         protected override void OnTriggerEnter(Collider other)
         {
-            if(other.tag == "Player" && _collectibleType == CollectibleType.Upgrade)
+            if(other.CompareTag("Player") && _collectibleType == CollectibleType.Upgrade)
             {
                 var player = Character.Instance;
 

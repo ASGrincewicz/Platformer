@@ -16,10 +16,7 @@ namespace Veganimus.Platformer
                 _gameStart = false;
         }
 
-        private void Update()
-        {
-            CheckHealth();
-        }
+        private void Update() => CheckHealth();
 
         private void CheckHealth()
         {

@@ -1,4 +1,6 @@
 ﻿// Aaron Grincewicz Veganimus@icloud.com 6/5/2021
+
+using System;
 using UnityEngine;
 namespace Veganimus.Platformer
 {
@@ -7,10 +9,10 @@ namespace Veganimus.Platformer
         [SerializeField] private float _aimWeight = 1f;
         [SerializeField] private GameObject _aimTarget;
         private Animator _animator;
-        public float AimWeight { get { return _aimWeight; } set { _aimWeight = value; } }
+        public float AimWeight { get => _aimWeight; set => _aimWeight = value; }
         public float LookWeight { get; set; } = 1f;
 
-        private void Start() => _animator = GetComponent<Animator>();
+        private void Awake() => _animator = GetComponent<Animator>();
 
         private void OnAnimatorIK(int layerIndex)
         {

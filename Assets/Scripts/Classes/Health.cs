@@ -17,10 +17,10 @@ namespace Veganimus.Platformer
         protected bool _gameStart = true;
         protected int _maxLifeHP = 99;
         protected UIManager _uIManager;
-        public int HP { get { return _hp; } set { _hp = value; } }
-        public bool IsPlayer { get { return _isPlayer;} }
-        
-        public int Lives { get { return _lives; } private set { _lives = value; } }
+        public int HP {get => _hp;  set => _hp = value;
+        }
+        public bool IsPlayer => _isPlayer;
+        public int Lives { get => _lives; private set => _lives = value; }
 
         public virtual void Damage(int hpDamage)
         {
@@ -28,7 +28,6 @@ namespace Veganimus.Platformer
 
             if (_hp <= 0 && _characterType == CharacterType.Enemy)
             {
-                
                 Destroy(gameObject);
             }
             else if(_hp <= 0 && _characterType != CharacterType.Enemy)

@@ -10,14 +10,9 @@ namespace Veganimus.Platformer
         public Rotate(Vector3 vector3) => _rotationVector = vector3;
         [SerializeField] private float _speed;
         [SerializeField] private Vector3 _rotationVector;
-        private float _deltaTime;
+       
+        private void Update() => RotateThis(_rotationVector);
 
-        private void Update()
-        {
-            //_deltaTime = Time.deltaTime;
-            RotateThis(_rotationVector);
-        }
-
-        public void RotateThis(Vector3 rotationVector) => transform.Rotate(rotationVector * _speed);
+        private void RotateThis(Vector3 rotationVector) => transform.Rotate(rotationVector * _speed);
     }
 }

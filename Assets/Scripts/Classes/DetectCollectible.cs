@@ -9,7 +9,7 @@ namespace Veganimus.Platformer
         [SerializeField, Tooltip("The area around the player in which collectibles are detected.")]
         private float _collectibleDetectionRadius;
         [SerializeField,Tooltip("Layer on which collectible objects exist.")] private LayerMask _collectibleLayerMask;
-        private Collider[] _collectiblesDetected = new Collider[5];
+        private readonly Collider[] _collectiblesDetected = new Collider[5];
         private Transform _transform;
 
         private void Start() => _transform = transform;
@@ -24,7 +24,7 @@ namespace Veganimus.Platformer
                                                                 _collectibleLayerMask);
             if (numberColliders != 0)
             {
-                for (int i = 0; i < numberColliders; i++)
+                for (var i = 0; i < numberColliders; i++)
                 {
                     if (_collectiblesDetected[i].GetComponent<Collectible>().CanAbsorb)
                         _collectiblesDetected[i].transform.localPosition = Vector3.MoveTowards(_collectiblesDetected[i].transform.localPosition, _transform.localPosition, 3f * Time.deltaTime);

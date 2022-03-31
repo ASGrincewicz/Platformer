@@ -1,4 +1,6 @@
 ﻿// Aaron Grincewicz Veganimus@icloud.com 6/5/2021
+
+using System;
 using System.Collections;
 using UnityEngine;
 namespace Veganimus.Platformer
@@ -20,14 +22,12 @@ namespace Veganimus.Platformer
         private IDamageable _idamageable;
         private Collider[] _hitColliders;
         private WaitForSeconds _explosionDelay;
-        public int MaxDoorLevel { get { return _maxDoorLevel; } set { } }
+        public int MaxDoorLevel { get => _maxDoorLevel; set { } }
 
         //private void OnDrawGizmosSelected() => Gizmos.DrawWireSphere(transform.position, _explosionRadius)
-        private void Start()
-        {
-            _explosionDelay = new WaitForSeconds(_bombTimer);
-            StartCoroutine(ExplosionRoutine());
-        }
+        private void Awake() => _explosionDelay = new WaitForSeconds(_bombTimer);
+
+        private void Start() => StartCoroutine(ExplosionRoutine());
 
         private void FixedUpdate()
         {
@@ -40,14 +40,14 @@ namespace Veganimus.Platformer
            
             for(int i = 0; i< _hitColliders.Length; i++)
             {
-                Rigidbody rigidbody = _hitColliders[i].GetComponent<Rigidbody>();
+                Rigidbody _rb = _hitColliders[i].GetComponent<Rigidbody>();
                 _iBombable = _hitColliders[i].GetComponentInParent<IBombable>();
                 _idamageable = _hitColliders[i].GetComponentInParent<IDamageable>();
-                if (rigidbody != null && _iBombable != null)
+                if (_rb != null && _iBombable != null)
                 {
-                    rigidbody.useGravity = true;
-                    rigidbody.isKinematic = false;
-                    rigidbody.AddExplosionForce(_explosionForce, transform.position, _explosionRadius, _upForce, ForceMode.Impulse);
+                    _rb.useGravity = true;
+                    _rb.isKinematic = false;
+                    _rb.AddExplosionForce(_explosionForce, transform.position, _explosionRadius, _upForce, ForceMode.Impulse);
                     if (_idamageable != null && !_idamageable.IsPlayer)
                     {
                         _idamageable.Damage(_damageAmount);

@@ -1,4 +1,6 @@
 ﻿// Aaron Grincewicz Veganimus@icloud.com 6/5/2021
+
+using System;
 using UnityEngine;
 namespace Veganimus.Platformer
 {
@@ -12,13 +14,13 @@ namespace Veganimus.Platformer
         private float _lifeTime = 5.0f;
         [SerializeField, Tooltip("Rate at which projectile travels.")]
         private float _speed = 10.0f;
-        public int MaxDoorLevel { get { return _maxDoorLevel; } set { } }
+        public int MaxDoorLevel { get => _maxDoorLevel; set { } }
         private float _deltaTime;
         private IDamageable _iDamageable;
         private Door _door;
         private Transform _transform;
 
-        private void Start() => _transform = transform;
+        private void Awake() => _transform = transform;
 
         private void Update()
         {
@@ -28,20 +30,18 @@ namespace Veganimus.Platformer
         }
         private void OnCollisionEnter(Collision collision)
         {
-            if (collision != null)
+            if (collision == null) return;
+            _iDamageable = collision.collider.GetComponentInParent<IDamageable>();
+            _door = collision.collider.GetComponentInParent<Door>();
+            if (_iDamageable != null)
             {
-                _iDamageable = collision.collider.GetComponentInParent<IDamageable>();
-                _door = collision.collider.GetComponentInParent<Door>();
-                if (_iDamageable != null)
-                {
-                    _iDamageable.Damage(_damageAmount);
-                    Destroy(gameObject);
-                }
-                else if (_iDamageable == null && _door != null && _door.DoorLevel > _maxDoorLevel)
-                    Destroy(gameObject);
-                else
-                    Destroy(gameObject);
+                _iDamageable.Damage(_damageAmount);
+                Destroy(gameObject);
             }
+            else if (_iDamageable == null && _door != null && _door.DoorLevel > _maxDoorLevel)
+                Destroy(gameObject);
+            else
+                Destroy(gameObject);
         }
     }
 }

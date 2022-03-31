@@ -1,4 +1,6 @@
 ﻿// Aaron Grincewicz Veganimus@icloud.com 6/5/2021
+
+using System;
 using System.Collections;
 using UnityEngine;
 namespace Veganimus.Platformer
@@ -21,21 +23,15 @@ namespace Veganimus.Platformer
         protected GameObject _secondaryWeaponPrefab;
         [SerializeField,Tooltip("Position at which projectiles are instantiated.")]
         protected Transform _fireOffset;
-        protected bool _secondaryFireTriggered;
+
+        private bool _secondaryFireTriggered;
         protected float _canFire = -1.0f;
         protected PoolManager _poolManager;
         protected Transform _pmTransform;
-        private Character _player;
+        [SerializeField] private Character _player;
         private UIManager _uIManager;
         protected WaitForSeconds _secondaryWeaponFireCooldownTime, _primaryWeaponFireCooldownTime;
-        public int SecondaryAmmo { get { return _secondaryAmmo; } set { _secondaryAmmo = value; } }
-
-        private void OnEnable()
-        {
-            _player = GetComponentInParent<Character>();
-            _weaponAudio = GetComponent<Weapon_Audio>();
-        }
-
+        public int SecondaryAmmo { get => _secondaryAmmo; set => _secondaryAmmo = value; }
         protected virtual IEnumerator Start()
         {
             yield return new WaitForSeconds(1.0f);
@@ -62,8 +58,8 @@ namespace Veganimus.Platformer
             {
                 case true:
                     if (Time.time > _canFire && _secondaryAmmo > 0 && _player.Upgrades.missiles)
-                        FireSecondaryWeapon();
-                        break;
+                        FireSecondaryWeapon(); 
+                    break;
                 case false:
                     if (Time.time > _canFire)
                         FirePrimaryWeapon();

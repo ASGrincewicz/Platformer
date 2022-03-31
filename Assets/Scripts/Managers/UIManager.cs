@@ -22,25 +22,24 @@ namespace Veganimus.Platformer
         [SerializeField] private TMP_Text _collectibleText, _healthText, _missilesText;
         [SerializeField] private TMP_Text _levelCompleteText, _upgradeText;
         private int _collectiblesCollected;
-        private int _maxBombs;
-        private int _maxHealth;
-        private int _maxLives;
         private int _currentBombs;
         private int _currentHealth;
         private int _currentLives;
-        private int _MaxSecondaryAmmo;
         private int  _secondaryAmmoCount;
         private WaitForSeconds _upgradeTextRoutineDelay;
-        public TMP_Text MissileText { get { return _missilesText; } set { } } 
+        public TMP_Text MissileText { get => _missilesText;  set { } } 
 
-        private void Awake() => _instance = this;
+        private void Awake()
+        {
+            _instance = this;
+            _upgradeTextRoutineDelay = new WaitForSeconds(0.5f);
+        }
 
         private void Start()
         {
             HealthTextUpdate(_currentHealth);
             LivesUpdate(_currentLives);
             SecondaryFireActive(false);
-            _upgradeTextRoutineDelay = new WaitForSeconds(0.5f);
         }
        
         private void ClearAmount(List<Image> toClear)

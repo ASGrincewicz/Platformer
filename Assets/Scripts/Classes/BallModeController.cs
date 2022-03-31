@@ -1,4 +1,6 @@
 ﻿// Aaron Grincewicz Veganimus@icloud.com 6/5/2021
+
+using System;
 using UnityEngine;
 namespace Veganimus.Platformer
 {
@@ -14,14 +16,13 @@ namespace Veganimus.Platformer
         private int _bombCount = 3;
         private float _canDropBomb = -1.0f;
         private Character _player;
-        private Transform _transform;
+        private Vector3 _position;
 
-        private void Start()
+        private void Awake()
         {
-            _transform = transform;
+            _position = transform.position;
             _player = Character.Instance;
         }
-
         private void Update()
         {
             if (Time.time > _canDropBomb && _player.Upgrades.ballBombs)
@@ -33,14 +34,15 @@ namespace Veganimus.Platformer
         }
         private void DropBomb()
         {
+            _position = transform.position;
             var bombTriggered = _inputManager.controls.Standard.Shoot.triggered;
             if (bombTriggered)
             {
                 _bombCount--;
                 UIManager.Instance.BombUpdate(_bombCount);
                 _canDropBomb = Time.time + _dropRate;
-                Instantiate(_bombPrefab,new Vector3(_transform.position.x,_transform.position.y, _transform.position.z - 0.5f), Quaternion.identity);
-                Invoke("RechargeBomb", _bombRechargeTime);
+                Instantiate(_bombPrefab,new Vector3(_position.x,_position.y, _position.z - 0.5f), Quaternion.identity);
+                Invoke(nameof(RechargeBomb), _bombRechargeTime);
             }
         }
         private void RechargeBomb()

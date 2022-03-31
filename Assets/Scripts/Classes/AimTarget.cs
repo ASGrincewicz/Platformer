@@ -16,8 +16,6 @@ namespace Veganimus.Platformer
         private float _vertical;
         private Transform _target;
         private Transform _targetPosition;
-       
-
         private void OnEnable()
         {
             _inputManager.downAimAction += OnDownAimInput;
@@ -39,7 +37,6 @@ namespace Veganimus.Platformer
             {
                 SetTarget();
             }
-          
         }
         private void SetTarget()
         {

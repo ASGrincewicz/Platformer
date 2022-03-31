@@ -6,6 +6,7 @@ namespace Veganimus.Platformer
     public class EnemyWeapon : Weapon
     {
         public bool IsShooting { get; set; }
+
         protected override IEnumerator Start()
         {
             yield return new WaitForSeconds(1.0f);
@@ -14,7 +15,6 @@ namespace Veganimus.Platformer
             _poolManager = PoolManager.Instance;
             _pmTransform = _poolManager.transform;
         }
-
         protected override void Update()
         {
             if (Time.time > _canFire)

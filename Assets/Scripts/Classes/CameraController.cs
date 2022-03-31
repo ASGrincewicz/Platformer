@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Collections;
 
 namespace Veganimus.Platformer
@@ -28,22 +29,22 @@ namespace Veganimus.Platformer
 		private Vector3 _previousPlayerPosition;
 		private Vector3 _smoothVelocity = Vector3.zero;
 		private Transform _transform;
-		public int AreaID { get { return _areaID; } }
+		public int AreaID
+		{
+			get => _areaID;
+			set {  }
+		}
+
 		public GameObject trackedObject;
 
-
-		private void Start()
+		private void Awake()
 		{
 			_transform = transform;
 			_cameraPosition = _transform.position;
-
 			if (trackedObject == null)
 				Debug.LogError("Nothing to track!");
 
-			_previousPlayerPosition.x = trackedObject.transform.position.x;
-			_previousPlayerPosition.y = trackedObject.transform.position.y;
-			_previousPlayerPosition.z = trackedObject.transform.position.z;
-
+			_previousPlayerPosition = trackedObject.transform.position;
 			ValidateLeftAndRightLimits();
 			ValidateTopAndBottomLimits();
 

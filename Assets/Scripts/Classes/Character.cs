@@ -6,7 +6,7 @@ namespace Veganimus.Platformer
     public class Character : MonoBehaviour
     {
         #region Singleton
-        public static Character Instance { get { return _instance; } }
+        public static Character Instance => _instance;
         private static Character _instance;
         #endregion
         [SerializeField] private int _collectibles;
@@ -69,12 +69,26 @@ namespace Veganimus.Platformer
         private Transform _ballFormTransform;
         private Transform _transform;
         private Weapon _weapon;
-        public bool InBallForm { get { return _inBallForm; } }
+        public bool InBallForm { get => _inBallForm; set{} }
         private float _deltaTime;
-        public PlayerUpgrades Upgrades { get { return _upgrades; } }
+        public PlayerUpgrades Upgrades => _upgrades;
         public InputManagerSO InputManager { get; set; }
 
-        private void Awake() => _instance = this;
+        private void Awake()
+        {
+            _instance = this;
+            _transform = transform;
+            _characterModelTransform = _characterModel.transform;
+            _ballFormTransform = _ballForm.transform;
+            _aimTransform = _aimTarget.transform;
+            _mainCamera = Camera.main.GetComponent<CameraController>();
+            _controller = GetComponentInChildren<CharacterController>();
+            _rigidbody = GetComponentInChildren<Rigidbody>();
+            _animator = _characterModel.GetComponent<Animator>();
+            _playerAim = _characterModel.GetComponent<PlayerAim>();
+            _weapon = GetComponentInChildren<Weapon>();
+            _gravity = _adjustGravity;
+        }
 
         private void OnEnable()
         {
@@ -90,17 +104,7 @@ namespace Veganimus.Platformer
 
         private void Start()
         {
-            _transform = transform;
-            _characterModelTransform = _characterModel.transform;
-            _ballFormTransform = _ballForm.transform;
-            _aimTransform = _aimTarget.transform;
-            _mainCamera = Camera.main.GetComponent<CameraController>();
-            _controller = GetComponentInChildren<CharacterController>();
-            _rigidbody = GetComponentInChildren<Rigidbody>();
-            _animator = _characterModel.GetComponent<Animator>();
-            _playerAim = _characterModel.GetComponent<PlayerAim>();
-            _weapon = GetComponentInChildren<Weapon>();
-            _gravity = _adjustGravity;
+            
         }
         private void FixedUpdate()
         {
@@ -141,7 +145,7 @@ namespace Veganimus.Platformer
                     TransformToBallMode(false);
                 }
             }
-             _animator.SetFloat(_horizontalAP, _horizontal != 0 ? 1 : 0);
+            _animator.SetFloat(_horizontalAP, _horizontal != 0 ? 1 : 0);
         }
 
         private void OnControllerColliderHit(ControllerColliderHit hit)

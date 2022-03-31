@@ -1,4 +1,6 @@
 ﻿// Aaron Grincewicz Veganimus@icloud.com 6/5/2021
+
+using System;
 using System.Collections;
 using UnityEngine;
 namespace Veganimus.Platformer
@@ -13,48 +15,47 @@ namespace Veganimus.Platformer
         private int _doorLevel = 1;
         [SerializeField, Tooltip("The materials to used for locked and unlocked states.")]
         private Material[] _doorMat = new Material[2];//0 is unlocked, 1 is locked.
-        private int _doorOpenAP = Animator.StringToHash("isDoorOpen");
-        private int _doorOpenSpeedAP = Animator.StringToHash("doorSpeed");
+        private readonly int _doorOpenAP = Animator.StringToHash("isDoorOpen");
+        private readonly int _doorOpenSpeedAP = Animator.StringToHash("doorSpeed");
         private ICanOpenDoor _iCanOpenDoor;
         private Animator _animator;
         private MeshRenderer _meshRenderer;
         private WaitForSeconds _closeDelay;
-        public int DoorLevel { get { return _doorLevel; } }
+        public int DoorLevel => _doorLevel;
 
-        private void Start()
+        private void Awake()
         {
             _animator = GetComponentInParent<Animator>();
             _meshRenderer = GetComponent<MeshRenderer>();
             _doorAudio = GetComponent<Door_Audio>();
             _closeDelay = new WaitForSeconds(5.0f);
-            if (_locked)
-                _meshRenderer.material = _doorMat[1];
-            else
-                _meshRenderer.material = _doorMat[0];
+        }
+
+        private void Start()
+        {
+            _meshRenderer.material = _locked ? _doorMat[1] : _doorMat[0];
         }
 
         private void OnCollisionEnter(Collision other)
         {
-            if(other.collider != null)
+            if (other.collider == null) return;
+            _iCanOpenDoor = other.collider.GetComponent<ICanOpenDoor>();
+            if(_iCanOpenDoor != null)
             {
-                _iCanOpenDoor = other.collider.GetComponent<ICanOpenDoor>();
-                if(_iCanOpenDoor != null)
+                if (_iCanOpenDoor.MaxDoorLevel >= _doorLevel)
                 {
-                    if (_iCanOpenDoor.MaxDoorLevel >= _doorLevel)
+                    if(_locked)
                     {
-                        if(_locked)
-                        {
-                            _locked = false;
-                            _doorLevel = 1;
-                            _meshRenderer.material = _doorMat[0];
-                            _doorAudio.PlaySound(_doorAudio.DoorUnlockSound);
-                            return;
-                        }
-                        _animator.SetFloat(_doorOpenSpeedAP, 1.0f);
-                        _animator.SetBool(_doorOpenAP, true);
-                        _doorAudio.PlaySound(_doorAudio.DoorOpensound);
-                        StartCoroutine(DoorCloseRoutine());
+                        _locked = false;
+                        _doorLevel = 1;
+                        _meshRenderer.material = _doorMat[0];
+                        _doorAudio.PlaySound(_doorAudio.DoorUnlockSound);
+                        return;
                     }
+                    _animator.SetFloat(_doorOpenSpeedAP, 1.0f);
+                    _animator.SetBool(_doorOpenAP, true);
+                    _doorAudio.PlaySound(_doorAudio.DoorOpensound);
+                    StartCoroutine(DoorCloseRoutine());
                 }
             }
         }
